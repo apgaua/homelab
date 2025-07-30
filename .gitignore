@@ -41,4 +41,4 @@ id_rsa
 *.log
 **credentials*
 **/inventory_files/*
-!*/environment/_example_file.tfvars
+!*/environment/_example_*.tfvars
