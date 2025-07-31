@@ -13,4 +13,4 @@ terraform init
 
 ## Terraform apply
 
-terraform apply -var-file=environment/MYCUSTOMFILE.tfvars
+terraform apply -var-file=environment/variables.tfvars
