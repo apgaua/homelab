@@ -42,3 +42,5 @@ id_rsa
 **credentials*
 **/inventory_files/*
 !*/environment/_example_*.tfvars
+!_example_credentials.env
+!*/images/*.env
