@@ -1,5 +1,6 @@
 # Deploy proxmox instances using terraform
 
+## Before everything
 
 ## Terraform init
 First of all, rename the files located in the environment folder and set variable values for your project.
