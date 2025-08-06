@@ -3,7 +3,7 @@ locals {
   agent        = 1
   cidr         = "192.168.27.0/24"
   onboot       = true
-  proxmox_node = "lab"
+  proxmox_node = "pve"
   scsihw       = "virtio-scsi-pci"
 
   bridge = {

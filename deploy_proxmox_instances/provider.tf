@@ -1,8 +1,8 @@
 terraform {
   required_providers {
     proxmox = {
-      source = "local/apgaua/Documents/Codes/terraform-provider-proxmox"
-      version = "0.0.1"
+      source = "telmate/proxmox"
+      version = "3.0.2-rc03"
     }
     local = {
       source  = "hashicorp/local"
