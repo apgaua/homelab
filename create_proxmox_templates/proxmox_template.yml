@@ -1,0 +1,34 @@
+---
+- name: Create Proxmox template and then clean temp files
+  hosts: proxmox
+  become: true
+  vars:
+    script_path: /tmp/create_template.sh
+    env_file_remote: /tmp/template.env
+
+  tasks:
+    - name: Copy create_template.sh file to the remote host
+      copy:
+        src: "{{ playbook_dir }}/create_template.sh"
+        dest: "{{ script_path }}"
+        mode: '0755'
+
+    - name: Copy .env file to the remote host
+      copy:
+        src: "{{ playbook_dir }}/{{ env_file }}"
+        dest: "{{ env_file_remote }}"
+        mode: '0644'
+
+    - name: Run script to create Proxmox template
+      command: bash {{ script_path }} {{ env_file_remote }}
+
+    - name: Remove script after execution
+      file:
+        path: "{{ script_path }}"
+        state: absent
+
+    - name: Remove .env file after execution
+      when: env_file is defined
+      file:
+        path: "{{ env_file_remote }}"
+        state: absent
