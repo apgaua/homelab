@@ -4,10 +4,12 @@
     1 - You should have a running proxmox server.
 
     2 - Create user and roles to allow terraform access proxmox server.
-        Follow documentation on<br>https://registry.terraform.io/providers/Telmate/proxmox/latest/docs
+        Follow documentation on
+        https://registry.terraform.io/providers/Telmate/proxmox/latest/docs
 
     3 - Create SSH keys to allow node access without password.
-        To create the keys, just follow the instructions on<br>https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server#step-1-creating-ssh-keys
+        To create the keys, just follow the instructions on
+        https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server#step-1-creating-ssh-keys
 
 ### Terraform init
 First of all, rename the files located in the environment folder and set variable values for your project.
