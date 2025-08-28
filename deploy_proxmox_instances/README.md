@@ -4,7 +4,7 @@
 
 You should have a running proxmox server.
 
-Create user and roles to allow terraform access proxmox server.
+Create user and roles to allow terraform access on proxmox server.
 Follow documentation on [Telmate Proxmox Module](https://registry.terraform.io/providers/Telmate/proxmox/latest/docs) documentation.
 
 Create SSH keys to allow node access without password.
