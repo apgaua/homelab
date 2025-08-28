@@ -5,14 +5,14 @@ resource "proxmox_vm_qemu" "workers" {
   vmid        = var.workers.vmid_prefix + count.index
   name = format(
     "%s-worker-%s",
-    var.cluster_name,
+    var.cluster.name,
     count.index
   )
 
-  onboot  = local.onboot
-  clone   = var.template
-  agent   = local.agent
-  pool    = var.resource_pool
+  onboot = local.onboot
+  clone  = var.cluster.template
+  agent  = local.agent
+  pool   = var.cluster.resource_pool
 
   cpu {
     cores   = var.workers.cores
@@ -22,17 +22,17 @@ resource "proxmox_vm_qemu" "workers" {
   memory  = var.workers.memory
   balloon = var.workers.balloon
 
-  ciuser           = local.cloud_init.user
-  sshkeys          = local.cloud_init.ssh_public_key
+  ciuser           = var.cluster.default_user
+  sshkeys          = file(var.ssh.public_key)
   automatic_reboot = local.automatic_reboot
   ciupgrade        = local.cloud_init.package_upgrade
   ipconfig0 = format(
     "ip=%s/24,gw=%s",
     cidrhost(
-      local.cidr,
+      var.cluster.cidr,
       var.workers.network_last_octect + count.index
     ),
-    cidrhost(local.cidr, 1)
+    cidrhost(var.cluster.cidr, 1)
   )
 
 
@@ -67,14 +67,14 @@ resource "proxmox_vm_qemu" "workers" {
     discard = local.disks.main.discard
   }
 
-  tags = "${var.cluster_name}-worker"
+  tags = "${var.cluster.name}-worker"
 
   connection {
     type        = "ssh"
-    user        = local.cloud_init.user
-    private_key = file("var.private_key")
+    user        = var.cluster.default_user
+    private_key = file(var.ssh.private_key)
     host = cidrhost(
-      local.cidr,
+      var.cluster.cidr,
       var.workers.network_last_octect + count.index
     )
   }

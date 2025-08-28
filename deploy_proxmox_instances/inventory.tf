@@ -15,6 +15,6 @@ resource "local_file" "ansible_inventory" {
       }
     }
   )
-  filename        = "inventory_files/${var.cluster_name}.ini"
+  filename        = "inventory_files/${var.cluster.name}.ini"
   file_permission = "0600"
 }

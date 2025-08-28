@@ -1,7 +1,6 @@
 locals {
   # global configurations
   agent        = 1
-  cidr         = "192.168.27.0/24"
   onboot       = true
   proxmox_node = "pve"
   scsihw       = "virtio-scsi-pci"
@@ -10,6 +9,7 @@ locals {
     interface = "vmbr0"
     model     = "virtio"
   }
+
   disks = {
     main = {
       backup    = true
@@ -20,6 +20,7 @@ locals {
       discard   = true
       disk_size = "105984M"
     }
+    
     cloudinit = {
       backup = true
       # format    = "raw"
@@ -36,9 +37,6 @@ locals {
 
   # cloud init information to be injected
   cloud_init = {
-    user            = "ubuntu"
-    password        = "ubuntu"
-    ssh_public_key  = file("/Users/apgaua/.ssh/id_rsa.pub")
     package_upgrade = true
   }
   automatic_reboot = true

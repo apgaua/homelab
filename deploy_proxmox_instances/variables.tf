@@ -1,34 +1,29 @@
+#Backend configuration
 variable "bucket" {
   description = "S3 bucket to store the Terraform state"
   type        = string
   default     = "homelab-kuda-state"
 }
 
-variable "cluster_name" {
-  description = "The name of the cluster"
-  type        = string
-  default     = "default"
+#Cluster configuration
+variable "cluster" {
+  description = "Configurations for the cluster"
+  type = object({
+    name          = string
+    description   = string
+    template      = string
+    default_user  = string
+    cidr          = string
+    resource_pool = optional(string)
+  })
 }
 
-variable "resource_pool" {
-  description = "Name of the resource pool to be used"
-  type        = string
-  default     = ""
-}
-
-variable "proxmox_api_url" {
-  description = "Proxmox url on wich resources should be deployed"
-}
-
-variable "description" {
-  description = "Description of cluster"
-  type        = string
-  default     = "Kubernetes"
-}
-
-variable "template" {
-  description = "Template to be used to deploy nodes"
-  type        = string
+variable "proxmox" {
+  description = "Proxmox backend configuration"
+  type = object({
+    ip   = string
+    port = number
+  })
 }
 
 variable "masters" {
@@ -57,7 +52,10 @@ variable "workers" {
   })
 }
 
-variable "private_key" {
-  description = "Private SSH key to connect to the VMs"
-  type        = string
+variable "ssh" {
+  description = "SSH configuration"
+  type = object({
+    private_key = string
+    public_key  = string
+  })
 }

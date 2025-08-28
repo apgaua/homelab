@@ -1,20 +1,34 @@
 #This file contains the variables for the Proxmox cluster deployment. It should be placed in the environment directory and named `variables.tfvars`.
 #It is recommended to create a copy of this file and rename it to `variables.tfvars` before running the Terraform script.
 
-################################# GENERAL CONFIG #################################
-cluster_name    = "lab-casa" # It is the name of the cluster that will be created.
-description     = "Default lab cluster" # Description of the cluster.
-proxmox_api_url = "https://<proxmoxurl>:8006/api2/json" # Proxmox API URL to deploy resources.
-private_key = "/path/to/your/private/key" # Path to the SSH private key that will be used to connect to the VMs.
+################################# GENERAL CONFIG ###############################
+cluster = {
+  name         = "lab-casa" # Must contain only letters, numbers, hyphen, and dot.
+  description  = "Default lab cluster"
+  template     = "flatcar-production-proxmoxve-image" # Template name to be used for node deployment.
+  default_user = "core"                               # Default user of the template image.
 
-template     = "flatcar-production-proxmoxve-image" # Template to be used to deploy nodes.
-resource_pool = "k8s-lab" # Name of the resource pool to be used. If not set, the default resource pool will be used.
-# Note: The resource pool must be created in Proxmox before running the Terraform script.
+  #IMPORTANT!! The value should not conflict with other devices on your network, which could cause instabilities and IP conflicts.
+  cidr = "192.168.XXX.0/24" # CIDR of the network where the VMs will be allocated.
 
+  resource_pool = ""   # Resource pool name to be used by the nodes. To use this variable, the resource pool must have been configured manually.
+}
+
+######################### PROXMOX ACCESS CONFIG ################################
+proxmox = {
+  ip   = "192.168.XXX.XXXX" # Proxmox IP address where the resource will be deployed.
+  port = "8006"             # Proxmox port, usually 8006.
+}
+
+################################ SSH CONFIG ####################################
+ssh = {
+  private_key = "<caminho private key>" # Private SSH key path to be used to connect to the VMs.
+  public_key  = "<caminho public key>"  # Public SSH key path to be injected into the VMs.
+}
 
 ################################# MASTER NODES #################################
 masters = {
-  count = 3 #How many master nodes?
+  count       = 3   #How many master nodes?
   vmid_prefix = 900 # VMID prefix for master nodes. It is important that this value does not conflict with other VMs in Proxmox, as it must be unique.
 
   # Hardware configuration.
@@ -27,12 +41,12 @@ masters = {
 
   # Network configuration.
   # IMPORTANT!! The value should not conflict with other devices on your network, which could cause instabilities and IP conflicts.
-  network_last_octect = 65 # Definicao de IP Master node: 192.168.XX.0
+  network_last_octect = 65 # IP definition for Master node: 192.168.XX.0
 }
 
-################################## WORKER NODES #################################
+################################## WORKER NODES ################################
 workers = {
-  count = 5 # How many worker nodes?
+  count       = 5   # How many worker nodes?
   vmid_prefix = 920 # VMID prefix for worker nodes. It is important that this value does not conflict with other VMs in Proxmox, as it must be unique.
 
   # Hardware configuration.
@@ -45,5 +59,5 @@ workers = {
 
   # Network configuration.
   # IMPORTANT!! The value should not conflict with other devices on your network, which could cause instabilities and IP conflicts.
-  network_last_octect = 70 # Definicao de IP Worker node> 192.168.XX.0
+  network_last_octect = 70 # IP definition for Worker node: 192.168.XX.0
 }
