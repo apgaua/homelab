@@ -1,9 +1,9 @@
 [all]
 %{ for index in master.index ~}
-${ master.vm_name[index] } ansible_host=${ master.ip_address[index]} ansible_user=${ master.user[index] } etcd_member_name=etcd${index+1}
+${ master.vm_name[index] } ansible_host=${ master.ip_address[index]} ansible_user=${ master.user[index] } ansible_ssh_private_key_file=${ ssh_private_key } etcd_member_name=etcd${index+1}
 %{ endfor ~}
 %{ for index in worker.index ~}
-${ worker.vm_name[index] } ansible_host=${ worker.ip_address[index]} ansible_user=${ worker.user[index] }
+${ worker.vm_name[index] } ansible_host=${ worker.ip_address[index]} ansible_user=${ worker.user[index] } ansible_ssh_private_key_file=${ ssh_private_key } 
 %{ endfor ~}
 
 [kube_control_plane]

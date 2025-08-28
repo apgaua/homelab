@@ -13,6 +13,7 @@ resource "local_file" "ansible_inventory" {
         user       = proxmox_vm_qemu.workers.*.ciuser
         vm_name    = proxmox_vm_qemu.workers.*.name
       }
+      ssh_private_key = var.ssh.private_key
     }
   )
   filename        = "inventory_files/${var.cluster.name}.ini"
