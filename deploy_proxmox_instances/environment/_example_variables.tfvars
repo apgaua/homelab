@@ -5,6 +5,7 @@
 cluster_name    = "lab-casa" # It is the name of the cluster that will be created.
 description     = "Default lab cluster" # Description of the cluster.
 proxmox_api_url = "https://<proxmoxurl>:8006/api2/json" # Proxmox API URL to deploy resources.
+private_key = "/path/to/your/private/key" # Path to the SSH private key that will be used to connect to the VMs.
 
 template     = "flatcar-production-proxmoxve-image" # Template to be used to deploy nodes.
 resource_pool = "k8s-lab" # Name of the resource pool to be used. If not set, the default resource pool will be used.

@@ -56,3 +56,8 @@ variable "workers" {
     network_last_octect = number
   })
 }
+
+variable "private_key" {
+  description = "Private SSH key to connect to the VMs"
+  type        = string
+}

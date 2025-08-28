@@ -13,8 +13,12 @@ resource "proxmox_vm_qemu" "masters" {
   clone   = var.template
   agent   = local.agent
   pool    = var.resource_pool
-  cores   = var.masters.cores
-  sockets = var.masters.sockets
+
+  cpu {
+    cores   = var.masters.cores
+    sockets = var.masters.sockets
+  }
+
   memory  = var.masters.memory
   balloon = var.workers.balloon
 
@@ -67,7 +71,7 @@ resource "proxmox_vm_qemu" "masters" {
   connection {
     type        = "ssh"
     user        = local.cloud_init.user
-    private_key = file("/Users/apgaua/.ssh/id_rsa")
+    private_key = file("var.private_key")
     host = cidrhost(
       local.cidr,
       var.masters.network_last_octect + count.index
