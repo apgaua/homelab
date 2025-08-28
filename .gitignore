@@ -36,6 +36,8 @@
 **terraform.rc
 
 **/ansible_inventory_files/*
+*.ini
+!_sample_inventory.ini
 *.pub
 id_rsa
 *.log
