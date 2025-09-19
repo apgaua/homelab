@@ -20,7 +20,7 @@ locals {
       discard   = true
       disk_size = "105984M"
     }
-    
+
     cloudinit = {
       backup = true
       # format    = "raw"
