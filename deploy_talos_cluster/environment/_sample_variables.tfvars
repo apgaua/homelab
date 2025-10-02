@@ -8,6 +8,7 @@ cluster = {
   cidr = "<networkip>" # CIDR of the network where the VMs will be allocated.
   resource_pool = "k8s-lab" # Resource pool name to be used by the nodes. To use this variable, the resource pool must have been configured manually.
   isoimage      = "talos-1.11.2-metal-amd64.iso" # ISO image name uploaded to Proxmox to be used for Talos installation.
+  talos_endpoint = ["listof","endpoints","IPs"] # IP address to be used to access the Talos API. It should be an IP address within the CIDR range.
 }
 
 ######################### PROXMOX ACCESS CONFIG ################################

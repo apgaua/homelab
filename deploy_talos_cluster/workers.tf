@@ -6,6 +6,8 @@ resource "proxmox_vm_qemu" "workers"{
     var.cluster.name,
     count.index
   )
+  agent = 1
+  skip_ipv6 = true
   target_node = "pve"
   onboot = true
   vm_state = "running"

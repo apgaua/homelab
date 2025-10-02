@@ -6,6 +6,8 @@ resource "proxmox_vm_qemu" "controlplane"{
     var.cluster.name,
     count.index
   )
+  agent = 1
+  skip_ipv6 = true
   target_node = "pve"
   onboot = true
   vm_state = "running"
@@ -29,7 +31,6 @@ resource "proxmox_vm_qemu" "controlplane"{
     macaddr = var.cp_mac_addresses[count.index]
   }
 
-# 
     disks {
     ide {
       ide2 {
@@ -66,6 +67,5 @@ resource "proxmox_vm_qemu" "controlplane"{
       var.masters.network_last_octect + count.index
     )
   }
-
 }
 
