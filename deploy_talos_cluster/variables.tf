@@ -9,11 +9,11 @@ variable "bucket" {
 variable "cluster" {
   description = "Configurations for the cluster"
   type = object({
-    name          = string
-    description   = string
-    cidr          = string
+    name           = string
+    description    = string
+    cidr           = string
     isoimage       = string
-    resource_pool = optional(string)
+    resource_pool  = optional(string)
     talos_endpoint = string
   })
 }
@@ -34,9 +34,9 @@ variable "cp" {
     cores               = number
     memory              = number
     balloon             = optional(number)
-    disk_size          =  number
+    disk_size           = number
     sockets             = number
-    type               = string
+    type                = string
     network_last_octect = optional(number)
   })
 }
@@ -49,9 +49,9 @@ variable "workers" {
     cores               = number
     memory              = number
     balloon             = optional(number)
-    disk_size          =  number
+    disk_size           = number
     sockets             = number
-    type               = string
+    type                = string
     network_last_octect = optional(number)
   })
 }

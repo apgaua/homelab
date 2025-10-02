@@ -1,37 +1,37 @@
-resource "proxmox_vm_qemu" "workers"{
+resource "proxmox_vm_qemu" "workers" {
   count = var.workers.count
-  vmid        = var.workers.vmid_prefix + count.index
+  vmid  = var.workers.vmid_prefix + count.index
   name = format(
     "%s-workers-%s",
     var.cluster.name,
     count.index
   )
-  agent = 1
-  skip_ipv6 = true
-  target_node = "pve"
-  onboot = true
-  vm_state = "running"
-  memory = var.workers.memory
-  balloon = var.workers.balloon
-  scsihw = "virtio-scsi-pci"
-  pool  = var.cluster.resource_pool
-  tags = "${var.cluster.name}-worker"
+  agent        = 1
+  skip_ipv6    = true
+  target_node  = "pve"
+  onboot       = true
+  vm_state     = "running"
+  memory       = var.workers.memory
+  balloon      = var.workers.balloon
+  scsihw       = "virtio-scsi-pci"
+  pool         = var.cluster.resource_pool
+  tags         = "${var.cluster.name}-worker"
   force_create = false
-# CPU Configuration
+
+  # CPU Configuration
   cpu {
     cores   = var.workers.cores
     sockets = var.workers.sockets
   }
 
-# Network interface and MAC address configuration
+  # Network interface and MAC address configuration
   network {
     id     = 0
     bridge = "vmbr0"
     model  = "virtio"
   }
 
-# 
-    disks {
+  disks {
     ide {
       ide2 {
         cdrom {
@@ -39,24 +39,24 @@ resource "proxmox_vm_qemu" "workers"{
         }
       }
     }
-        scsi {
-            scsi0 {
-                disk {
-                    size    = var.workers.disk_size
-                    storage = "local-lvm"
-                    format  = "raw"
-                    backup  = true
-                    discard = true
-                }
-            }
-          
+    scsi {
+      scsi0 {
+        disk {
+          size    = var.workers.disk_size
+          storage = "local-lvm"
+          format  = "raw"
+          backup  = true
+          discard = true
         }
-    }
+      }
 
-    serial {
-        id   = 0
-        type = "socket"
     }
+  }
+
+  serial {
+    id   = 0
+    type = "socket"
+  }
 
   connection {
     type        = "ssh"
