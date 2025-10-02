@@ -6,10 +6,10 @@ data "talos_client_configuration" "this" {
   endpoints            = [var.cluster.talos_endpoint]
 }
 
-data "talos_machine_configuration" "controlplane" {
+data "talos_machine_configuration" "this" {
   talos_version    = "v1.11.2"
   cluster_name     = var.cluster.name
-  machine_type     = "controlplane"
+  machine_type     = var.workers.type == "worker" ? "worker" : "controlplane"
   machine_secrets  = talos_machine_secrets.this.machine_secrets
   cluster_endpoint = "https://${var.cluster.talos_endpoint}:6443"
 }
@@ -26,7 +26,7 @@ resource "talos_machine_configuration_apply" "controlplane" {
   count                       = var.cp.count
   depends_on                  = [proxmox_vm_qemu.controlplane]
   client_configuration        = talos_machine_secrets.this.client_configuration
-  machine_configuration_input = data.talos_machine_configuration.controlplane.machine_configuration
+  machine_configuration_input = data.talos_machine_configuration.this.machine_configuration
   node                        = proxmox_vm_qemu.controlplane[count.index].default_ipv4_address
 }
 
