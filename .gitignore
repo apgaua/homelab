@@ -43,6 +43,6 @@ id_rsa
 *.log
 **credentials*
 **/inventory_files/*
-!*/environment/_example_*.tfvars
-!_example_credentials.env
+!*/environment/_sample_*.tfvars
+!_sample_credentials.env
 !*/images/*.env
