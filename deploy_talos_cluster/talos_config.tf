@@ -1,7 +1,3 @@
-locals {
-    instance_number = var.cp.count + var.workers.count
-}
-
 resource "talos_machine_secrets" "this" {}
 
 data "talos_client_configuration" "this" {
