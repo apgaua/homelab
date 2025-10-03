@@ -56,10 +56,5 @@ resource "proxmox_vm_qemu" "this" {
 
     }
   }
-
-  serial {
-    id   = 0
-    type = "socket"
-  }
 }
 
