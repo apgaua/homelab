@@ -13,6 +13,7 @@ cluster = {
   talos_endpoint = "talosendpointIP"         # IP address to be used to access the Talos API. It should be an IP address within the CIDR range.
   vmid_prefix    = 900                       # VMID prefix for all nodes. It is important that this value does not conflict with other VMs in Proxmox, as it must be unique.
   kubeconfig     = "kubeconfigfolder/config" # Path where the kubeconfig file will be saved after the cluster is created.
+  cpu_type       = "x86-64-v2-AES"
 }
 
 ################################################################################
@@ -51,10 +52,6 @@ nodes = [
 ################################################################################
 ########################## VIRTUAL MACHINE CONFIGURATION #######################
 ################################################################################
-
-hardware = {
-  cpu_type = "x86-64-v2-AES"
-}
 
 worker_nodes = {
   sockets = 1
@@ -120,4 +117,16 @@ helm_charts = [
   #     { name = "controller.admissionWebhooks.patch.enabled", value = "true" }
   #   ]
   # }
+  {
+    name             = "argocd"
+    repository       = "https://argoproj.github.io/argo-helm"
+    chart            = "argo-cd"
+    namespace        = "argocd"
+    create_namespace = true
+    version          = "8.5.8"
+    set = [
+      { name = "server.service.type", value = "LoadBalancer" },
+      { name = "configs.params.server.insecure", value = "true" }
+    ]
+  }
 ]
