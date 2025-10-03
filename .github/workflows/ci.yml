@@ -1,20 +1,17 @@
-name: 'Terraform Module CI'
+name: Generate Terraform Docs
 
 on:
-  pull_request:
   push:
     branches:
-      - dev
       - main
 
 jobs:
-  # This job runs on pull requests to check code quality and security.
-  pr-checks:
-    name: 'PR Checks'
-    if: github.event_name == 'pull_request'
+  docs:
     runs-on: ubuntu-latest
     steps:
-      - name: 'Checkout Code'
+      # STEP 1: Check out the repository code first
+      # This is the crucial step that solves the "not a git repository" error.
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: 'Setup Terraform'
@@ -40,19 +37,13 @@ jobs:
       - name: 'Run tfsec security scan on Terraform code'
         uses: aquasecurity/tfsec-action@v1.0.0
 
-          # Note: Terraform test would be another step here and requires cloud credentials.
-      # - name: 'Terraform Test'
-      #   run: terraform test
-
-  generate-docs:
-    name: 'Create docs'
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Render terraform docs inside the README.md and push changes back to PR branch
+      # STEP 2: Now run the terraform-docs action
+      # It will execute in the context of the checked-out repository.
+      - name: Generate Terraform Docs
         uses: terraform-docs/gh-actions@v1.4.1
         with:
+          # Your other options go here
+          git-push: "true"
           find-dir: .
           output-file: README.md
           output-method: inject
-          git-push: "true"
