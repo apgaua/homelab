@@ -65,9 +65,8 @@ This proccess wait for cluster deployment and full access before starts.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cluster"></a> [cluster](#input\_cluster) | Configurations for the cluster | <pre>object({<br/>    name           = string<br/>    description    = string<br/>    cidr           = string<br/>    isoimage       = string<br/>    resource_pool  = optional(string)<br/>    talos_endpoint = string<br/>    vmid_prefix    = number<br/>    kubeconfig     = string<br/>  })</pre> | n/a | yes |
+| <a name="input_cluster"></a> [cluster](#input\_cluster) | Configurations for the cluster | <pre>object({<br/>    name           = string<br/>    description    = string<br/>    cidr           = string<br/>    isoimage       = string<br/>    resource_pool  = optional(string)<br/>    talos_endpoint = string<br/>    vmid_prefix    = number<br/>    kubeconfig     = string<br/>    cpu_type       = string<br/>  })</pre> | n/a | yes |
 | <a name="input_controlplane_nodes"></a> [controlplane\_nodes](#input\_controlplane\_nodes) | Hardware configuration for control plane nodes | <pre>object({<br/>    sockets   = number<br/>    cores     = number<br/>    memory    = number<br/>    balloon   = optional(number)<br/>    disk_size = number<br/>  })</pre> | n/a | yes |
-| <a name="input_hardware"></a> [hardware](#input\_hardware) | Base hardware configuration for the VMs | <pre>object({<br/>    cpu_type = string<br/>  })</pre> | n/a | yes |
 | <a name="input_nodes"></a> [nodes](#input\_nodes) | List of nodes to be created | <pre>list(object({<br/>    type        = string<br/>    ip          = string<br/>    mac_address = string<br/>  }))</pre> | n/a | yes |
 | <a name="input_proxmox"></a> [proxmox](#input\_proxmox) | Proxmox backend configuration | <pre>object({<br/>    ip   = string<br/>    port = number<br/>  })</pre> | n/a | yes |
 | <a name="input_ssh"></a> [ssh](#input\_ssh) | SSH configuration | <pre>object({<br/>    private_key = string<br/>    public_key  = string<br/>  })</pre> | n/a | yes |
