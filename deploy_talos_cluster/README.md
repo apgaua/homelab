@@ -25,27 +25,18 @@ This proccess wait for cluster deployment and full access before starts.
 
 <!-- BEGIN_TF_DOCS -->
 
+## Inputs
 
-## Requirements
-
-| Name | Version |
-|------|---------|
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | 3.0.2 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.38.0 |
-| <a name="requirement_local"></a> [local](#requirement\_local) | 2.5.3 |
-| <a name="requirement_proxmox"></a> [proxmox](#requirement\_proxmox) | 3.0.2-rc04 |
-| <a name="requirement_talos"></a> [talos](#requirement\_talos) | 0.9.0 |
-
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_helm"></a> [helm](#provider\_helm) | 3.0.2 |
-| <a name="provider_local"></a> [local](#provider\_local) | 2.5.3 |
-| <a name="provider_null"></a> [null](#provider\_null) | n/a |
-| <a name="provider_proxmox"></a> [proxmox](#provider\_proxmox) | 3.0.2-rc04 |
-| <a name="provider_talos"></a> [talos](#provider\_talos) | 0.9.0 |
-
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_cluster"></a> [cluster](#input\_cluster) | Configurations for the cluster | <pre>object({<br/>    name           = string<br/>    description    = string<br/>    cidr           = string<br/>    isoimage       = string<br/>    resource_pool  = optional(string)<br/>    talos_endpoint = string<br/>    vmid_prefix    = number<br/>    kubeconfig     = string<br/>    cpu_type       = string<br/>  })</pre> | n/a | yes |
+| <a name="input_controlplane_nodes"></a> [controlplane\_nodes](#input\_controlplane\_nodes) | Hardware configuration for control plane nodes | <pre>object({<br/>    sockets   = number<br/>    cores     = number<br/>    memory    = number<br/>    balloon   = optional(number)<br/>    disk_size = number<br/>  })</pre> | n/a | yes |
+| <a name="input_nodes"></a> [nodes](#input\_nodes) | List of nodes to be created | <pre>list(object({<br/>    type        = string<br/>    ip          = string<br/>    mac_address = string<br/>  }))</pre> | n/a | yes |
+| <a name="input_proxmox"></a> [proxmox](#input\_proxmox) | Proxmox backend configuration | <pre>object({<br/>    ip   = string<br/>    port = number<br/>  })</pre> | n/a | yes |
+| <a name="input_ssh"></a> [ssh](#input\_ssh) | SSH configuration | <pre>object({<br/>    private_key = string<br/>    public_key  = string<br/>  })</pre> | n/a | yes |
+| <a name="input_worker_nodes"></a> [worker\_nodes](#input\_worker\_nodes) | Hardware configuration for worker nodes | <pre>object({<br/>    sockets   = number<br/>    cores     = number<br/>    memory    = number<br/>    balloon   = optional(number)<br/>    disk_size = number<br/>  })</pre> | n/a | yes |
+| <a name="input_bucket"></a> [bucket](#input\_bucket) | S3 bucket to store the Terraform state | `string` | `"homelab-kuda-state"` | no |
+| <a name="input_helm_charts"></a> [helm\_charts](#input\_helm\_charts) | n/a | <pre>list(object({<br/>    name             = string<br/>    repository       = string<br/>    chart            = string<br/>    namespace        = string<br/>    create_namespace = optional(bool, false)<br/>    wait             = optional(bool, false)<br/>    version          = optional(string, null)<br/>    set = optional(list(object({<br/>      name  = string<br/>      value = string<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 ## Resources
 
 | Name | Type |
@@ -60,19 +51,24 @@ This proccess wait for cluster deployment and full access before starts.
 | [talos_machine_secrets.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0/docs/resources/machine_secrets) | resource |
 | [talos_client_configuration.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0/docs/data-sources/client_configuration) | data source |
 | [talos_machine_configuration.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0/docs/data-sources/machine_configuration) | data source |
+## Requirements
 
-## Inputs
+| Name | Version |
+|------|---------|
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | 3.0.2 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.38.0 |
+| <a name="requirement_local"></a> [local](#requirement\_local) | 2.5.3 |
+| <a name="requirement_proxmox"></a> [proxmox](#requirement\_proxmox) | 3.0.2-rc04 |
+| <a name="requirement_talos"></a> [talos](#requirement\_talos) | 0.9.0 |
+## Providers
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_cluster"></a> [cluster](#input\_cluster) | Configurations for the cluster | <pre>object({<br/>    name           = string<br/>    description    = string<br/>    cidr           = string<br/>    isoimage       = string<br/>    resource_pool  = optional(string)<br/>    talos_endpoint = string<br/>    vmid_prefix    = number<br/>    kubeconfig     = string<br/>    cpu_type       = string<br/>  })</pre> | n/a | yes |
-| <a name="input_controlplane_nodes"></a> [controlplane\_nodes](#input\_controlplane\_nodes) | Hardware configuration for control plane nodes | <pre>object({<br/>    sockets   = number<br/>    cores     = number<br/>    memory    = number<br/>    balloon   = optional(number)<br/>    disk_size = number<br/>  })</pre> | n/a | yes |
-| <a name="input_nodes"></a> [nodes](#input\_nodes) | List of nodes to be created | <pre>list(object({<br/>    type        = string<br/>    ip          = string<br/>    mac_address = string<br/>  }))</pre> | n/a | yes |
-| <a name="input_proxmox"></a> [proxmox](#input\_proxmox) | Proxmox backend configuration | <pre>object({<br/>    ip   = string<br/>    port = number<br/>  })</pre> | n/a | yes |
-| <a name="input_ssh"></a> [ssh](#input\_ssh) | SSH configuration | <pre>object({<br/>    private_key = string<br/>    public_key  = string<br/>  })</pre> | n/a | yes |
-| <a name="input_worker_nodes"></a> [worker\_nodes](#input\_worker\_nodes) | Hardware configuration for worker nodes | <pre>object({<br/>    sockets   = number<br/>    cores     = number<br/>    memory    = number<br/>    balloon   = optional(number)<br/>    disk_size = number<br/>  })</pre> | n/a | yes |
-| <a name="input_bucket"></a> [bucket](#input\_bucket) | S3 bucket to store the Terraform state | `string` | `"homelab-kuda-state"` | no |
-| <a name="input_helm_charts"></a> [helm\_charts](#input\_helm\_charts) | n/a | <pre>list(object({<br/>    name             = string<br/>    repository       = string<br/>    chart            = string<br/>    namespace        = string<br/>    create_namespace = optional(bool, false)<br/>    wait             = optional(bool, false)<br/>    version          = optional(string, null)<br/>    set = optional(list(object({<br/>      name  = string<br/>      value = string<br/>    })), [])<br/>  }))</pre> | `[]` | no |
+| Name | Version |
+|------|---------|
+| <a name="provider_helm"></a> [helm](#provider\_helm) | 3.0.2 |
+| <a name="provider_local"></a> [local](#provider\_local) | 2.5.3 |
+| <a name="provider_null"></a> [null](#provider\_null) | n/a |
+| <a name="provider_proxmox"></a> [proxmox](#provider\_proxmox) | 3.0.2-rc04 |
+| <a name="provider_talos"></a> [talos](#provider\_talos) | 0.9.0 |
 
 ## Outputs
 
