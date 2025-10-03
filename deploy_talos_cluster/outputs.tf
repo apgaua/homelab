@@ -27,7 +27,3 @@ output "talos_endpoint" {
   description = "Talos API endpoint"
   value       = var.cluster.talos_endpoint
 }
-
-# output "schematic_id" {
-#   value = talos_image_factory_schematic.this.id
-# }
