@@ -39,12 +39,12 @@ variable "nodes" {
 variable "hardware" {
   description = "Hardware configuration for the nodes"
   type = object({
-    cpu_type         = string
-    sockets           = number
-    cores             = number
-    memory            = number
-    balloon           = optional(number)
-    disk_size         = number
+    cpu_type  = string
+    sockets   = number
+    cores     = number
+    memory    = number
+    balloon   = optional(number)
+    disk_size = number
   })
 }
 
@@ -54,4 +54,21 @@ variable "ssh" {
     private_key = string
     public_key  = string
   })
+}
+
+variable "helm_charts" {
+  type = list(object({
+    name             = string
+    repository       = string
+    chart            = string
+    namespace        = string
+    create_namespace = optional(bool, false)
+    wait             = optional(bool, false)
+    version          = optional(string, null)
+    set = optional(list(object({
+      name  = string
+      value = string
+    })), [])
+  }))
+  default = []
 }
