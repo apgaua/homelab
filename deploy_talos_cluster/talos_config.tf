@@ -20,7 +20,17 @@ resource "talos_machine_configuration_apply" "this" {
   depends_on                  = [proxmox_vm_qemu.this[0]]
   client_configuration        = talos_machine_secrets.this.client_configuration
   machine_configuration_input = data.talos_machine_configuration.this[count.index].machine_configuration
-  node                        = var.nodes[count.index].ip #proxmox_vm_qemu.this[count.index].default_ipv4_address  install_image               = "factory.talos.dev/metal-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.11.2"
+  node                        = var.nodes[count.index].ip
+  config_patches = [
+    yamlencode({
+      machine = {
+        install = {
+          disk = "/dev/sda"
+          image = "factory.talos.dev/metal-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.11.2"
+        }
+      }
+    })
+  ]
 }
 
 resource "talos_machine_bootstrap" "this" {
