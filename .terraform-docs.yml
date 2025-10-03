@@ -14,3 +14,13 @@ settings:
 sort:
   enabled: true
   by: required
+
+content: |-
+  {{ .Header }}
+  {{ .Inputs }}
+  {{ .Resources }}
+  {{ .Requirements }}
+  {{ .Providers }}
+  {{ .Modules }}
+  {{ .Outputs }}
+  {{ .Footer }}
