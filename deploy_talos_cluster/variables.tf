@@ -15,6 +15,8 @@ variable "cluster" {
     isoimage       = string
     resource_pool  = optional(string)
     talos_endpoint = string
+    vmid_prefix    = number
+    kubeconfig     = string
   })
 }
 
@@ -29,7 +31,6 @@ variable "proxmox" {
 variable "nodes" {
   description = "List of nodes to be created"
   type = list(object({
-    vmid        = number
     type        = string
     ip          = string
     mac_address = string
@@ -37,9 +38,26 @@ variable "nodes" {
 }
 
 variable "hardware" {
-  description = "Hardware configuration for the nodes"
+  description = "Base hardware configuration for the VMs"
   type = object({
-    cpu_type  = string
+    cpu_type = string
+  })
+}
+
+variable "worker_nodes" {
+  description = "Hardware configuration for worker nodes"
+  type = object({
+    sockets   = number
+    cores     = number
+    memory    = number
+    balloon   = optional(number)
+    disk_size = number
+  })
+}
+
+variable "controlplane_nodes" {
+  description = "Hardware configuration for control plane nodes"
+  type = object({
     sockets   = number
     cores     = number
     memory    = number

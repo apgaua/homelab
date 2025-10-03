@@ -1,0 +1,70 @@
+name: 'Terraform Module CI'
+
+on:
+  pull_request:
+  push:
+    branches:
+      - dev
+      - main
+
+jobs:
+  # This job runs on pull requests to check code quality and security.
+  pr-checks:
+    name: 'PR Checks'
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout Code'
+        uses: actions/checkout@v4
+
+      - name: 'Setup Terraform'
+        uses: hashicorp/setup-terraform@v3
+        with:
+         terraform_version: 1.13.3 # Specify your desired Terraform version
+
+      - name: 'Terraform Format Check'
+        run: terraform fmt -check -recursive
+
+      - name: 'Terraform Initialize'
+        # Use -backend=false for modules since they don't have a backend.
+        run: terraform init -backend=false
+
+      - name: 'Terraform Validate Code'
+        run: terraform validate
+
+      - name: 'Run tflint linter on Terraform code'
+        uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: latest
+
+      - name: 'Run tfsec security scan on Terraform code'
+        uses: aquasecurity/tfsec-action@v1.0.0
+
+          # Note: Terraform test would be another step here and requires cloud credentials.
+      # - name: 'Terraform Test'
+      #   run: terraform test
+
+  # This job runs only on a merge to the main branch to create a release.
+  release:
+    name: 'Release'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Render terraform docs inside the README.md and push changes back to PR branch
+        uses: terraform-docs/gh-actions@v1.4.1
+        with:
+          find-dir: .
+          output-file: README.md
+          output-method: inject
+          git-push: "true"
+
+      - name: 'Release Please'
+        uses: googleapis/release-please-action@v4
+        with:
+          # this assumes that you have created a personal access token
+          # (PAT) and configured it as a GitHub action secret named
+          # `MY_RELEASE_PLEASE_TOKEN` (this secret name is not important).
+          token: ${{ secrets.MY_RELEASE_PLEASE_TOKEN }}
+          # this is a built-in strategy in release-please, see "Action Inputs"
+          # for more options
+          release-type: simple

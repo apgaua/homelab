@@ -8,6 +8,16 @@ output "kubeconfig" {
   sensitive = true
 }
 
+output "kubernetes_endpoint" {
+  description = "Kubernetes API endpoint"
+  value       = talos_cluster_kubeconfig.this.kubernetes_client_configuration.host
+}
+
+output "talos_endpoint" {
+  description = "Talos API endpoint"
+  value       = var.cluster.talos_endpoint
+}
+
 output "how_many_nodes_will_be_created" {
   description = "Trouble-shooting output"
   value       = length(var.nodes)
@@ -23,7 +33,17 @@ output "how_many_worker_nodes_will_be_created" {
   value       = length([for node in var.nodes : node if node.type == "worker"])
 }
 
-output "talos_endpoint" {
-  description = "Talos API endpoint"
-  value       = var.cluster.talos_endpoint
+output "installed_helm_charts" {
+  description = "List of installed Helm charts with their versions"
+  value       = { for chart in var.helm_charts : chart.name => chart.version }
+}
+
+output "node_names" {
+  description = "List of node names that will be created"
+  value       = local.node_names
+}
+
+output "kubeconfig_file_path" {
+  description = "Path where the kubeconfig file is saved"
+  value       = var.cluster.kubeconfig
 }

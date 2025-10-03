@@ -1,20 +1,16 @@
 resource "proxmox_vm_qemu" "this" {
   count = length(var.nodes)
-  vmid  = var.nodes[count.index].vmid
-  name = format(
-    "%s-%s-%s",
-    var.cluster.name,
-    var.nodes[count.index].type,
-    count.index
-  )
+  vmid  = var.cluster.vmid_prefix + count.index # Unique VM ID
+  name = local.node_names[count.index]                       # VM name
+  description = format("Talos %s node for %s cluster", var.nodes[count.index].type, var.cluster.name) # VM description
 
   agent        = 1                                                              # QEMU Guest Agent
   skip_ipv6    = true                                                           # Disable IPv6 in the VM
   target_node  = "pve"                                                          # Proxmox node name where the VM will be created
   onboot       = true                                                           # Start the VM on Proxmox boot
   vm_state     = "running"                                                      # VM state after creation
-  memory       = var.hardware.memory                                            # Memory in MB
-  balloon      = var.hardware.balloon                                           # Balloon memory in MB
+  memory       = var.nodes[count.index].type == "worker" ? var.worker_nodes.memory : var.controlplane_nodes.memory # Memory in MB
+  balloon      = var.nodes[count.index].type == "worker" ? var.worker_nodes.balloon : var.controlplane_nodes.balloon # Balloon memory in MB
   scsihw       = "virtio-scsi-pci"                                              # SCSI controller type
   pool         = var.cluster.resource_pool                                      # Resource pool name
   tags         = format("%s-%s", var.cluster.name, var.nodes[count.index].type) # Tags for the VM
@@ -22,8 +18,8 @@ resource "proxmox_vm_qemu" "this" {
 
   # CPU Configuration
   cpu {
-    cores   = var.hardware.cores
-    sockets = var.hardware.sockets
+    cores   = var.nodes[count.index].type == "worker" ? var.worker_nodes.cores : var.controlplane_nodes.cores
+    sockets = var.nodes[count.index].type == "worker" ? var.worker_nodes.sockets : var.controlplane_nodes.sockets
     type    = var.hardware.cpu_type
   }
 
@@ -46,7 +42,7 @@ resource "proxmox_vm_qemu" "this" {
     scsi {
       scsi0 {
         disk {
-          size    = var.hardware.disk_size
+          size    = var.nodes[count.index].type == "worker" ? var.worker_nodes.disk_size : var.controlplane_nodes.disk_size
           storage = "local-lvm"
           format  = "raw"
           backup  = true
