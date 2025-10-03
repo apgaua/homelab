@@ -17,6 +17,7 @@ variable "cluster" {
     talos_endpoint = string
     vmid_prefix    = number
     kubeconfig     = string
+    cpu_type      = string
   })
 }
 
@@ -35,13 +36,6 @@ variable "nodes" {
     ip          = string
     mac_address = string
   }))
-}
-
-variable "hardware" {
-  description = "Base hardware configuration for the VMs"
-  type = object({
-    cpu_type = string
-  })
 }
 
 variable "worker_nodes" {

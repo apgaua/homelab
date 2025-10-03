@@ -20,7 +20,7 @@ resource "proxmox_vm_qemu" "this" {
   cpu {
     cores   = var.nodes[count.index].type == "worker" ? var.worker_nodes.cores : var.controlplane_nodes.cores
     sockets = var.nodes[count.index].type == "worker" ? var.worker_nodes.sockets : var.controlplane_nodes.sockets
-    type    = var.hardware.cpu_type
+    type    = var.cluster.cpu_type
   }
 
   # Network interface and MAC address configuration
