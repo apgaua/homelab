@@ -28,7 +28,7 @@ provider "kubernetes" {}
 # Configure the Helm provider.
 provider "helm" {
   kubernetes = {
-    config_path = "~/.kube/config"
+    #    config_path = "~/.kube/config"
   }
 }
 

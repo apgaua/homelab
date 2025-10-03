@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket       = var.bucket
-    key          = "proxmox/talosinstances"
+    key          = "proxmox/talos_instances"
     use_lockfile = true
   }
 }

@@ -39,11 +39,12 @@ variable "nodes" {
 variable "hardware" {
   description = "Hardware configuration for the nodes"
   type = object({
-    sockets = number
-    cores   = number
-    memory  = number
-    balloon   = optional(number)
-    disk_size = number
+    cpu_type         = string
+    sockets           = number
+    cores             = number
+    memory            = number
+    balloon           = optional(number)
+    disk_size         = number
   })
 }
 
@@ -53,10 +54,4 @@ variable "ssh" {
     private_key = string
     public_key  = string
   })
-}
-
-variable "cp_mac_addresses" {
-  description = "List of MAC addresses for the control plane nodes"
-  type        = list(string)
-  default     = []
 }
