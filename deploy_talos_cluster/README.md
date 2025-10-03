@@ -18,10 +18,10 @@ This proccess wait for cluster deployment and full access before starts.
 | Terraform | Description |
 |--------------------|-------------|
 | terraform fmt --recursive | Format terraform files |
-| terraform init -backend-config=environment/<backendfile>.tfvars | Init terraform backend config|
+| terraform init -backend-config=environment/*backendfile*.tfvars | Init terraform backend config|
 | terraform validate | Validate terraform workflow |
-| terraform apply -auto-approve -var-file=environment/<variablefile>.tfvars | Create structure |
-| terraform destroy -auto-approve -var-file=environment/<variablefile>.tfvars | Destroy structure |
+| terraform apply -auto-approve -var-file=environment/*variablefile*.tfvars | Create structure |
+| terraform destroy -auto-approve -var-file=environment/*variablefile*.tfvars | Destroy structure |
 
 <!-- BEGIN_TF_DOCS -->
 
