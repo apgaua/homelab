@@ -44,9 +44,8 @@ jobs:
       # - name: 'Terraform Test'
       #   run: terraform test
 
-  # This job runs only on a merge to the main branch to create a release.
-  release:
-    name: 'Release'
+  generate-docs:
+    name: 'Create docs'
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
@@ -57,14 +56,3 @@ jobs:
           output-file: README.md
           output-method: inject
           git-push: "true"
-
-      - name: 'Release Please'
-        uses: googleapis/release-please-action@v4
-        with:
-          # this assumes that you have created a personal access token
-          # (PAT) and configured it as a GitHub action secret named
-          # `MY_RELEASE_PLEASE_TOKEN` (this secret name is not important).
-          token: ${{ secrets.MY_RELEASE_PLEASE_TOKEN }}
-          # this is a built-in strategy in release-please, see "Action Inputs"
-          # for more options
-          release-type: simple
