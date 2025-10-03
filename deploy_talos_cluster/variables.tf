@@ -26,33 +26,24 @@ variable "proxmox" {
   })
 }
 
-variable "cp" {
-  description = "Master nodes configuration"
-  type = object({
-    count               = number
-    vmid_prefix         = optional(number)
-    cores               = number
-    memory              = number
-    balloon             = optional(number)
-    disk_size           = number
-    sockets             = number
-    type                = string
-    network_last_octect = optional(number)
-  })
+variable "nodes" {
+  description = "List of nodes to be created"
+  type = list(object({
+    vmid        = number
+    type        = string
+    ip          = string
+    mac_address = string
+  }))
 }
 
-variable "workers" {
-  description = "Worker nodes configuration"
+variable "hardware" {
+  description = "Hardware configuration for the nodes"
   type = object({
-    count               = number
-    vmid_prefix         = optional(number)
-    cores               = number
-    memory              = number
-    balloon             = optional(number)
-    disk_size           = number
-    sockets             = number
-    type                = string
-    network_last_octect = optional(number)
+    sockets = number
+    cores   = number
+    memory  = number
+    balloon   = optional(number)
+    disk_size = number
   })
 }
 
