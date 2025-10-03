@@ -7,12 +7,12 @@ cluster = {
   description = "Default lab cluster"
 
   #IMPORTANT!! The value should not conflict with other devices on your network, which could cause instabilities and IP conflicts.
-  cidr           = "network/24" # CIDR of the network where the VMs will be allocated.
-  resource_pool  = "k8s-lab"         # Resource pool name to be used by the nodes. To use this variable, the resource pool must have been configured manually.
-  isoimage       = "metal-amd64.iso" # ISO image name uploaded to Proxmox to be used for Talos installation.
-  talos_endpoint = "talosendpointIP"   # IP address to be used to access the Talos API. It should be an IP address within the CIDR range.
-  vmid_prefix   = 900             # VMID prefix for all nodes. It is important that this value does not conflict with other VMs in Proxmox, as it must be unique.
-  kubeconfig    = "kubeconfigfolder/config" # Path where the kubeconfig file will be saved after the cluster is created.
+  cidr           = "network/24"              # CIDR of the network where the VMs will be allocated.
+  resource_pool  = "k8s-lab"                 # Resource pool name to be used by the nodes. To use this variable, the resource pool must have been configured manually.
+  isoimage       = "metal-amd64.iso"         # ISO image name uploaded to Proxmox to be used for Talos installation.
+  talos_endpoint = "talosendpointIP"         # IP address to be used to access the Talos API. It should be an IP address within the CIDR range.
+  vmid_prefix    = 900                       # VMID prefix for all nodes. It is important that this value does not conflict with other VMs in Proxmox, as it must be unique.
+  kubeconfig     = "kubeconfigfolder/config" # Path where the kubeconfig file will be saved after the cluster is created.
 }
 
 ################################################################################
@@ -21,7 +21,7 @@ cluster = {
 
 proxmox = {
   ip   = "proxmoxip" # Proxmox IP address where the resource will be deployed.
-  port = "8006"           # Proxmox port, usually 8006.
+  port = "8006"      # Proxmox port, usually 8006.
 }
 
 ################################################################################
@@ -57,17 +57,17 @@ hardware = {
 }
 
 worker_nodes = {
-  sockets  = 1
-  cores    = 2
-  memory   = 4096
+  sockets = 1
+  cores   = 2
+  memory  = 4096
   #  balloon           = 1024
   disk_size = 50
 }
 
 controlplane_nodes = {
-  sockets  = 1
-  cores    = 2
-  memory   = 3072
+  sockets = 1
+  cores   = 2
+  memory  = 3072
   #  balloon           = 1024
   disk_size = 40
 }

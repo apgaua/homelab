@@ -10,8 +10,8 @@ locals {
 }
 
 resource "local_file" "kubeconfig" {
-  content  = talos_cluster_kubeconfig.this.kubeconfig_raw
-  filename = var.cluster.kubeconfig
+  content         = talos_cluster_kubeconfig.this.kubeconfig_raw
+  filename        = var.cluster.kubeconfig
   file_permission = "0600"
-  
+
 }

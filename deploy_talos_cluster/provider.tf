@@ -29,7 +29,7 @@ provider "kubernetes" {}
 provider "helm" {
   kubernetes = {
     config_path = var.cluster.kubeconfig
-    }
+  }
 }
 
 provider "proxmox" {
