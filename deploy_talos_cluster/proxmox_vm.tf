@@ -27,7 +27,7 @@ resource "proxmox_vm_qemu" "this" {
     id      = 0
     bridge  = "vmbr0"
     model   = "virtio"
-    macaddr = local.node_configs[count.index].mac_addres # MAC address for the network interface
+    macaddr = local.node_configs[count.index].mac_address # MAC address for the network interface
   }
 
   disks {
