@@ -1,9 +1,11 @@
 output "talosconfig" {
+  description = "value of talosconfig to be used with talosctl"
   value     = data.talos_client_configuration.this.talos_config
   sensitive = true
 }
 
 output "kubeconfig" {
+  description = "value of kubeconfig to be used with kubectl"
   value     = talos_cluster_kubeconfig.this.kubeconfig_raw
   sensitive = true
 }
@@ -19,17 +21,17 @@ output "talos_endpoint" {
 }
 
 output "how_many_nodes_will_be_created" {
-  description = "Trouble-shooting output"
+  description = "Troubleshooting output"
   value       = length(local.node_configs)
 }
 
 output "how_many_controlplane_nodes_will_be_created" {
-  description = "Trouble-shooting output"
+  description = "Troubleshooting output"
   value       = var.controlplane.count
 }
 
 output "how_many_worker_nodes_will_be_created" {
-  description = "Trouble-shooting output"
+  description = "Troubleshooting output"
   value       = var.worker.count
 }
 
@@ -44,6 +46,6 @@ output "node_names" {
 }
 
 output "kubeconfig_file_path" {
-  description = "Path where the kubeconfig file is saved"
+  description = "Path where kubeconfig file is saved"
   value       = var.cluster.kubeconfig
 }
