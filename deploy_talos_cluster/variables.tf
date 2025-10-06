@@ -13,7 +13,7 @@ variable "bucket" {
 ################################################################################
 
 variable "cluster" {
-  description = "Configurations for the cluster"
+  description = "Cluster wide configuration"
   type = object({
     name             = string
     description      = string
@@ -33,7 +33,7 @@ variable "cluster" {
 ################################################################################
 
 variable "proxmox" {
-  description = "Proxmox backend configuration"
+  description = "Proxmox backend address"
   type = object({
     ip   = string
     port = number
