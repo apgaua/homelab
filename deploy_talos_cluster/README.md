@@ -73,16 +73,16 @@ This proccess wait for cluster deployment and full access before starts.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_how_many_controlplane_nodes_will_be_created"></a> [how\_many\_controlplane\_nodes\_will\_be\_created](#output\_how\_many\_controlplane\_nodes\_will\_be\_created) | Trouble-shooting output |
-| <a name="output_how_many_nodes_will_be_created"></a> [how\_many\_nodes\_will\_be\_created](#output\_how\_many\_nodes\_will\_be\_created) | Trouble-shooting output |
-| <a name="output_how_many_worker_nodes_will_be_created"></a> [how\_many\_worker\_nodes\_will\_be\_created](#output\_how\_many\_worker\_nodes\_will\_be\_created) | Trouble-shooting output |
+| <a name="output_how_many_controlplane_nodes_will_be_created"></a> [how\_many\_controlplane\_nodes\_will\_be\_created](#output\_how\_many\_controlplane\_nodes\_will\_be\_created) | Troubleshooting output |
+| <a name="output_how_many_nodes_will_be_created"></a> [how\_many\_nodes\_will\_be\_created](#output\_how\_many\_nodes\_will\_be\_created) | Troubleshooting output |
+| <a name="output_how_many_worker_nodes_will_be_created"></a> [how\_many\_worker\_nodes\_will\_be\_created](#output\_how\_many\_worker\_nodes\_will\_be\_created) | Troubleshooting output |
 | <a name="output_installed_helm_charts"></a> [installed\_helm\_charts](#output\_installed\_helm\_charts) | List of installed Helm charts with their versions |
-| <a name="output_kubeconfig"></a> [kubeconfig](#output\_kubeconfig) | n/a |
-| <a name="output_kubeconfig_file_path"></a> [kubeconfig\_file\_path](#output\_kubeconfig\_file\_path) | Path where the kubeconfig file is saved |
+| <a name="output_kubeconfig"></a> [kubeconfig](#output\_kubeconfig) | value of kubeconfig to be used with kubectl |
+| <a name="output_kubeconfig_file_path"></a> [kubeconfig\_file\_path](#output\_kubeconfig\_file\_path) | Path where kubeconfig file is saved |
 | <a name="output_kubernetes_endpoint"></a> [kubernetes\_endpoint](#output\_kubernetes\_endpoint) | Kubernetes API endpoint |
 | <a name="output_node_names"></a> [node\_names](#output\_node\_names) | List of node names that will be created |
 | <a name="output_talos_endpoint"></a> [talos\_endpoint](#output\_talos\_endpoint) | Talos API endpoint |
-| <a name="output_talosconfig"></a> [talosconfig](#output\_talosconfig) | n/a |
+| <a name="output_talosconfig"></a> [talosconfig](#output\_talosconfig) | value of talosconfig to be used with talosctl |
 
 ## Author
 
