@@ -1,13 +1,13 @@
 output "talosconfig" {
   description = "value of talosconfig to be used with talosctl"
-  value     = data.talos_client_configuration.this.talos_config
-  sensitive = true
+  value       = data.talos_client_configuration.this.talos_config
+  sensitive   = true
 }
 
 output "kubeconfig" {
   description = "value of kubeconfig to be used with kubectl"
-  value     = talos_cluster_kubeconfig.this.kubeconfig_raw
-  sensitive = true
+  value       = talos_cluster_kubeconfig.this.kubeconfig_raw
+  sensitive   = true
 }
 
 output "kubernetes_endpoint" {
