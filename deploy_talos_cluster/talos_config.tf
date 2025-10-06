@@ -5,10 +5,10 @@ data "talos_client_configuration" "this" {
 }
 
 data "talos_machine_configuration" "this" {
-  count            = length(var.nodes)
+  count            = length(local.node_configs)
   talos_version    = "v1.11.2"
   cluster_name     = var.cluster.name
-  machine_type     = var.nodes[count.index].type
+  machine_type     = local.node_configs[count.index].type
   machine_secrets  = talos_machine_secrets.this.machine_secrets
   cluster_endpoint = "https://${var.cluster.talos_endpoint}:6443"
 }
@@ -16,11 +16,11 @@ data "talos_machine_configuration" "this" {
 resource "talos_machine_secrets" "this" {}
 
 resource "talos_machine_configuration_apply" "this" {
-  count                       = length(var.nodes)
+  count                       = length(local.node_configs)
   depends_on                  = [proxmox_vm_qemu.this[0]]
   client_configuration        = talos_machine_secrets.this.client_configuration
   machine_configuration_input = data.talos_machine_configuration.this[count.index].machine_configuration
-  node                        = var.nodes[count.index].ip
+  node                        = proxmox_vm_qemu.this[count.index].default_ipv4_address
   config_patches = [
     yamlencode({
       machine = {
@@ -29,7 +29,7 @@ resource "talos_machine_configuration_apply" "this" {
           image = "factory.talos.dev/metal-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.11.2"
         }
         network = {
-          hostname = local.node_names[count.index]
+          hostname = local.node_configs[count.index].name
         }
       }
     })

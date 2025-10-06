@@ -20,17 +20,17 @@ output "talos_endpoint" {
 
 output "how_many_nodes_will_be_created" {
   description = "Trouble-shooting output"
-  value       = length(var.nodes)
+  value       = length(local.node_configs)
 }
 
 output "how_many_controlplane_nodes_will_be_created" {
   description = "Trouble-shooting output"
-  value       = length([for node in var.nodes : node if node.type == "controlplane"])
+  value       = var.controlplane.count
 }
 
 output "how_many_worker_nodes_will_be_created" {
   description = "Trouble-shooting output"
-  value       = length([for node in var.nodes : node if node.type == "worker"])
+  value       = var.worker.count
 }
 
 output "installed_helm_charts" {
@@ -40,7 +40,7 @@ output "installed_helm_charts" {
 
 output "node_names" {
   description = "List of node names that will be created"
-  value       = local.node_names
+  value       = local.node_configs[*].name
 }
 
 output "kubeconfig_file_path" {

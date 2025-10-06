@@ -1,25 +1,36 @@
-#Backend configuration
+################################################################################
+############################ BACKEND CONFIGURATION #############################
+################################################################################
+
 variable "bucket" {
   description = "S3 bucket to store the Terraform state"
   type        = string
   default     = "homelab-kuda-state"
 }
 
-#Cluster configuration
+################################################################################
+########################## CLUSTER CONFIGURATION ###############################
+################################################################################
+
 variable "cluster" {
   description = "Configurations for the cluster"
   type = object({
-    name           = string
-    description    = string
-    cidr           = string
-    isoimage       = string
-    resource_pool  = optional(string)
-    talos_endpoint = string
-    vmid_prefix    = number
-    kubeconfig     = string
-    cpu_type       = string
+    name             = string
+    description      = string
+    cidr             = string
+    isoimage         = string
+    resource_pool    = optional(string)
+    talos_endpoint   = string
+    vmid_prefix      = number
+    kubeconfig       = string
+    cpu_type         = string
+    internet_gateway = string
   })
 }
+
+################################################################################
+########################### PROXMOX ENDPOINT CONFIG ############################
+################################################################################
 
 variable "proxmox" {
   description = "Proxmox backend configuration"
@@ -29,46 +40,55 @@ variable "proxmox" {
   })
 }
 
-variable "nodes" {
-  description = "List of nodes to be created"
-  type = list(object({
-    type        = string
-    ip          = string
-    mac_address = string
-  }))
-}
+################################################################################
+############################ WORKER NODES CONFIG ###############################
+################################################################################
 
-variable "worker_nodes" {
+variable "worker" {
   description = "Hardware configuration for worker nodes"
   type = object({
-    sockets   = number
-    cores     = number
-    memory    = number
-    balloon   = optional(number)
-    disk_size = number
+    count               = number
+    sockets             = number
+    cores               = number
+    memory              = number
+    balloon             = optional(number)
+    disk_size           = number
+    network_last_octect = number
   })
 }
 
-variable "controlplane_nodes" {
-  description = "Hardware configuration for control plane nodes"
+################################################################################
+########################## CONTROL PLANE NODES CONFIG ##########################
+################################################################################
+
+variable "controlplane" {
+  description = "Hardware configuration for controlplane nodes"
   type = object({
-    sockets   = number
-    cores     = number
-    memory    = number
-    balloon   = optional(number)
-    disk_size = number
+    count               = number
+    sockets             = number
+    cores               = number
+    memory              = number
+    balloon             = optional(number)
+    disk_size           = number
+    network_last_octect = number
   })
 }
 
-variable "ssh" {
-  description = "SSH configuration"
-  type = object({
-    private_key = string
-    public_key  = string
-  })
+################################################################################
+########################## ADDITIONAL CONFIGURATIONS ###########################
+################################################################################
+
+variable "mac_address" {
+  description = "Base MAC address for generating unique MACs for controlplane nodes"
+  type        = list(string)
 }
+
+################################################################################
+############################ HELM CHARTS CONFIG ################################
+################################################################################
 
 variable "helm_charts" {
+  description = "values for Helm charts to be installed after the cluster is created"
   type = list(object({
     name             = string
     repository       = string

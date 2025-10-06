@@ -26,48 +26,34 @@ proxmox = {
 }
 
 ################################################################################
-################################### ##SSH CONFIG ###############################
-################################################################################
-
-ssh = {
-  private_key = "/folder/.ssh/id_rsa"     # Private SSH key path to be used to connect to the VMs.
-  public_key  = "/folder/.ssh/id_rsa.pub" # Public SSH key path to be injected into the VMs.
-}
-
-################################################################################
-###################################### NODES ###################################
-################################################################################
-
-nodes = [
-  { type = "controlplane", ip = "ip", mac_address = "BC:24:11:50:5E:51" },
-  { type = "controlplane", ip = "ip", mac_address = "BC:24:11:A7:D4:68" },
-  { type = "controlplane", ip = "ip", mac_address = "BC:24:11:5D:4B:DC" },
-  { type = "worker", ip = "ip", mac_address = "bc:24:11:30:57:55" },
-  { type = "worker", ip = "ip", mac_address = "bc:24:11:d9:ee:d1" },
-  { type = "worker", ip = "ip", mac_address = "bc:24:11:59:61:62" },
-  { type = "worker", ip = "ip", mac_address = "bc:24:11:16:47:cf" },
-  { type = "worker", ip = "ip", mac_address = "bc:24:11:88:6b:fe" }
-]
-
-################################################################################
 ########################## VIRTUAL MACHINE CONFIGURATION #######################
 ################################################################################
 
-worker_nodes = {
-  sockets = 1
-  cores   = 2
-  memory  = 4096
-  #  balloon           = 1024
-  disk_size = 50
+worker = {
+  type                = "worker" # Type of node: worker or controlplane
+  count               = 5        # Number of nodes to be created
+  sockets             = 1        # Number of CPU sockets
+  cores               = 2        # Number of CPU cores per socket
+  memory              = 4096     # Memory in MB
+  disk_size           = 50       # Disk size in GB
+  network_last_octect = 90       # IP definition for Worker node: 192.168.XX.0
 }
 
-controlplane_nodes = {
-  sockets = 1
-  cores   = 2
-  memory  = 3072
-  #  balloon           = 1024
-  disk_size = 40
+controlplane = {
+  type                = "controlplane" # Type of node: worker or controlplane
+  count               = 3              # Number of nodes to be created
+  sockets             = 1              # Number of CPU sockets
+  cores               = 2              # Number of CPU cores per socket
+  memory              = 3072           # Memory in MB
+  disk_size           = 40             # Disk size in GB
+  network_last_octect = 60             # IP definition for Control Plane node: 192.168.XX.0
 }
+
+mac_address = [ # Base MAC addresses for generating unique MACs for controlplane nodes
+  "BC:24:11:50:5E:51",
+  "BC:24:11:A7:D4:68",
+  "BC:24:11:5D:4B:DC"
+]
 
 ################################################################################
 #################################### HELM CHARTS ###############################

@@ -25,7 +25,6 @@ terraform {
 
 provider "kubernetes" {}
 
-# Configure the Helm provider.
 provider "helm" {
   kubernetes = {
     config_path = var.cluster.kubeconfig
