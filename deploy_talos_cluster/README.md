@@ -25,6 +25,7 @@ This proccess wait for cluster deployment and full access before starts.
 
 ### Proxmox user privileges
 To properly run bgp/proxmox provider, the permissions bellow are needed:
+
 Sys.Console, VM.Allocate, Datastore.AllocateTemplate, VM.Config.HWType, VM.Config.Memory, Mapping.Use, VM.Config.Network, VM.Config.CDROM, VM.GuestAgent.Unrestricted, VM.Clone, Sys.Audit, VM.Config.CPU, Sys.Modify, VM.PowerMgmt, SDN.Use, VM.Migrate, Pool.Audit, Datastore.Allocate, VM.Config.Options, Datastore.Audit, VM.Config.Cloudinit, Pool.Allocate, Datastore.AllocateSpace, VM.GuestAgent.Audit, VM.Config.Disk, VM.Audit
 
 <!-- BEGIN_TF_DOCS -->
