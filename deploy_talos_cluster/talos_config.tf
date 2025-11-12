@@ -26,7 +26,7 @@ resource "talos_machine_configuration_apply" "this" {
       machine = {
         install = {
           disk  = "/dev/sda"
-          image = "factory.talos.dev/metal-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.11.2"
+          image = var.cluster.talos_installer_image
         }
         network = {
           hostname = local.node_configs[count.index].name

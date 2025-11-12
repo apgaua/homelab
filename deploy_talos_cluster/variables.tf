@@ -25,6 +25,7 @@ variable "cluster" {
     kubeconfig       = string
     cpu_type         = string
     internet_gateway = string
+    talos_installer_image = string
   })
 }
 
