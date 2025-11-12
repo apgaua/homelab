@@ -5,28 +5,33 @@ resource "proxmox_virtual_environment_pool" "this" {
 
 resource "proxmox_virtual_environment_vm" "this" {
   count       = length(local.node_configs)
-  name        = local.node_configs[count.index].name
-  description = format("Talos %s node for %s cluster", local.node_configs[count.index].type, var.cluster.name)
-  tags        = ["terraform", "talos", "lab"]
+  name        = local.node_configs[count.index].name                                                           # VM name
+  description = format("Talos %s node for %s cluster", local.node_configs[count.index].type, var.cluster.name) # VM description
+  tags        = format("%s-%s", var.cluster.name, local.node_configs[count.index].type)
   node_name   = "pve"
-  vm_id       = local.node_configs[count.index].vmid
+  vm_id       = local.node_configs[count.index].vmid # Unique VM ID
+  pool_id     = proxmox_virtual_environment_pool.this.pool_id
 
+  # QUEMU Guest Agent
   agent {
     enabled = true
     trim    = true
   }
 
+  # CPU Configuration
   cpu {
     cores   = local.node_configs[count.index].cores
     sockets = local.node_configs[count.index].sockets
     type    = var.cluster.cpu_type
   }
 
+  # Memory Configuration
   memory {
     dedicated = local.node_configs[count.index].memory
     floating  = local.node_configs[count.index].memory # set equal to dedicated to enable ballooning
   }
 
+  # Disk Configuration
   disk {
     datastore_id = "local-lvm"
     size         = local.node_configs[count.index].disk_size
@@ -36,10 +41,12 @@ resource "proxmox_virtual_environment_vm" "this" {
     interface    = "scsi0"
   }
 
+  # CDROM Configuration
   cdrom {
     file_id = data.proxmox_virtual_environment_file.iso.id
   }
 
+  # Network Configuration
   network_device {
     model       = "virtio"
     mac_address = local.node_configs[count.index].mac_address # MAC address for the network interface
@@ -53,6 +60,4 @@ resource "proxmox_virtual_environment_vm" "this" {
   tpm_state {
     version = "v2.0"
   }
-
-  pool_id = proxmox_virtual_environment_pool.this.pool_id
 }
