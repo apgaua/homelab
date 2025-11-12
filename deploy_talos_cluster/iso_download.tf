@@ -9,6 +9,6 @@ resource "proxmox_virtual_environment_download_file" "this" {
   content_type = "iso"
   datastore_id = "local"
   node_name    = "pve"
-  url = var.iso.url
-  file_name = var.iso.file_name
+  url          = var.iso.url
+  file_name    = var.iso.file_name
 }

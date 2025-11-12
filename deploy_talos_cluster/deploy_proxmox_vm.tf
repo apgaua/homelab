@@ -4,22 +4,22 @@ resource "proxmox_virtual_environment_pool" "this" {
 }
 
 resource "proxmox_virtual_environment_vm" "this" {
-    count = length(local.node_configs)
+  count       = length(local.node_configs)
   name        = local.node_configs[count.index].name
   description = format("Talos %s node for %s cluster", local.node_configs[count.index].type, var.cluster.name)
   tags        = ["terraform", "talos", "lab"]
-  node_name = "pve"
-  vm_id     = local.node_configs[count.index].vmid
+  node_name   = "pve"
+  vm_id       = local.node_configs[count.index].vmid
 
   agent {
     enabled = true
-    trim = true
+    trim    = true
   }
 
   cpu {
-    cores        = local.node_configs[count.index].cores
-    sockets      = local.node_configs[count.index].sockets
-    type         = var.cluster.cpu_type
+    cores   = local.node_configs[count.index].cores
+    sockets = local.node_configs[count.index].sockets
+    type    = var.cluster.cpu_type
   }
 
   memory {
@@ -30,9 +30,9 @@ resource "proxmox_virtual_environment_vm" "this" {
   disk {
     datastore_id = "local-lvm"
     size         = local.node_configs[count.index].disk_size
-    file_format = "raw"
-    backup     = true
-    discard = "on"
+    file_format  = "raw"
+    backup       = true
+    discard      = "on"
     interface    = "scsi0"
   }
 
@@ -41,9 +41,9 @@ resource "proxmox_virtual_environment_vm" "this" {
   }
 
   network_device {
-    model  = "virtio"
+    model       = "virtio"
     mac_address = local.node_configs[count.index].mac_address # MAC address for the network interface
-    bridge = "vmbr0"
+    bridge      = "vmbr0"
   }
 
   operating_system {
