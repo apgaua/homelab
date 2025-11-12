@@ -30,8 +30,8 @@ variable "cluster" {
 variable "iso" {
   description = "ISO image configuration"
   type = object({
-    url      = string
-    file_name = string
+    url                   = string
+    file_name             = string
     talos_installer_image = string
   })
 }
