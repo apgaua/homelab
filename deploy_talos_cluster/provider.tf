@@ -1,9 +1,5 @@
 terraform {
   required_providers {
-    # proxmox = {
-    #   source  = "telmate/proxmox"
-    #   version = "3.0.2-rc04"
-    # }
     proxmox = {
       source  = "bpg/proxmox"
       version = "0.86.0"
@@ -35,28 +31,12 @@ provider "helm" {
   }
 }
 
-# provider "proxmox" {
-#   pm_api_url      = "https://${var.proxmox.ip}:${var.proxmox.port}/api2/json"
-#   pm_tls_insecure = true
-#   pm_log_enable   = true
-#   pm_log_file     = "_${var.cluster.name}.log"
-#   pm_debug        = true
-#   pm_log_levels = {
-#     _default    = "debug"
-#     _capturelog = ""
-#   }
-# }
-
 provider "proxmox" {
   endpoint = "https://${var.proxmox.ip}:${var.proxmox.port}"
-  # because self-signed TLS certificate is in use
   insecure = true
-  # uncomment (unless on Windows...)
-  # tmp_dir  = "/var/tmp"
+  tmp_dir  = "/var/tmp"
 
   ssh {
     agent = true
-    # TODO: uncomment and configure if using api_token instead of password
-    # username = "root"
   }
 }
