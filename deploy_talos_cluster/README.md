@@ -29,8 +29,9 @@ This proccess wait for cluster deployment and full access before starts.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cluster"></a> [cluster](#input\_cluster) | Cluster wide configuration | <pre>object({<br/>    name             = string<br/>    description      = string<br/>    cidr             = string<br/>    isoimage         = string<br/>    resource_pool    = optional(string)<br/>    talos_endpoint   = string<br/>    vmid_prefix      = number<br/>    kubeconfig       = string<br/>    cpu_type         = string<br/>    internet_gateway = string<br/>  })</pre> | n/a | yes |
+| <a name="input_cluster"></a> [cluster](#input\_cluster) | Cluster wide configuration | <pre>object({<br/>    name             = string<br/>    description      = string<br/>    cidr             = string<br/>    resource_pool    = optional(string)<br/>    talos_endpoint   = string<br/>    vmid_prefix      = number<br/>    kubeconfig       = string<br/>    cpu_type         = string<br/>    internet_gateway = string<br/>  })</pre> | n/a | yes |
 | <a name="input_controlplane"></a> [controlplane](#input\_controlplane) | Hardware configuration for controlplane nodes | <pre>object({<br/>    count               = number<br/>    sockets             = number<br/>    cores               = number<br/>    memory              = number<br/>    balloon             = optional(number)<br/>    disk_size           = number<br/>    network_last_octect = number<br/>  })</pre> | n/a | yes |
+| <a name="input_iso"></a> [iso](#input\_iso) | ISO image configuration | <pre>object({<br/>    url                   = string<br/>    file_name             = string<br/>    talos_installer_image = string<br/>  })</pre> | n/a | yes |
 | <a name="input_mac_address"></a> [mac\_address](#input\_mac\_address) | Base MAC address for generating unique MACs for controlplane nodes | `list(string)` | n/a | yes |
 | <a name="input_proxmox"></a> [proxmox](#input\_proxmox) | Proxmox backend address | <pre>object({<br/>    ip   = string<br/>    port = number<br/>  })</pre> | n/a | yes |
 | <a name="input_worker"></a> [worker](#input\_worker) | Hardware configuration for worker nodes | <pre>object({<br/>    count               = number<br/>    sockets             = number<br/>    cores               = number<br/>    memory              = number<br/>    balloon             = optional(number)<br/>    disk_size           = number<br/>    network_last_octect = number<br/>  })</pre> | n/a | yes |
@@ -43,11 +44,14 @@ This proccess wait for cluster deployment and full access before starts.
 | [helm_release.main](https://registry.terraform.io/providers/hashicorp/helm/3.0.2/docs/resources/release) | resource |
 | [local_file.kubeconfig](https://registry.terraform.io/providers/hashicorp/local/2.5.3/docs/resources/file) | resource |
 | [null_resource.wait_for_k8s_api](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [proxmox_vm_qemu.this](https://registry.terraform.io/providers/telmate/proxmox/3.0.2-rc04/docs/resources/vm_qemu) | resource |
+| [proxmox_virtual_environment_download_file.this](https://registry.terraform.io/providers/bpg/proxmox/0.86.0/docs/resources/virtual_environment_download_file) | resource |
+| [proxmox_virtual_environment_pool.this](https://registry.terraform.io/providers/bpg/proxmox/0.86.0/docs/resources/virtual_environment_pool) | resource |
+| [proxmox_virtual_environment_vm.this](https://registry.terraform.io/providers/bpg/proxmox/0.86.0/docs/resources/virtual_environment_vm) | resource |
 | [talos_cluster_kubeconfig.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0/docs/resources/cluster_kubeconfig) | resource |
 | [talos_machine_bootstrap.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0/docs/resources/machine_bootstrap) | resource |
 | [talos_machine_configuration_apply.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0/docs/resources/machine_configuration_apply) | resource |
 | [talos_machine_secrets.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0/docs/resources/machine_secrets) | resource |
+| [proxmox_virtual_environment_file.iso](https://registry.terraform.io/providers/bpg/proxmox/0.86.0/docs/data-sources/virtual_environment_file) | data source |
 | [talos_client_configuration.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0/docs/data-sources/client_configuration) | data source |
 | [talos_machine_configuration.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0/docs/data-sources/machine_configuration) | data source |
 ## Requirements
@@ -57,7 +61,7 @@ This proccess wait for cluster deployment and full access before starts.
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | 3.0.2 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.38.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | 2.5.3 |
-| <a name="requirement_proxmox"></a> [proxmox](#requirement\_proxmox) | 3.0.2-rc04 |
+| <a name="requirement_proxmox"></a> [proxmox](#requirement\_proxmox) | 0.86.0 |
 | <a name="requirement_talos"></a> [talos](#requirement\_talos) | 0.9.0 |
 ## Providers
 
@@ -66,7 +70,7 @@ This proccess wait for cluster deployment and full access before starts.
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 3.0.2 |
 | <a name="provider_local"></a> [local](#provider\_local) | 2.5.3 |
 | <a name="provider_null"></a> [null](#provider\_null) | n/a |
-| <a name="provider_proxmox"></a> [proxmox](#provider\_proxmox) | 3.0.2-rc04 |
+| <a name="provider_proxmox"></a> [proxmox](#provider\_proxmox) | 0.86.0 |
 | <a name="provider_talos"></a> [talos](#provider\_talos) | 0.9.0 |
 
 ## Outputs
