@@ -18,13 +18,20 @@ variable "cluster" {
     name             = string
     description      = string
     cidr             = string
-    isoimage         = string
     resource_pool    = optional(string)
     talos_endpoint   = string
     vmid_prefix      = number
     kubeconfig       = string
     cpu_type         = string
     internet_gateway = string
+  })
+}
+
+variable "iso" {
+  description = "ISO image configuration"
+  type = object({
+    url      = string
+    file_name = string
     talos_installer_image = string
   })
 }

@@ -17,16 +17,16 @@ resource "talos_machine_secrets" "this" {}
 
 resource "talos_machine_configuration_apply" "this" {
   count                       = length(local.node_configs)
-  depends_on                  = [proxmox_vm_qemu.this[0]]
+  depends_on                  = [proxmox_virtual_environment_vm.this[0]]
   client_configuration        = talos_machine_secrets.this.client_configuration
   machine_configuration_input = data.talos_machine_configuration.this[count.index].machine_configuration
-  node                        = proxmox_vm_qemu.this[count.index].default_ipv4_address
+  node                        = flatten(proxmox_virtual_environment_vm.this[count.index].ipv4_addresses)[1]
   config_patches = [
     yamlencode({
       machine = {
         install = {
           disk  = "/dev/sda"
-          image = var.cluster.talos_installer_image
+          image = var.iso.talos_installer_image
         }
         network = {
           hostname = local.node_configs[count.index].name
