@@ -12,6 +12,8 @@ resource "proxmox_virtual_environment_vm" "this" {
   vm_id       = local.node_configs[count.index].vmid # Unique VM ID
   pool_id     = proxmox_virtual_environment_pool.this.pool_id
 
+  boot_order = ["scsi0", "ide3"]
+
   # QUEMU Guest Agent
   agent {
     enabled = true
