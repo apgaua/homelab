@@ -9,41 +9,40 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      # STEP 1: Check out the repository code
+      # STEP 1: Check out the repository code first
+      # This is the crucial step that solves the "not a git repository" error.
       - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: "Setup Terraform"
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.13.3
+          terraform_version: 1.13.3 # Specify your desired Terraform version
 
       - name: "Terraform Format Check"
         run: terraform fmt -check -recursive
 
       - name: "Terraform Initialize"
+        # Use -backend=false for modules since they don't have a backend.
         run: terraform init -backend=false
 
       - name: "Terraform Validate Code"
         run: terraform validate
 
-      # Linter and Security checks added below
-      - name: "Install tflint"
-        run: brew install tflint
-
       - name: "Run tflint linter on Terraform code"
-        run: tflint --recursive
-
-      - name: "Install tfsec"
-        run: brew install tfsec
+        uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: latest
 
       - name: "Run tfsec security scan on Terraform code"
-        run: tfsec .
+        uses: aquasecurity/tfsec-action@v1.0.0
 
-      # STEP 2: Run the terraform-docs action
+      # STEP 2: Now run the terraform-docs action
+      # It will execute in the context of the checked-out repository.
       - name: Generate Terraform Docs
         uses: terraform-docs/gh-actions@v1.4.1
         with:
+          # Your other options go here
           git-push: "true"
           find-dir: .
           output-file: README.md
