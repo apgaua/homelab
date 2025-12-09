@@ -33,7 +33,7 @@ resource "helm_release" "main" {
 }
 
 resource "null_resource" "apply_manifests" {
-  for_each = toset(var.kubernetes_manifests)
+  for_each   = toset(var.kubernetes_manifests)
   depends_on = [null_resource.wait_for_k8s_api, helm_release.main]
   provisioner "local-exec" {
     command = "KUBECONFIG=${local_file.kubeconfig.filename} kubectl apply -f \"${each.key}\""
