@@ -36,4 +36,20 @@ locals {
       vmid = var.cluster.vmid_prefix + i
     }
   ]
+
+  release_mtime = timestamp()
+
+  helm_charts_with_mtime = [
+    for c in var.helm_charts : c.name == "argocd"
+    ? merge(
+      c,
+      {
+        set = concat(
+          lookup(c, "set", []),
+          [{ name = "configs.secret.argocdServerAdminPasswordMtime", value = local.release_mtime }]
+        )
+      }
+    )
+    : c
+  ]
 }

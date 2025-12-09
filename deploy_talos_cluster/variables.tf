@@ -91,6 +91,12 @@ variable "mac_address" {
   type        = list(string)
 }
 
+variable "kubernetes_manifests" {
+  description = "List of Kubernetes manifest files or URLs to be applied after the cluster is created"
+  type        = list(string)
+  default     = []
+}
+
 ################################################################################
 ############################ HELM CHARTS CONFIG ################################
 ################################################################################

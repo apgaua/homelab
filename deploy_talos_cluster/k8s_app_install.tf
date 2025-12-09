@@ -19,15 +19,23 @@ resource "null_resource" "wait_for_k8s_api" {
 }
 
 resource "helm_release" "main" {
-  count            = length(var.helm_charts)
-  name             = var.helm_charts[count.index].name
-  repository       = var.helm_charts[count.index].repository
-  chart            = var.helm_charts[count.index].chart
-  namespace        = var.helm_charts[count.index].namespace
-  wait             = var.helm_charts[count.index].wait
-  version          = var.helm_charts[count.index].version
-  create_namespace = var.helm_charts[count.index].create_namespace
-  set              = var.helm_charts[count.index].set
+  count            = length(local.helm_charts_with_mtime)
+  name             = local.helm_charts_with_mtime[count.index].name
+  repository       = local.helm_charts_with_mtime[count.index].repository
+  chart            = local.helm_charts_with_mtime[count.index].chart
+  namespace        = local.helm_charts_with_mtime[count.index].namespace
+  wait             = local.helm_charts_with_mtime[count.index].wait
+  version          = local.helm_charts_with_mtime[count.index].version
+  create_namespace = local.helm_charts_with_mtime[count.index].create_namespace
+  set              = local.helm_charts_with_mtime[count.index].set
 
   depends_on = [null_resource.wait_for_k8s_api]
+}
+
+resource "null_resource" "apply_manifests" {
+  for_each = toset(var.kubernetes_manifests)
+  depends_on = [null_resource.wait_for_k8s_api, helm_release.main]
+  provisioner "local-exec" {
+    command = "KUBECONFIG=${local_file.kubeconfig.filename} kubectl apply -f \"${each.key}\""
+  }
 }
