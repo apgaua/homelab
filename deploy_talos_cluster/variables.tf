@@ -27,6 +27,20 @@ variable "cluster" {
   })
 }
 
+variable "argocd" {
+  description = "ArgoCD configuration"
+  type = object({
+    password          = string
+    repo_url          = string
+    repo_user         = string
+    repo_pass         = string
+    version           = string
+    monitoring_path   = optional(string)
+    monorepo          = optional(bool)
+    high_availability = optional(bool, false)
+  })
+}
+
 variable "iso" {
   description = "ISO image configuration"
   type = object({
