@@ -64,7 +64,7 @@ Sys.Console, VM.Allocate, Datastore.AllocateTemplate, VM.Config.HWType, VM.Confi
 | Name | Version |
 |------|---------|
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | 3.0.2 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.38.0 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 3.0.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | 2.5.3 |
 | <a name="requirement_proxmox"></a> [proxmox](#requirement\_proxmox) | 0.86.0 |
 | <a name="requirement_talos"></a> [talos](#requirement\_talos) | 0.9.0 |
