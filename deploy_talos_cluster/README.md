@@ -34,6 +34,7 @@ Sys.Console, VM.Allocate, Datastore.AllocateTemplate, VM.Config.HWType, VM.Confi
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_argocd"></a> [argocd](#input\_argocd) | ArgoCD configuration | <pre>object({<br/>    password          = string<br/>    repo_url          = string<br/>    repo_user         = string<br/>    repo_pass         = string<br/>    version           = string<br/>    monitoring_path   = optional(string)<br/>    monorepo          = optional(bool)<br/>    high_availability = optional(bool, false)<br/>  })</pre> | n/a | yes |
 | <a name="input_cluster"></a> [cluster](#input\_cluster) | Cluster wide configuration | <pre>object({<br/>    name             = string<br/>    description      = string<br/>    cidr             = string<br/>    resource_pool    = optional(string)<br/>    talos_endpoint   = string<br/>    vmid_prefix      = number<br/>    kubeconfig       = string<br/>    cpu_type         = string<br/>    internet_gateway = string<br/>  })</pre> | n/a | yes |
 | <a name="input_controlplane"></a> [controlplane](#input\_controlplane) | Hardware configuration for controlplane nodes | <pre>object({<br/>    count               = number<br/>    sockets             = number<br/>    cores               = number<br/>    memory              = number<br/>    balloon             = optional(number)<br/>    disk_size           = number<br/>    network_last_octect = number<br/>  })</pre> | n/a | yes |
 | <a name="input_iso"></a> [iso](#input\_iso) | ISO image configuration | <pre>object({<br/>    url                   = string<br/>    file_name             = string<br/>    talos_installer_image = string<br/>  })</pre> | n/a | yes |
@@ -47,6 +48,7 @@ Sys.Console, VM.Allocate, Datastore.AllocateTemplate, VM.Config.HWType, VM.Confi
 
 | Name | Type |
 |------|------|
+| [helm_release.argocd](https://registry.terraform.io/providers/hashicorp/helm/3.0.2/docs/resources/release) | resource |
 | [helm_release.main](https://registry.terraform.io/providers/hashicorp/helm/3.0.2/docs/resources/release) | resource |
 | [local_file.kubeconfig](https://registry.terraform.io/providers/hashicorp/local/2.5.3/docs/resources/file) | resource |
 | [null_resource.apply_manifests](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
