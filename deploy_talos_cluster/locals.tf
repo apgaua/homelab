@@ -14,6 +14,18 @@ locals {
   )
 
   ################################################################################
+  ### Extract VM IP addresses from Proxmox VMs excluding link-local addresses  ###
+  ################################################################################
+  vm_ips = [
+    for vm in proxmox_virtual_environment_vm.this :
+    lookup(
+      { for ip in flatten(vm.ipv4_addresses) : ip => ip if !startswith(ip, "169.254.") },
+      keys({ for ip in flatten(vm.ipv4_addresses) : ip => ip if !startswith(ip, "169.254.") })[0],
+      null
+    )
+  ]
+
+  ################################################################################
   # Generate a complete list of node configurations with hardware specs and MACs #
   ################################################################################
   node_configs = [

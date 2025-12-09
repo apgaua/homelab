@@ -20,7 +20,7 @@ resource "talos_machine_configuration_apply" "this" {
   depends_on                  = [proxmox_virtual_environment_vm.this[0]]
   client_configuration        = talos_machine_secrets.this.client_configuration
   machine_configuration_input = data.talos_machine_configuration.this[count.index].machine_configuration
-  node                        = flatten(proxmox_virtual_environment_vm.this[count.index].ipv4_addresses)[1]
+  node                        = local.vm_ips[count.index]
   config_patches = [
     yamlencode({
       machine = {

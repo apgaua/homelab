@@ -18,6 +18,14 @@ resource "null_resource" "wait_for_k8s_api" {
   }
 }
 
+resource "null_resource" "apply_manifests" {
+  for_each = toset(var.kubernetes_manifests)
+  provisioner "local-exec" {
+    command = "KUBECONFIG=${local_file.kubeconfig.filename} kubectl apply -f \"${each.key}\""
+  }
+  depends_on = [null_resource.wait_for_k8s_api, helm_release.this]
+}
+
 resource "helm_release" "argocd" {
   name             = "argocd"
   repository       = "https://argoproj.github.io/argo-helm"
@@ -25,82 +33,85 @@ resource "helm_release" "argocd" {
   namespace        = "argocd"
   create_namespace = true
   wait             = true
-  version          = var.argocd.version
+  version          = var.argocd.chart_version
 
-  set = concat(
-    [
-      { name = "server.service.type", value = "LoadBalancer" },
-      { name = "configs.params.server.insecure", value = "true" },
-      { name = "crds.install", value = "false" },
-      { name = "configs.secret.argocdServerAdminPassword", value = var.argocd.password },
-      { name = "configs.secret.argocdServerAdminPasswordMtime", value = timestamp() },
-      { name = "configs.repositories.gh.url", value = var.argocd.repo_url },
-      { name = "configs.repositories.gh.type", value = "git" },
-      { name = "configs.repositories.gh.username", value = var.argocd.repo_user },
-      { name = "configs.repositories.gh.password", value = var.argocd.repo_pass },
-      { name = "monitoring.path", value = var.argocd.monitoring_path != null ? var.argocd.monitoring_path : "" },
-      { name = "monitoring.monorepo", value = tostring(var.argocd.monorepo) }
-    ],
-    var.argocd.ha ? [
-      # HA enabled: disable built-in redis, enable redis-ha and server HA, set replicas and add anti-affinity
-      { name = "redis.enabled", value = "false" },
-      { name = "redis-ha.enabled", value = "true" },
+  # valores simples que continuam via 'set' (opcional)
+  set = [
+    { name = "crds.install", value = "false" }
+  ]
 
-      { name = "server.ha.enabled", value = "true" },
-      { name = "server.ha.replicas", value = "3" },
-
-      { name = "repoServer.ha.enabled", value = "true" },
-      { name = "repoServer.replicas", value = "3" },
-      
-      { name = "server.affinity", value = jsonencode({
-          podAntiAffinity = {
-            preferredDuringSchedulingIgnoredDuringExecution = [
-              {
-                weight = 100
-                podAffinityTerm = {
-                  labelSelector = {
-                    matchLabels = {
-                      "app.kubernetes.io/name" = "argocd-server"
+  # passa um values.yaml gerado dinamicamente (suporta objetos complexos como affinity)
+  values = [
+    yamlencode(
+      merge(
+        {
+          server = {
+            service = { type = "LoadBalancer" }
+            ha      = { enabled = var.argocd.ha, replicas = var.argocd.ha ? var.argocd.replicas : 1 }
+          }
+          redis      = { enabled = var.argocd.ha ? false : true }
+          "redis-ha" = { enabled = var.argocd.ha }
+          repoServer = { ha = { enabled = var.argocd.ha, replicas = var.argocd.ha ? var.argocd.replicas : 1 } }
+          configs = {
+            secret = {
+              argocdServerAdminPassword      = var.argocd.password
+              argocdServerAdminPasswordMtime = timestamp()
+            }
+            repositories = {
+              gh = {
+                url      = var.argocd.repo_url
+                type     = "git"
+                username = var.argocd.repo_user
+                password = var.argocd.repo_pass
+              }
+            }
+          }
+          monitoring = {
+            path     = var.argocd.monitoring_path != null ? var.argocd.monitoring_path : ""
+            monorepo = var.argocd.monorepo
+          }
+        },
+        # adiciona affinities apenas quando HA habilitado
+        var.argocd.ha ? {
+          server = {
+            affinity = {
+              podAntiAffinity = {
+                preferredDuringSchedulingIgnoredDuringExecution = [
+                  {
+                    weight = 100
+                    podAffinityTerm = {
+                      labelSelector = { matchLabels = { "app.kubernetes.io/name" = "argocd-server" } }
+                      topologyKey   = "kubernetes.io/hostname"
                     }
                   }
-                  topologyKey = "kubernetes.io/hostname"
-                }
+                ]
               }
-            ]
+            }
           }
-        })
-      },
-      { name = "repoServer.affinity", value = jsonencode({
-          podAntiAffinity = {
-            preferredDuringSchedulingIgnoredDuringExecution = [
-              {
-                weight = 100
-                podAffinityTerm = {
-                  labelSelector = {
-                    matchLabels = {
-                      "app.kubernetes.io/name" = "argocd-repo-server"
+          repoServer = {
+            affinity = {
+              podAntiAffinity = {
+                preferredDuringSchedulingIgnoredDuringExecution = [
+                  {
+                    weight = 100
+                    podAffinityTerm = {
+                      labelSelector = { matchLabels = { "app.kubernetes.io/name" = "argocd-repo-server" } }
+                      topologyKey   = "kubernetes.io/hostname"
                     }
                   }
-                  topologyKey = "kubernetes.io/hostname"
-                }
+                ]
               }
-            ]
+            }
           }
-        })
-      }
-    ] : [
-      # HA disabled: keep defaults / single instance
-      { name = "redis.enabled", value = "true" },
-      { name = "redis-ha.enabled", value = "false" },
-      { name = "server.ha.enabled", value = "false" },
-      { name = "server.ha.replicas", value = "1" }
-    ]
-  )
+        } : {}
+      )
+    )
+  ]
 
   depends_on = [null_resource.wait_for_k8s_api]
 }
 
-resource "helm_release" "main" {
+resource "helm_release" "this" {
   count            = length(var.helm_charts)
   name             = var.helm_charts[count.index].name
   repository       = var.helm_charts[count.index].repository
@@ -112,12 +123,4 @@ resource "helm_release" "main" {
   set              = var.helm_charts[count.index].set
 
   depends_on = [null_resource.wait_for_k8s_api]
-}
-
-resource "null_resource" "apply_manifests" {
-  for_each   = toset(var.kubernetes_manifests)
-  depends_on = [null_resource.wait_for_k8s_api, helm_release.main]
-  provisioner "local-exec" {
-    command = "KUBECONFIG=${local_file.kubeconfig.filename} kubectl apply -f \"${each.key}\""
-  }
 }

@@ -34,10 +34,11 @@ variable "argocd" {
     repo_url        = string
     repo_user       = string
     repo_pass       = string
-    version         = string
+    chart_version   = string
     monitoring_path = optional(string)
     monorepo        = optional(bool)
     ha              = optional(bool, false)
+    replicas        = optional(number, 3)
   })
 }
 
