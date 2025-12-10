@@ -52,7 +52,7 @@ Sys.Console, VM.Allocate, Datastore.AllocateTemplate, VM.Config.HWType, VM.Confi
 | [helm_release.this](https://registry.terraform.io/providers/hashicorp/helm/3.0.2/docs/resources/release) | resource |
 | [local_file.kubeconfig](https://registry.terraform.io/providers/hashicorp/local/2.5.3/docs/resources/file) | resource |
 | [null_resource.apply_manifests](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.wait_for_k8s_api](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.waiting](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [proxmox_virtual_environment_download_file.this](https://registry.terraform.io/providers/bpg/proxmox/0.86.0/docs/resources/virtual_environment_download_file) | resource |
 | [proxmox_virtual_environment_pool.this](https://registry.terraform.io/providers/bpg/proxmox/0.86.0/docs/resources/virtual_environment_pool) | resource |
 | [proxmox_virtual_environment_vm.this](https://registry.terraform.io/providers/bpg/proxmox/0.86.0/docs/resources/virtual_environment_vm) | resource |
