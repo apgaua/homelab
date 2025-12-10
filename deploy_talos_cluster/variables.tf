@@ -38,7 +38,7 @@ variable "argocd" {
     monitoring_path = optional(string)
     monorepo        = optional(bool)
     ha              = optional(bool, false)
-    replicas        = optional(number, 3)
+    replicas        = optional(number)
   })
 }
 
