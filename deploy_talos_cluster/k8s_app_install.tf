@@ -23,7 +23,7 @@ resource "null_resource" "apply_manifests" {
   provisioner "local-exec" {
     command = "KUBECONFIG=${local_file.kubeconfig.filename} kubectl apply -f \"${each.key}\""
   }
-  depends_on = [null_resource.wait_for_k8s_api]
+  depends_on = [null_resource.waiting]
 }
 
 resource "helm_release" "argocd" {
@@ -108,7 +108,7 @@ resource "helm_release" "argocd" {
     )
   ]
 
-  depends_on = [null_resource.wait_for_k8s_api, null_resource.apply_manifests]
+  depends_on = [null_resource.waiting, null_resource.apply_manifests]
 }
 
 resource "helm_release" "this" {
@@ -122,5 +122,5 @@ resource "helm_release" "this" {
   create_namespace = var.helm_charts[count.index].create_namespace
   set              = var.helm_charts[count.index].set
 
-  depends_on = [null_resource.wait_for_k8s_api, null_resource.apply_manifests]
+  depends_on = [null_resource.waiting, null_resource.apply_manifests]
 }
