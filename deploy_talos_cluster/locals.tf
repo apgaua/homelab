@@ -16,11 +16,17 @@ locals {
   ################################################################################
   ### Extract VM IP addresses from Proxmox VMs excluding link-local addresses  ###
   ################################################################################
+
+  cidr_prefix_len    = tonumber(split("/", var.cluster.cidr)[1])
+  cidr_prefix_octets = ceil(local.cidr_prefix_len / 8)
+  cidr_sample_ip     = cidrhost(var.cluster.cidr, 1)
+  network_prefix     = format("%s.", join(".", slice(split(".", local.cidr_sample_ip), 0, local.cidr_prefix_octets)))
+
   vm_ips = [
     for vm in proxmox_virtual_environment_vm.this :
     lookup(
-      { for ip in flatten(vm.ipv4_addresses) : ip => ip if !startswith(ip, "169.254.") },
-      keys({ for ip in flatten(vm.ipv4_addresses) : ip => ip if !startswith(ip, "169.254.") })[0],
+      { for ip in flatten(vm.ipv4_addresses) : ip => ip if startswith(ip, local.network_prefix) },
+      try(keys({ for ip in flatten(vm.ipv4_addresses) : ip => ip if startswith(ip, local.network_prefix) })[0], null),
       null
     )
   ]
