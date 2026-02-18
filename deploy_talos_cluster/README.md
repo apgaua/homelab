@@ -48,39 +48,39 @@ Sys.Console, VM.Allocate, Datastore.AllocateTemplate, VM.Config.HWType, VM.Confi
 
 | Name | Type |
 |------|------|
-| [helm_release.argocd](https://registry.terraform.io/providers/hashicorp/helm/3.0.2/docs/resources/release) | resource |
-| [helm_release.this](https://registry.terraform.io/providers/hashicorp/helm/3.0.2/docs/resources/release) | resource |
-| [local_file.kubeconfig](https://registry.terraform.io/providers/hashicorp/local/2.5.3/docs/resources/file) | resource |
+| [helm_release.argocd](https://registry.terraform.io/providers/hashicorp/helm/3.1.1/docs/resources/release) | resource |
+| [helm_release.this](https://registry.terraform.io/providers/hashicorp/helm/3.1.1/docs/resources/release) | resource |
+| [local_file.kubeconfig](https://registry.terraform.io/providers/hashicorp/local/2.7.0/docs/resources/file) | resource |
 | [null_resource.argocd_manifests](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.waiting](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [proxmox_virtual_environment_download_file.this](https://registry.terraform.io/providers/bpg/proxmox/0.86.0/docs/resources/virtual_environment_download_file) | resource |
-| [proxmox_virtual_environment_pool.this](https://registry.terraform.io/providers/bpg/proxmox/0.86.0/docs/resources/virtual_environment_pool) | resource |
-| [proxmox_virtual_environment_vm.this](https://registry.terraform.io/providers/bpg/proxmox/0.86.0/docs/resources/virtual_environment_vm) | resource |
-| [talos_cluster_kubeconfig.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0/docs/resources/cluster_kubeconfig) | resource |
-| [talos_machine_bootstrap.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0/docs/resources/machine_bootstrap) | resource |
-| [talos_machine_configuration_apply.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0/docs/resources/machine_configuration_apply) | resource |
-| [talos_machine_secrets.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0/docs/resources/machine_secrets) | resource |
-| [proxmox_virtual_environment_file.iso](https://registry.terraform.io/providers/bpg/proxmox/0.86.0/docs/data-sources/virtual_environment_file) | data source |
-| [talos_client_configuration.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0/docs/data-sources/client_configuration) | data source |
-| [talos_machine_configuration.this](https://registry.terraform.io/providers/siderolabs/talos/0.9.0/docs/data-sources/machine_configuration) | data source |
+| [proxmox_virtual_environment_download_file.this](https://registry.terraform.io/providers/bpg/proxmox/0.96.0/docs/resources/virtual_environment_download_file) | resource |
+| [proxmox_virtual_environment_pool.this](https://registry.terraform.io/providers/bpg/proxmox/0.96.0/docs/resources/virtual_environment_pool) | resource |
+| [proxmox_virtual_environment_vm.this](https://registry.terraform.io/providers/bpg/proxmox/0.96.0/docs/resources/virtual_environment_vm) | resource |
+| [talos_cluster_kubeconfig.this](https://registry.terraform.io/providers/siderolabs/talos/0.10.1/docs/resources/cluster_kubeconfig) | resource |
+| [talos_machine_bootstrap.this](https://registry.terraform.io/providers/siderolabs/talos/0.10.1/docs/resources/machine_bootstrap) | resource |
+| [talos_machine_configuration_apply.this](https://registry.terraform.io/providers/siderolabs/talos/0.10.1/docs/resources/machine_configuration_apply) | resource |
+| [talos_machine_secrets.this](https://registry.terraform.io/providers/siderolabs/talos/0.10.1/docs/resources/machine_secrets) | resource |
+| [proxmox_virtual_environment_file.iso](https://registry.terraform.io/providers/bpg/proxmox/0.96.0/docs/data-sources/virtual_environment_file) | data source |
+| [talos_client_configuration.this](https://registry.terraform.io/providers/siderolabs/talos/0.10.1/docs/data-sources/client_configuration) | data source |
+| [talos_machine_configuration.this](https://registry.terraform.io/providers/siderolabs/talos/0.10.1/docs/data-sources/machine_configuration) | data source |
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | 3.0.2 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 3.0.0 |
-| <a name="requirement_local"></a> [local](#requirement\_local) | 2.5.3 |
-| <a name="requirement_proxmox"></a> [proxmox](#requirement\_proxmox) | 0.86.0 |
-| <a name="requirement_talos"></a> [talos](#requirement\_talos) | 0.9.0 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | 3.1.1 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 3.0.1 |
+| <a name="requirement_local"></a> [local](#requirement\_local) | 2.7.0 |
+| <a name="requirement_proxmox"></a> [proxmox](#requirement\_proxmox) | 0.96.0 |
+| <a name="requirement_talos"></a> [talos](#requirement\_talos) | 0.10.1 |
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_helm"></a> [helm](#provider\_helm) | 3.0.2 |
-| <a name="provider_local"></a> [local](#provider\_local) | 2.5.3 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | 3.1.1 |
+| <a name="provider_local"></a> [local](#provider\_local) | 2.7.0 |
 | <a name="provider_null"></a> [null](#provider\_null) | n/a |
-| <a name="provider_proxmox"></a> [proxmox](#provider\_proxmox) | 0.86.0 |
-| <a name="provider_talos"></a> [talos](#provider\_talos) | 0.9.0 |
+| <a name="provider_proxmox"></a> [proxmox](#provider\_proxmox) | 0.96.0 |
+| <a name="provider_talos"></a> [talos](#provider\_talos) | 0.10.1 |
 
 ## Outputs
 
