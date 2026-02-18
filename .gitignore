@@ -48,3 +48,4 @@ id_rsa
 !*/images/*.env
 !*.terraform-docs.yml
 **/.agent/*
+**/.vscode/*

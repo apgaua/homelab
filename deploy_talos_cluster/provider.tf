@@ -2,23 +2,23 @@ terraform {
   required_providers {
     proxmox = {
       source  = "bpg/proxmox"
-      version = "0.86.0"
+      version = "0.96.0"
     }
     local = {
       source  = "hashicorp/local"
-      version = "2.5.3"
+      version = "2.7.0"
     }
     talos = {
       source  = "siderolabs/talos"
-      version = "0.9.0"
+      version = "0.10.1"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "3.0.2"
+      version = "3.1.1"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = ">= 3.0.0"
+      version = ">= 3.0.1"
     }
   }
 }
