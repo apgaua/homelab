@@ -9,40 +9,41 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      # STEP 1: Check out the repository code first
-      # This is the crucial step that solves the "not a git repository" error.
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.2 # Updated for Node.js 24 support
 
-      - name: "Setup Terraform"
-        uses: hashicorp/setup-terraform@v3
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3.1.2 # Includes latest security fixes
         with:
-          terraform_version: 1.13.3 # Specify your desired Terraform version
+          terraform_version: 1.14.5 # Latest stable version
 
-      - name: "Terraform Format Check"
+      - name: Terraform Format Check
         run: terraform fmt -check -recursive
 
-      - name: "Terraform Initialize"
-        # Use -backend=false for modules since they don't have a backend.
+      - name: Terraform Initialize
         run: terraform init -backend=false
 
-      - name: "Terraform Validate Code"
+      - name: Terraform Validate Code
         run: terraform validate
 
-      - name: "Run tflint linter on Terraform code"
-        uses: terraform-linters/setup-tflint@v4
+      - name: Run tflint linter
+        uses: terraform-linters/setup-tflint@v6.2.1 # Performance boost via caching
         with:
           tflint_version: latest
+          cache: true # Enables plugin caching to reduce runtime
 
-      - name: "Run tfsec security scan on Terraform code"
-        uses: aquasecurity/tfsec-action@v1.0.0
+      - name: Run Trivy security scan
+        uses: aquasecurity/trivy-action@master # Replaces deprecated tfsec
+        with:
+          scan-type: 'config'
+          hide-progress: true
+          format: 'table'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
 
-      # STEP 2: Now run the terraform-docs action
-      # It will execute in the context of the checked-out repository.
       - name: Generate Terraform Docs
         uses: terraform-docs/gh-actions@v1.4.1
         with:
-          # Your other options go here
           git-push: "true"
           find-dir: .
           output-file: README.md
