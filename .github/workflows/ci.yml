@@ -42,7 +42,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
 
       - name: Generate Terraform Docs
-        uses: terraform-docs/gh-actions@v1.4.1
+        uses: terraform-docs/gh-actions@vmain
         with:
           git-push: "true"
           find-dir: .
