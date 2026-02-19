@@ -30,15 +30,10 @@ variable "cluster" {
 variable "argocd" {
   description = "ArgoCD configuration"
   type = object({
-    password        = string
-    repo_url        = string
-    repo_user       = string
-    repo_pass       = string
-    chart_version   = string
-    monitoring_path = optional(string)
-    monorepo        = optional(bool)
-    ha              = optional(bool, false)
-    replicas        = optional(number)
+    password      = string
+    chart_version = string
+    ha            = optional(bool, false)
+    replicas      = optional(number)
   })
 }
 
