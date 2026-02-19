@@ -47,10 +47,10 @@ resource "talos_machine_configuration_apply" "this" {
       }
     }),
     yamlencode({
-apiVersion = "v1alpha1"
-    kind       = "HostnameConfig"
-    auto       = "off"
-    hostname   = local.node_configs[count.index].name
+      apiVersion = "v1alpha1"
+      kind       = "HostnameConfig"
+      auto       = "off"
+      hostname   = local.node_configs[count.index].name
     })
   ]
 }

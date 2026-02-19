@@ -8,9 +8,9 @@ cluster = {
 
   #IMPORTANT!! The value should not conflict with other devices on your network, which could cause instabilities and IP conflicts.
   cidr             = "cidr"            # CIDR of the network where the VMs will be allocated.
-  resource_pool    = "resource_pool"                    # Resource pool name to be used by the nodes. To use this variable, the resource pool must have been configured manually.
-  talos_endpoint   = "talos_endpoint"              # IP address to be used to access the Talos API. It should be an IP address within the CIDR range.
-  vmid_prefix      = vmid_prefix                          # VMID prefix for all nodes. It is important that this value does not conflict with other VMs in Proxmox, as it must be unique.
+  resource_pool    = "resource_pool"   # Resource pool name to be used by the nodes. To use this variable, the resource pool must have been configured manually.
+  talos_endpoint   = "talos_endpoint"  # IP address to be used to access the Talos API. It should be an IP address within the CIDR range.
+  vmid_prefix      = vmid_prefix       # VMID prefix for all nodes. It is important that this value does not conflict with other VMs in Proxmox, as it must be unique.
   kubeconfig       = "kubeconfig_path" # Path where the kubeconfig file will be saved after the cluster is created.
   cpu_type         = "cpu_type"
   internet_gateway = "gateway_ip" # Gateway IP address for internet access.
@@ -31,8 +31,8 @@ iso = {
 ################################################################################
 
 proxmox = {
-  ip   = "proxmox_ip" # Proxmox IP address where the resource will be deployed.
-  port = "proxmox_port"           # Proxmox port, usually 8006.
+  ip   = "proxmox_ip"   # Proxmox IP address where the resource will be deployed.
+  port = "proxmox_port" # Proxmox port, usually 8006.
 }
 
 ################################################################################
