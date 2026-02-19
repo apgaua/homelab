@@ -7,13 +7,13 @@ cluster = {
   description = "Default lab cluster"
 
   #IMPORTANT!! The value should not conflict with other devices on your network, which could cause instabilities and IP conflicts.
-  cidr             = "network/24"              # CIDR of the network where the VMs will be allocated.
-  resource_pool    = "k8s-lab"                 # Resource pool name to be used by the nodes. To use this variable, the resource pool must have been configured manually.
-  talos_endpoint   = "talosendpointIP"         # IP address to be used to access the Talos API. It should be an IP address within the CIDR range.
-  vmid_prefix      = 900                       # VMID prefix for all nodes. It is important that this value does not conflict with other VMs in Proxmox, as it must be unique.
-  kubeconfig       = "kubeconfigfolder/config" # Path where the kubeconfig file will be saved after the cluster is created.
-  cpu_type         = "x86-64-v2-AES"
-  internet_gateway = "NetworkGWIP" # Gateway IP address for internet access.
+  cidr             = "cidr"            # CIDR of the network where the VMs will be allocated.
+  resource_pool    = "resource_pool"                    # Resource pool name to be used by the nodes. To use this variable, the resource pool must have been configured manually.
+  talos_endpoint   = "talos_endpoint"              # IP address to be used to access the Talos API. It should be an IP address within the CIDR range.
+  vmid_prefix      = vmid_prefix                          # VMID prefix for all nodes. It is important that this value does not conflict with other VMs in Proxmox, as it must be unique.
+  kubeconfig       = "kubeconfig_path" # Path where the kubeconfig file will be saved after the cluster is created.
+  cpu_type         = "cpu_type"
+  internet_gateway = "gateway_ip" # Gateway IP address for internet access.
 }
 
 ################################################################################
@@ -21,9 +21,9 @@ cluster = {
 ################################################################################
 
 iso = {
-  url                   = "https://factory.talos.dev/image/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515/v1.11.5/metal-amd64.iso"
+  url                   = "https://factory.talos.dev/image/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515/v1.12.4/metal-amd64.iso"
   file_name             = "metal-amd64.iso"
-  talos_installer_image = "factory.talos.dev/metal-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.11.5"
+  talos_installer_image = "factory.talos.dev/metal-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.12.4"
 }
 
 ################################################################################
@@ -31,9 +31,26 @@ iso = {
 ################################################################################
 
 proxmox = {
-  ip   = "proxmoxip" # Proxmox IP address where the resource will be deployed.
-  port = "8006"      # Proxmox port, usually 8006.
+  ip   = "proxmox_ip" # Proxmox IP address where the resource will be deployed.
+  port = "proxmox_port"           # Proxmox port, usually 8006.
 }
+
+################################################################################
+################################ ARGO-CD CONFIG ################################
+################################################################################
+
+argocd = {
+  password      = "argocdadminpassword"
+  chart_version = "9.4.3"
+  ha            = true
+  replicas      = 3
+}
+
+kubernetes_manifests = [
+  "https://raw.githubusercontent.com/argoproj/argo-cd/refs/tags/v3.3.1/manifests/crds/application-crd.yaml",
+  "https://raw.githubusercontent.com/argoproj/argo-cd/refs/tags/v3.3.1/manifests/crds/applicationset-crd.yaml",
+  "https://raw.githubusercontent.com/argoproj/argo-cd/refs/tags/v3.3.1/manifests/crds/appproject-crd.yaml"
+]
 
 ################################################################################
 ########################## VIRTUAL MACHINE CONFIGURATION #######################
@@ -75,56 +92,56 @@ mac_address = [ # Base MAC addresses for generating unique MACs for controlplane
 # to the cluster after its creation. This is optional and can be customized as needed.
 
 helm_charts = [
-  # Metrics Server
-  {
-    name       = "metrics-server"
-    repository = "https://kubernetes-sigs.github.io/metrics-server/"
-    chart      = "metrics-server"
-    namespace  = "kube-system"
-    wait       = false
-    version    = "3.12.2"
-    set = [
-      { name = "apiService.create", value = "true" }
-    ]
-  },
-  # Kube State Metrics
-  {
-    name             = "kube-state-metrics"
-    repository       = "https://prometheus-community.github.io/helm-charts"
-    chart            = "kube-state-metrics"
-    namespace        = "kube-system"
-    version          = "6.3.0"
-    create_namespace = true
-    set = [
-      { name = "apiService.create", value = "true" },
-      { name = "metricLabelsAllowlist[0]", value = "nodes=[*]" },
-      { name = "metricAnnotationsAllowList[0]", value = "nodes=[*]" }
-    ]
-  },
-  # NGINX Ingress Controller
-  {
-    name             = "ingress-nginx"
-    repository       = "https://kubernetes.github.io/ingress-nginx"
-    chart            = "ingress-nginx"
-    namespace        = "ingress-nginx"
-    version          = "4.13.3"
-    create_namespace = true
-    set = [
-      { name = "controller.publishService.enabled", value = "true" },
-      { name = "controller.admissionWebhooks.enabled", value = "true" },
-      { name = "controller.admissionWebhooks.patch.enabled", value = "true" }
-    ]
-  },
-  {
-    name             = "argocd"
-    repository       = "https://argoproj.github.io/argo-helm"
-    chart            = "argo-cd"
-    namespace        = "argocd"
-    create_namespace = true
-    version          = "8.5.8"
-    set = [
-      { name = "server.service.type", value = "LoadBalancer" },
-      { name = "configs.params.server.insecure", value = "true" }
-    ]
-  }
+  # # Metrics Server
+  # {
+  #   name       = "metrics-server"
+  #   repository = "https://kubernetes-sigs.github.io/metrics-server/"
+  #   chart      = "metrics-server"
+  #   namespace  = "kube-system"
+  #   wait       = false
+  #   version    = "3.12.2"
+  #   set = [
+  #     { name = "apiService.create", value = "true" }
+  #   ]
+  # },
+  # # Kube State Metrics
+  # {
+  #   name             = "kube-state-metrics"
+  #   repository       = "https://prometheus-community.github.io/helm-charts"
+  #   chart            = "kube-state-metrics"
+  #   namespace        = "kube-system"
+  #   version          = "6.3.0"
+  #   create_namespace = true
+  #   set = [
+  #     { name = "apiService.create", value = "true" },
+  #     { name = "metricLabelsAllowlist[0]", value = "nodes=[*]" },
+  #     { name = "metricAnnotationsAllowList[0]", value = "nodes=[*]" }
+  #   ]
+  # },
+  # # NGINX Ingress Controller
+  # {
+  #   name             = "ingress-nginx"
+  #   repository       = "https://kubernetes.github.io/ingress-nginx"
+  #   chart            = "ingress-nginx"
+  #   namespace        = "ingress-nginx"
+  #   version          = "4.13.3"
+  #   create_namespace = true
+  #   set = [
+  #     { name = "controller.publishService.enabled", value = "true" },
+  #     { name = "controller.admissionWebhooks.enabled", value = "true" },
+  #     { name = "controller.admissionWebhooks.patch.enabled", value = "true" }
+  #   ]
+  # },
+  # {
+  #   name             = "argocd"
+  #   repository       = "https://argoproj.github.io/argo-helm"
+  #   chart            = "argo-cd"
+  #   namespace        = "argocd"
+  #   create_namespace = true
+  #   version          = "8.5.8"
+  #   set = [
+  #     { name = "server.service.type", value = "LoadBalancer" },
+  #     { name = "configs.params.server.insecure", value = "true" }
+  #   ]
+  # }
 ]
