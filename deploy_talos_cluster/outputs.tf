@@ -40,10 +40,10 @@ output "installed_helm_charts" {
   value       = { for chart in var.helm_charts : chart.name => chart.version }
 }
 
-output "kubernetes_manifests_applied" {
-  description = "List of Kubernetes manifests that will be applied after cluster creation"
-  value       = var.kubernetes_manifests[*]
-}
+# output "kubernetes_manifests_applied" {
+#   description = "List of Kubernetes manifests that will be applied after cluster creation"
+#   value       = var.kubernetes_manifests[*]
+# }
 
 output "node_names" {
   description = "List of node names that will be created"

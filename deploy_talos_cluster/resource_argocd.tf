@@ -1,5 +1,5 @@
-resource "null_resource" "argocd_manifests" {
-  for_each = toset(var.kubernetes_manifests)
+resource "null_resource" "argocd_crds_manifests" {
+  for_each = toset(var.argocd_crds_manifests)
 
   provisioner "local-exec" {
     command = "KUBECONFIG=${var.cluster.kubeconfig} kubectl apply --server-side -f \"${each.key}\""
@@ -25,5 +25,5 @@ resource "helm_release" "argocd" {
     { name = "configs.secret.argocdServerAdminPasswordMtime", value = timestamp() },
     { name = "configs.secret.argocdServerSecretKey", value = uuid() }
   ]
-  depends_on = [null_resource.waiting, null_resource.argocd_manifests]
+  depends_on = [null_resource.waiting, null_resource.argocd_crds_manifests]
 }
