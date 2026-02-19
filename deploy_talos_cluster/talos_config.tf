@@ -28,8 +28,21 @@ resource "talos_machine_configuration_apply" "this" {
           disk  = "/dev/sda"
           image = var.iso.talos_installer_image
         }
+        features = {
+          kubePrism = {
+            enabled = true
+            port    = 7445
+          }
+        }
+      }
+      cluster = {
         network = {
-          hostname = local.node_configs[count.index].name
+          cni = {
+            name = "none"
+          }
+        }
+        proxy = {
+          disabled = true
         }
       }
     })
