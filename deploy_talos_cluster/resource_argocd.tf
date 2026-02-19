@@ -16,68 +16,13 @@ resource "helm_release" "argocd" {
   wait             = true
   version          = var.argocd.chart_version
 
-  # valores simples que continuam via 'set' (opcional)
   set = [
-    { name = "crds.install", value = "false" }
+    { name = "crds.install", value = "false" },
+    { name = "server.service.type", value = "NodePort" },
+    { name = "server.service.nodePort", value = "30080" },
+    { name = "configs.secret.argocdServerAdminPassword", value = bcrypt(var.argocd.password) },
+    { name = "configs.secret.argocdServerAdminPasswordMtime", value = timestamp() },
+    { name = "configs.secret.argocdServerSecretKey", value = uuid() }
   ]
-
-  # passa um values.yaml gerado dinamicamente (suporta objetos complexos como affinity)
-  # values = [
-  #   yamlencode({
-  #     server = merge(
-  #       {
-  #         service = { type = "LoadBalancer" }
-  #         ha      = { enabled = var.argocd.ha, replicas = var.argocd.ha ? var.argocd.replicas : 1 }
-  #       },
-  #       var.argocd.ha ? {
-  #         affinity = {
-  #           podAntiAffinity = {
-  #             preferredDuringSchedulingIgnoredDuringExecution = [
-  #               {
-  #                 weight = 100
-  #                 podAffinityTerm = {
-  #                   labelSelector = { matchLabels = { "app.kubernetes.io/name" = "argocd-server" } }
-  #                   topologyKey   = "kubernetes.io/hostname"
-  #                 }
-  #               }
-  #             ]
-  #           }
-  #         }
-  #       } : {}
-  #     )
-
-  #     redis      = { enabled = var.argocd.ha ? false : true }
-  #     "redis-ha" = { enabled = var.argocd.ha }
-
-  #     repoServer = merge(
-  #       {
-  #         ha = { enabled = var.argocd.ha, replicas = var.argocd.ha ? var.argocd.replicas : 1 }
-  #       },
-  #       var.argocd.ha ? {
-  #         affinity = {
-  #           podAntiAffinity = {
-  #             preferredDuringSchedulingIgnoredDuringExecution = [
-  #               {
-  #                 weight = 100
-  #                 podAffinityTerm = {
-  #                   labelSelector = { matchLabels = { "app.kubernetes.io/name" = "argocd-repo-server" } }
-  #                   topologyKey   = "kubernetes.io/hostname"
-  #                 }
-  #               }
-  #             ]
-  #           }
-  #         }
-  #       } : {}
-  #     )
-
-  #     configs = {
-  #       secret = {
-  #         argocdServerAdminPassword      = var.argocd.password
-  #         argocdServerAdminPasswordMtime = timestamp()
-  #       }
-  #     }
-  #   })
-  # ]
-
   depends_on = [null_resource.waiting, null_resource.argocd_manifests]
 }
