@@ -6,7 +6,7 @@ data "talos_client_configuration" "this" {
 
 data "talos_machine_configuration" "this" {
   count            = length(local.node_configs)
-  talos_version    = "v1.11.2"
+  talos_version    = "v1.12.4"
   cluster_name     = var.cluster.name
   machine_type     = local.node_configs[count.index].type
   machine_secrets  = talos_machine_secrets.this.machine_secrets

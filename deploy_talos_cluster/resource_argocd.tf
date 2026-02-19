@@ -14,6 +14,8 @@ resource "helm_release" "argocd" {
   namespace        = "argocd"
   create_namespace = true
   wait             = true
+  atomic           = true
+  timeout          = 900
   version          = var.argocd.chart_version
 
   set = [
@@ -24,5 +26,5 @@ resource "helm_release" "argocd" {
     { name = "configs.secret.argocdServerAdminPasswordMtime", value = timestamp() },
     { name = "configs.secret.argocdServerSecretKey", value = uuid() }
   ]
-  depends_on = [null_resource.waiting, null_resource.argocd_manifests]
+  depends_on = [null_resource.waiting, null_resource.argocd_manifests, helm_release.cilium]
 }
