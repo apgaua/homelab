@@ -41,9 +41,9 @@ Sys.Console, VM.Allocate, Datastore.AllocateTemplate, VM.Config.HWType, VM.Confi
 | <a name="input_mac_address"></a> [mac\_address](#input\_mac\_address) | Base MAC address for generating unique MACs for controlplane nodes | `list(string)` | n/a | yes |
 | <a name="input_proxmox"></a> [proxmox](#input\_proxmox) | Proxmox backend address | <pre>object({<br/>    ip   = string<br/>    port = number<br/>  })</pre> | n/a | yes |
 | <a name="input_worker"></a> [worker](#input\_worker) | Hardware configuration for worker nodes | <pre>object({<br/>    count               = number<br/>    sockets             = number<br/>    cores               = number<br/>    memory              = number<br/>    balloon             = optional(number)<br/>    disk_size           = number<br/>    network_last_octect = number<br/>  })</pre> | n/a | yes |
+| <a name="input_argocd_crds_manifests"></a> [argocd\_crds\_manifests](#input\_argocd\_crds\_manifests) | List of ArgoCD CRDs manifest files or URLs to be applied after the cluster is created | `list(string)` | `[]` | no |
 | <a name="input_bucket"></a> [bucket](#input\_bucket) | S3 bucket to store the Terraform state | `string` | `"homelab-kuda-state"` | no |
 | <a name="input_helm_charts"></a> [helm\_charts](#input\_helm\_charts) | values for Helm charts to be installed after the cluster is created | <pre>list(object({<br/>    name             = string<br/>    repository       = string<br/>    chart            = string<br/>    namespace        = string<br/>    create_namespace = optional(bool, false)<br/>    wait             = optional(bool, false)<br/>    version          = optional(string, null)<br/>    set = optional(list(object({<br/>      name  = string<br/>      value = string<br/>    })), [])<br/>  }))</pre> | `[]` | no |
-| <a name="input_kubernetes_manifests"></a> [kubernetes\_manifests](#input\_kubernetes\_manifests) | List of Kubernetes manifest files or URLs to be applied after the cluster is created | `list(string)` | `[]` | no |
 ## Resources
 
 | Name | Type |
@@ -52,7 +52,7 @@ Sys.Console, VM.Allocate, Datastore.AllocateTemplate, VM.Config.HWType, VM.Confi
 | [helm_release.cilium](https://registry.terraform.io/providers/hashicorp/helm/3.1.1/docs/resources/release) | resource |
 | [helm_release.this](https://registry.terraform.io/providers/hashicorp/helm/3.1.1/docs/resources/release) | resource |
 | [local_file.kubeconfig](https://registry.terraform.io/providers/hashicorp/local/2.7.0/docs/resources/file) | resource |
-| [null_resource.argocd_manifests](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.argocd_crds_manifests](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.waiting](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [proxmox_virtual_environment_download_file.this](https://registry.terraform.io/providers/bpg/proxmox/0.96.0/docs/resources/virtual_environment_download_file) | resource |
 | [proxmox_virtual_environment_pool.this](https://registry.terraform.io/providers/bpg/proxmox/0.96.0/docs/resources/virtual_environment_pool) | resource |
@@ -94,7 +94,6 @@ Sys.Console, VM.Allocate, Datastore.AllocateTemplate, VM.Config.HWType, VM.Confi
 | <a name="output_kubeconfig"></a> [kubeconfig](#output\_kubeconfig) | value of kubeconfig to be used with kubectl |
 | <a name="output_kubeconfig_file_path"></a> [kubeconfig\_file\_path](#output\_kubeconfig\_file\_path) | Path where kubeconfig file is saved |
 | <a name="output_kubernetes_endpoint"></a> [kubernetes\_endpoint](#output\_kubernetes\_endpoint) | Kubernetes API endpoint |
-| <a name="output_kubernetes_manifests_applied"></a> [kubernetes\_manifests\_applied](#output\_kubernetes\_manifests\_applied) | List of Kubernetes manifests that will be applied after cluster creation |
 | <a name="output_node_names"></a> [node\_names](#output\_node\_names) | List of node names that will be created |
 | <a name="output_talos_endpoint"></a> [talos\_endpoint](#output\_talos\_endpoint) | Talos API endpoint |
 | <a name="output_talosconfig"></a> [talosconfig](#output\_talosconfig) | value of talosconfig to be used with talosctl |
