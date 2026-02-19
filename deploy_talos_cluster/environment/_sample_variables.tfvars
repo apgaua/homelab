@@ -62,7 +62,6 @@ worker = {
   sockets             = 1        # Number of CPU sockets
   cores               = 2        # Number of CPU cores per socket
   memory              = 4096     # Memory in MB
-  max_memory          = 4096     # Maximum Memory in MB for ballooning
   disk_size           = 50       # Disk size in GB
   network_last_octect = 90       # IP definition for Worker node: 192.168.XX.0
 }
@@ -73,7 +72,6 @@ controlplane = {
   sockets             = 1              # Number of CPU sockets
   cores               = 2              # Number of CPU cores per socket
   memory              = 3072           # Memory in MB
-  max_memory          = 3072           # Maximum Memory in MB for ballooning
   disk_size           = 40             # Disk size in GB
   network_last_octect = 60             # IP definition for Control Plane node: 192.168.XX.0
 }

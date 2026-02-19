@@ -22,6 +22,7 @@ variable "cluster" {
     talos_endpoint   = string
     vmid_prefix      = number
     kubeconfig       = string
+    talosconfig      = string
     cpu_type         = string
     internet_gateway = string
   })

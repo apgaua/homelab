@@ -1,3 +1,7 @@
+################################################################################
+########################## WAIT API SERVER TO BE READY #########################
+################################################################################
+
 resource "null_resource" "waiting" {
   depends_on = [local_file.kubeconfig]
 
@@ -18,6 +22,10 @@ resource "null_resource" "waiting" {
   }
 }
 
+################################################################################
+########################## HELM CHARTS DEPLOYMENT ##############################
+################################################################################
+
 resource "helm_release" "this" {
   count            = length(var.helm_charts)
   name             = var.helm_charts[count.index].name
@@ -29,5 +37,5 @@ resource "helm_release" "this" {
   create_namespace = var.helm_charts[count.index].create_namespace
   set              = var.helm_charts[count.index].set
 
-  depends_on = [null_resource.waiting, null_resource.argocd_manifests]
+  depends_on = [null_resource.waiting]
 }

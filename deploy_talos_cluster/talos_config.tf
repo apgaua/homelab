@@ -73,3 +73,9 @@ resource "local_file" "kubeconfig" {
   file_permission = "0600"
 
 }
+
+resource "local_file" "talosconfig" {
+  content         = data.talos_client_configuration.this.talos_config
+  filename        = var.cluster.talosconfig
+  file_permission = "0600"
+}

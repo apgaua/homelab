@@ -30,7 +30,6 @@ resource "proxmox_virtual_environment_vm" "this" {
   # Memory Configuration
   memory {
     dedicated = local.node_configs[count.index].memory
-    floating  = local.node_configs[count.index].memory # set equal to dedicated to enable ballooning
   }
 
   # Disk Configuration
