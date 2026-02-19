@@ -4,7 +4,7 @@ resource "null_resource" "argocd_manifests" {
   provisioner "local-exec" {
     command = "KUBECONFIG=${var.cluster.kubeconfig} kubectl apply --server-side -f \"${each.key}\""
   }
-  depends_on = [null_resource.waiting]
+  depends_on = [null_resource.waiting, helm_release.cilium]
 }
 
 resource "helm_release" "argocd" {
@@ -14,7 +14,6 @@ resource "helm_release" "argocd" {
   namespace        = "argocd"
   create_namespace = true
   wait             = true
-  atomic           = true
   timeout          = 900
   version          = var.argocd.chart_version
 
@@ -26,5 +25,5 @@ resource "helm_release" "argocd" {
     { name = "configs.secret.argocdServerAdminPasswordMtime", value = timestamp() },
     { name = "configs.secret.argocdServerSecretKey", value = uuid() }
   ]
-  depends_on = [null_resource.waiting, null_resource.argocd_manifests, helm_release.cilium]
+  depends_on = [null_resource.waiting, null_resource.argocd_manifests]
 }
