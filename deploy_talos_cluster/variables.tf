@@ -72,7 +72,7 @@ variable "worker" {
     memory              = number
     balloon             = optional(number)
     disk_size           = number
-    network_last_octect = number
+#    network_last_octect = number
   })
 }
 
@@ -89,7 +89,7 @@ variable "controlplane" {
     memory              = number
     balloon             = optional(number)
     disk_size           = number
-    network_last_octect = number
+#    network_last_octect = number
   })
 }
 

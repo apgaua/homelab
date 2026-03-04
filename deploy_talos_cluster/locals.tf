@@ -5,11 +5,11 @@ locals {
   all_nodes = concat(
     [for i in range(var.controlplane.count) : {
       type = "controlplane"
-      ip   = cidrhost(var.cluster.cidr, var.controlplane.network_last_octect + i)
+#      ip   = cidrhost(var.cluster.cidr, var.controlplane.network_last_octect + i)
     }],
     [for i in range(var.worker.count) : {
       type = "worker"
-      ip   = cidrhost(var.cluster.cidr, var.worker.network_last_octect + i)
+#      ip   = cidrhost(var.cluster.cidr, var.worker.network_last_octect + i)
     }]
   )
 
@@ -37,7 +37,7 @@ locals {
   node_configs = [
     for i, node in local.all_nodes : {
       type = node.type
-      ip   = node.ip
+#      ip   = node.ip
 
       sockets     = node.type == "controlplane" ? var.controlplane.sockets : var.worker.sockets
       cores       = node.type == "controlplane" ? var.controlplane.cores : var.worker.cores
