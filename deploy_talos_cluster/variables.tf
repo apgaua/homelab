@@ -66,13 +66,13 @@ variable "proxmox" {
 variable "worker" {
   description = "Hardware configuration for worker nodes"
   type = object({
-    count               = number
-    sockets             = number
-    cores               = number
-    memory              = number
-    balloon             = optional(number)
-    disk_size           = number
-#    network_last_octect = number
+    count     = number
+    sockets   = number
+    cores     = number
+    memory    = number
+    balloon   = optional(number)
+    disk_size = number
+    #    network_last_octect = number
   })
 }
 
@@ -83,13 +83,13 @@ variable "worker" {
 variable "controlplane" {
   description = "Hardware configuration for controlplane nodes"
   type = object({
-    count               = number
-    sockets             = number
-    cores               = number
-    memory              = number
-    balloon             = optional(number)
-    disk_size           = number
-#    network_last_octect = number
+    count     = number
+    sockets   = number
+    cores     = number
+    memory    = number
+    balloon   = optional(number)
+    disk_size = number
+    #    network_last_octect = number
   })
 }
 
