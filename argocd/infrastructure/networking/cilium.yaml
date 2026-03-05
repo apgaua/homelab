@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cilium
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    chart: cilium
+    repoURL: https://helm.cilium.io/
+    targetRevision: 1.19.1
+    helm:
+      values: |
+        # Talos Linux specific requirements
+        k8sServiceHost: localhost
+        k8sServicePort: 7445
+
+        # Enable Hubble for observability
+        hubble:
+          enabled: true
+          relay:
+            enabled: true
+          ui:
+            enabled: true
+            
+        # Cloud/Infrastructure specific
+        ipam:
+          mode: kubernetes
+
+        # Integration with NodePort
+        nodePort:
+          enabled: true
+          
+        # Ensure Cilium replaces kube-proxy if desired
+        kubeProxyReplacement: true
+        operator:
+          replicas: 1
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
