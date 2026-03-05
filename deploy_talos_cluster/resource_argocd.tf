@@ -41,6 +41,9 @@ resource "argocd_application" "applications" {
       repo_url        = var.applications[count.index].repo_url
       target_revision = var.applications[count.index].revision
       path            = var.applications[count.index].path
+      directory {
+        recurse = var.applications[count.index].recurse
+      }
     }
     destination {
       server    = var.applications[count.index].server

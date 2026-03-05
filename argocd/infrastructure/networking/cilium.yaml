@@ -37,6 +37,27 @@ spec:
         kubeProxyReplacement: true
         operator:
           replicas: 1
+
+        privileged: true
+        securityContext:
+          capabilities:
+            cleanCiliumState: true
+              - NET_ADMIN
+              - SYS_ADMIN
+              - SYS_RESOURCE
+            ciliumAgent:
+              - CHOWN
+              - DAC_OVERRIDE
+              -FOWNER
+              -IPC_LOCK
+              -KILL
+              -NET_ADMIN
+              -NET_RAW
+              -SETGID
+              -SETUID
+              -SYS_ADMIN
+              -SYS_RESOURCE
+              -DAC_READ_SEARCH
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system

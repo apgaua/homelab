@@ -118,6 +118,7 @@ variable "applications" {
     path      = string
     server    = string
     namespace = string
+    recurse   = optional(bool, false)
   }))
   default = []
 }
