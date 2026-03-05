@@ -27,3 +27,34 @@ resource "helm_release" "argocd" {
   ]
   depends_on = [null_resource.waiting, helm_release.cilium, null_resource.argocd_crds_manifests]
 }
+
+resource "argocd_application" "bootstrap" {
+  metadata {
+    name      = "${var.cluster.name}-bootstrap"
+    namespace = "argocd"
+  }
+
+  spec {
+    project = "default"
+    source {
+      repo_url        = var.bootstrap_manifests_repo
+      target_revision = "HEAD"
+      path            = var.bootstrap_manifests_path
+    }
+    destination {
+      server    = "https://kubernetes.default.svc"
+      namespace = "default"
+    }
+    sync_policy {
+      retry {
+        limit = "2"
+        backoff {
+          duration     = "5s"
+          factor       = "2"
+          max_duration = "3m"
+        }
+      }
+    }
+  }
+  depends_on = [helm_release.argocd]
+}

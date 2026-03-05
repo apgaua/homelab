@@ -2,7 +2,7 @@ terraform {
   required_providers {
     proxmox = {
       source  = "bpg/proxmox"
-      version = "0.96.0"
+      version = "0.97.1"
     }
     local = {
       source  = "hashicorp/local"
@@ -19,6 +19,10 @@ terraform {
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = ">= 3.0.1"
+    }
+    argocd = {
+      source  = "argoproj-labs/argocd"
+      version = "7.15.0"
     }
   }
 }
@@ -41,4 +45,11 @@ provider "proxmox" {
   ssh {
     agent = true
   }
+}
+
+provider "argocd" {
+  server_addr = "${var.cluster.talos_endpoint}:30080"
+  username    = "admin"
+  password    = var.argocd.password
+  insecure    = true
 }
