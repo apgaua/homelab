@@ -13,6 +13,8 @@ spec:
     targetRevision: 9.4.3
     helm:
       values: |
+        crds:
+          install: false
         server:
           service:
             type: NodePort

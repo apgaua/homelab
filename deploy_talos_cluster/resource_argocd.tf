@@ -25,6 +25,7 @@ resource "helm_release" "argocd" {
     { name = "configs.secret.argocdServerAdminPasswordMtime", value = timestamp() },
     { name = "configs.secret.argocdServerSecretKey", value = uuid() }
   ]
+
   depends_on = [null_resource.waiting, helm_release.cilium, null_resource.argocd_crds_manifests]
 }
 
