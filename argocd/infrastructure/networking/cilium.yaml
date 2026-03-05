@@ -48,16 +48,16 @@ spec:
             ciliumAgent:
               - CHOWN
               - DAC_OVERRIDE
-              -FOWNER
-              -IPC_LOCK
-              -KILL
-              -NET_ADMIN
-              -NET_RAW
-              -SETGID
-              -SETUID
-              -SYS_ADMIN
-              -SYS_RESOURCE
-              -DAC_READ_SEARCH
+              - FOWNER
+              - IPC_LOCK
+              - KILL
+              - NET_ADMIN
+              - NET_RAW
+              - SETGID
+              - SETUID
+              - SYS_ADMIN
+              - SYS_RESOURCE
+              - DAC_READ_SEARCH
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
