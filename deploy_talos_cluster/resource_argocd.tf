@@ -28,22 +28,23 @@ resource "helm_release" "argocd" {
   depends_on = [null_resource.waiting, helm_release.cilium, null_resource.argocd_crds_manifests]
 }
 
-resource "argocd_application" "bootstrap" {
+resource "argocd_application" "applications" {
+  count = length(var.applications)
   metadata {
-    name      = "${var.cluster.name}-bootstrap"
+    name      = "${var.cluster.name}-${var.applications[count.index].name}"
     namespace = "argocd"
   }
 
   spec {
-    project = "default"
+    project = var.applications[count.index].project
     source {
-      repo_url        = var.bootstrap_manifests_repo
-      target_revision = "HEAD"
-      path            = var.bootstrap_manifests_path
+      repo_url        = var.applications[count.index].repo_url
+      target_revision = var.applications[count.index].revision
+      path            = var.applications[count.index].path
     }
     destination {
-      server    = "https://kubernetes.default.svc"
-      namespace = "default"
+      server    = var.applications[count.index].server
+      namespace = var.applications[count.index].namespace
     }
     sync_policy {
       retry {

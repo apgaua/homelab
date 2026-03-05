@@ -108,16 +108,18 @@ variable "argocd_crds_manifests" {
   default     = []
 }
 
-variable "bootstrap_manifests_repo" {
-  description = "URL of the bootstrap manifests repository"
-  type        = string
-  default     = ""
-}
-
-variable "bootstrap_manifests_path" {
-  description = "Path to the bootstrap app manifest"
-  type        = string
-  default     = ""
+variable "applications" {
+  description = "List of ArgoCD applications to be applied after the cluster is created"
+  type = list(object({
+    name      = string
+    project   = string
+    repo_url  = string
+    revision  = string
+    path      = string
+    server    = string
+    namespace = string
+  }))
+  default = []
 }
 
 ################################################################################
