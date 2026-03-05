@@ -41,7 +41,7 @@ spec:
         privileged: true
         securityContext:
           capabilities:
-            cleanCiliumState: true
+            cleanCiliumState:
               - NET_ADMIN
               - SYS_ADMIN
               - SYS_RESOURCE
