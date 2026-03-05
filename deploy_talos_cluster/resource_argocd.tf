@@ -61,5 +61,7 @@ resource "argocd_application" "applications" {
       }
     }
   }
+  wait = false
+  cascade = false
   depends_on = [helm_release.argocd]
 }
