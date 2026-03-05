@@ -37,5 +37,5 @@ resource "helm_release" "this" {
   create_namespace = var.helm_charts[count.index].create_namespace
   set              = var.helm_charts[count.index].set
 
-  depends_on = [null_resource.waiting]
+  depends_on = [null_resource.waiting, helm_release.cilium, helm_release.argocd]
 }
