@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: homelab-apps
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: var.bootstrap_manifests_repo
+    targetRevision: HEAD
+    path: var.bootstrap_manifests_path
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    # Automated sync is omitted to ensure manual synchronization
+    managedResources:
+      - group: "*"
+        kind: "*"
+    retry:
+      limit: 2
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
