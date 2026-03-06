@@ -10,7 +10,7 @@ spec:
   source:
     chart: kyverno
     repoURL: https://kyverno.github.io/kyverno
-    targetRevision: 1.17.1
+    targetRevision: v1.17.1
     helm:
       values: |
         admissionController:
