@@ -27,7 +27,15 @@ spec:
             server.insecure: true
         controller:
           replicas: 3
-  destination:
+          # Enable sharding
+          env:
+            - name: ARGOCD_CONTROLLER_REPLICAS
+              value: "3"
+          # Optional: Define the sharding algorithm
+          # 'round-robin' is usually the most stable for even distribution
+          args:
+            - --sharding-method
+            - round-robin  destination:
     server: https://kubernetes.default.svc
     namespace: argocd
   ignoreDifferences:
