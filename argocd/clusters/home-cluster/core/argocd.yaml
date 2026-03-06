@@ -19,7 +19,6 @@ spec:
           service:
             type: NodePort
             nodePortHttps: 30080
-        # Removed server.insecure: true so the pod actually serves HTTPS
         controller:
           replicas: 3
           # Enable sharding
