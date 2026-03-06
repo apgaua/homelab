@@ -14,7 +14,7 @@ spec:
     helm:
       values: |
         podSecurityStandard: baseline # Options: baseline, restricted, privileged
-        validationFailureAction: audit
+        validationFailureAction: Audit
         background: true
   destination:
     server: https://kubernetes.default.svc
