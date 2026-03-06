@@ -32,7 +32,10 @@ resource "helm_release" "argocd" {
     { name = "server.service.nodePortHttp", value = "30081" },
     { name = "configs.secret.argocdServerAdminPassword", value = bcrypt(var.argocd.password) },
     { name = "configs.secret.argocdServerAdminPasswordMtime", value = time_static.argocd_mtime.rfc3339 },
-    { name = "configs.secret.argocdServerSecretKey", value = random_uuid.argocd_secret_key.result }
+    { name = "configs.secret.argocdServerSecretKey", value = random_uuid.argocd_secret_key.result },
+    { name = "controller.replicas", value = "3" },
+    { name = "controller.sharding.enabled", value = "true" },
+    { name = "controller.sharding.method", value = "round-robin" }
   ]
   depends_on = [null_resource.waiting, helm_release.cilium, null_resource.argocd_crds_manifests]
 }

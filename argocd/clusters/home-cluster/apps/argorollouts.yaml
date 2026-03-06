@@ -12,10 +12,11 @@ spec:
     repoURL: https://argoproj.github.io/argo-helm
     targetRevision: 2.40.6
     helm:
-      skipCrds: true
       parameters:
         - name: dashboard.enabled
           value: "true"
+        - name: installCRDs
+          value: "false"
   destination:
     server: https://kubernetes.default.svc
     namespace: argo-rollouts
