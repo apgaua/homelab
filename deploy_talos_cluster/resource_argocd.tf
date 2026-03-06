@@ -39,7 +39,7 @@ resource "helm_release" "argocd" {
 resource "argocd_application" "applications" {
   count = length(var.applications)
   metadata {
-    name      = "${var.cluster.name}-${var.applications[count.index].name}"
+    name      = var.applications[count.index].name
     namespace = "argocd"
   }
 
