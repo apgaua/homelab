@@ -18,6 +18,9 @@ spec:
         server:
           service:
             type: NodePort
+            # Explicitly set the name and ports to ensure Helm stays consistent
+            servicePortHttp: 80
+            servicePortHttps: 443
             nodePort: 30080
         configs:
           params:
@@ -34,6 +37,8 @@ spec:
       name: argocd-server
       jsonPointers:
         - /spec/ports/0/nodePort
+        - /spec/ports/0/name
+        - /spec/ports/0/targetPort
     # Ignore the password and keys that Terraform changes every run
     - group: ""
       kind: Secret
