@@ -28,7 +28,8 @@ resource "helm_release" "argocd" {
   set = [
     { name = "crds.install", value = "false" },
     { name = "server.service.type", value = "NodePort" },
-    { name = "server.service.nodePort", value = "30080" },
+    { name = "server.service.nodePortHttps", value = "30080" },
+    { name = "server.service.nodePortHttp", value = "30081" },
     { name = "configs.secret.argocdServerAdminPassword", value = bcrypt(var.argocd.password) },
     { name = "configs.secret.argocdServerAdminPasswordMtime", value = time_static.argocd_mtime.rfc3339 },
     { name = "configs.secret.argocdServerSecretKey", value = random_uuid.argocd_secret_key.result }

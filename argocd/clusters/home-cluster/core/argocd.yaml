@@ -18,6 +18,7 @@ spec:
         server:
           service:
             type: NodePort
+            nodePortHttp: 30081
             nodePortHttps: 30080
         controller:
           replicas: 3
