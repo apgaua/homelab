@@ -18,13 +18,8 @@ spec:
         server:
           service:
             type: NodePort
-            # Explicitly set the name and ports to ensure Helm stays consistent
-            servicePortHttp: 80
-            servicePortHttps: 443
-            nodePort: 30080
-        configs:
-          params:
-            server.insecure: true
+            nodePortHttps: 30080
+        # Removed server.insecure: true so the pod actually serves HTTPS
         controller:
           replicas: 3
           # Enable sharding
@@ -32,12 +27,9 @@ spec:
             - name: ARGOCD_CONTROLLER_REPLICAS
               value: "3"
           # Optional: Define the sharding algorithm
-          # 'round-robin' is usually the most stable for even distribution
           args:
             - --sharding-method
-            - round-robin  destination:
-    server: https://kubernetes.default.svc
-    namespace: argocd
+            - round-robin
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
