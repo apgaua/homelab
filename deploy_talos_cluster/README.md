@@ -60,10 +60,12 @@ Sys.Console, VM.Allocate, Datastore.AllocateTemplate, VM.Config.HWType, VM.Confi
 | [proxmox_virtual_environment_download_file.this](https://registry.terraform.io/providers/bpg/proxmox/0.97.1/docs/resources/virtual_environment_download_file) | resource |
 | [proxmox_virtual_environment_pool.this](https://registry.terraform.io/providers/bpg/proxmox/0.97.1/docs/resources/virtual_environment_pool) | resource |
 | [proxmox_virtual_environment_vm.this](https://registry.terraform.io/providers/bpg/proxmox/0.97.1/docs/resources/virtual_environment_vm) | resource |
+| [random_uuid.argocd_secret_key](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/uuid) | resource |
 | [talos_cluster_kubeconfig.this](https://registry.terraform.io/providers/siderolabs/talos/0.10.1/docs/resources/cluster_kubeconfig) | resource |
 | [talos_machine_bootstrap.this](https://registry.terraform.io/providers/siderolabs/talos/0.10.1/docs/resources/machine_bootstrap) | resource |
 | [talos_machine_configuration_apply.this](https://registry.terraform.io/providers/siderolabs/talos/0.10.1/docs/resources/machine_configuration_apply) | resource |
 | [talos_machine_secrets.this](https://registry.terraform.io/providers/siderolabs/talos/0.10.1/docs/resources/machine_secrets) | resource |
+| [time_static.argocd_mtime](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/static) | resource |
 | [proxmox_virtual_environment_file.iso](https://registry.terraform.io/providers/bpg/proxmox/0.97.1/docs/data-sources/virtual_environment_file) | data source |
 | [talos_client_configuration.this](https://registry.terraform.io/providers/siderolabs/talos/0.10.1/docs/data-sources/client_configuration) | data source |
 | [talos_machine_configuration.this](https://registry.terraform.io/providers/siderolabs/talos/0.10.1/docs/data-sources/machine_configuration) | data source |
@@ -86,7 +88,9 @@ Sys.Console, VM.Allocate, Datastore.AllocateTemplate, VM.Config.HWType, VM.Confi
 | <a name="provider_local"></a> [local](#provider\_local) | 2.7.0 |
 | <a name="provider_null"></a> [null](#provider\_null) | n/a |
 | <a name="provider_proxmox"></a> [proxmox](#provider\_proxmox) | 0.97.1 |
+| <a name="provider_random"></a> [random](#provider\_random) | n/a |
 | <a name="provider_talos"></a> [talos](#provider\_talos) | 0.10.1 |
+| <a name="provider_time"></a> [time](#provider\_time) | n/a |
 
 ## Outputs
 
