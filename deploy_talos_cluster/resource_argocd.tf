@@ -1,3 +1,11 @@
+resource "random_uuid" "argocd_secret_key" {}
+
+resource "time_static" "argocd_mtime" {
+  triggers = {
+    password_hash = bcrypt(var.argocd.password)
+  }
+}
+
 resource "null_resource" "argocd_crds_manifests" {
   for_each = toset(var.argocd_crds_manifests)
 
@@ -22,10 +30,9 @@ resource "helm_release" "argocd" {
     { name = "server.service.type", value = "NodePort" },
     { name = "server.service.nodePort", value = "30080" },
     { name = "configs.secret.argocdServerAdminPassword", value = bcrypt(var.argocd.password) },
-    { name = "configs.secret.argocdServerAdminPasswordMtime", value = timestamp() },
-    { name = "configs.secret.argocdServerSecretKey", value = uuid() }
+    { name = "configs.secret.argocdServerAdminPasswordMtime", value = time_static.argocd_mtime.rfc3339 },
+    { name = "configs.secret.argocdServerSecretKey", value = random_uuid.argocd_secret_key.result }
   ]
-
   depends_on = [null_resource.waiting, helm_release.cilium, null_resource.argocd_crds_manifests]
 }
 

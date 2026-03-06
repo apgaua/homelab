@@ -27,6 +27,21 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
+  ignoreDifferences:
+    # Ignore the NodePort if an external provider or TF is shifting it
+    - group: ""
+      kind: Service
+      name: argocd-server
+      jsonPointers:
+        - /spec/ports/0/nodePort
+    # Ignore the password and keys that Terraform changes every run
+    - group: ""
+      kind: Secret
+      name: argocd-secret
+      jsonPointers:
+        - /data/admin.password
+        - /data/admin.passwordMtime
+        - /data/server.secretkey
   syncPolicy:
     automated:
       prune: true
