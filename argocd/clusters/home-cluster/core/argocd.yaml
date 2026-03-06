@@ -38,6 +38,9 @@ spec:
             - round-robin  destination:
     server: https://kubernetes.default.svc
     namespace: argocd
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo-rollouts
   ignoreDifferences:
     # Ignore the NodePort if an external provider or TF is shifting it
     - group: ""
