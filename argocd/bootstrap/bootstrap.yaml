@@ -1,24 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argo-rollouts
+  name: bootstrap
+  # The Application resource itself typically lives in the argocd namespace
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    chart: argo-rollouts
-    repoURL: https://argoproj.github.io/argo-helm
-    targetRevision: 2.40.6
-    helm:
-      skipCrds: true
-      parameters:
-        - name: dashboard.enabled
-          value: "true"
+    repoURL: https://github.com/apgaua/homelab
+    targetRevision: HEAD
+    path: argocd
+    directory:
+      recurse: true
   destination:
     server: https://kubernetes.default.svc
-    namespace: argo-rollouts
+    # This is where the deployed resources will go
+    namespace: default
   syncPolicy:
     automated:
       prune: true
