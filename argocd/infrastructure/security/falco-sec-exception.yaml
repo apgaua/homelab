@@ -1,8 +1,11 @@
-apiVersion: kyverno.io/v2beta1
+apiVersion: kyverno.io/v2
 kind: PolicyException
 metadata:
   name: falco-security-exceptions
   namespace: falco
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   exceptions:
     - policyName: disallow-host-path
