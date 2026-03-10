@@ -8,27 +8,21 @@ spec:
   destination:
     server: "https://kubernetes.default.svc"
     namespace: falco
-  sources:
-    - repoURL: "https://falcosecurity.github.io/charts"
-      chart: falco
-      targetRevision: 8.0.1
-      helm:
-        values: |
-          tty: true
-          driver:
-            kind: modern_ebpf
-
-    - repoURL: "https://github.com/apgaua/homelab.git"
-      targetRevision: HEAD
-      path: argocd/infrastructure/security
-
+  source:
+    repoURL: "https://falcosecurity.github.io/charts"
+    chart: falco
+    targetRevision: 8.0.1
+    helm:
+      values: |
+        tty: true
+        driver:
+          kind: modern_ebpf
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=true
     managedNamespaceMetadata:
       labels:
         pod-security.kubernetes.io/enforce: privileged

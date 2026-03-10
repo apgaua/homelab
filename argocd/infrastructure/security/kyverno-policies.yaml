@@ -25,4 +25,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=true # Crucial for large policy CRDs to avoid annotation limits
+      - ServerSideApply=true
