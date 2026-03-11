@@ -44,6 +44,7 @@ variable "iso" {
     url                   = string
     file_name             = string
     talos_installer_image = string
+    version               = string
   })
 }
 
@@ -72,7 +73,6 @@ variable "worker" {
     memory    = number
     balloon   = optional(number)
     disk_size = number
-    #    network_last_octect = number
   })
 }
 
@@ -89,7 +89,6 @@ variable "controlplane" {
     memory    = number
     balloon   = optional(number)
     disk_size = number
-    #    network_last_octect = number
   })
 }
 
