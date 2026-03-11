@@ -7,13 +7,15 @@ cluster = {
   description = "Default lab cluster"
 
   #IMPORTANT!! The value should not conflict with other devices on your network, which could cause instabilities and IP conflicts.
-  cidr             = "cidr"            # CIDR of the network where the VMs will be allocated.
-  resource_pool    = "resource_pool"   # Resource pool name to be used by the nodes. To use this variable, the resource pool must have been configured manually.
-  talos_endpoint   = "talos_endpoint"  # IP address to be used to access the Talos API. It should be an IP address within the CIDR range.
-  vmid_prefix      = vmid_prefix       # VMID prefix for all nodes. It is important that this value does not conflict with other VMs in Proxmox, as it must be unique.
-  kubeconfig       = "kubeconfig_path" # Path where the kubeconfig file will be saved after the cluster is created.
-  cpu_type         = "cpu_type"
-  internet_gateway = "gateway_ip" # Gateway IP address for internet access.
+  cidr                               = "talos_network_cidr" # CIDR of the network where the VMs will be allocated.
+  resource_pool                      = "k8s-lab"            # Resource pool name to be used by the nodes. To use this variable, the resource pool must have been configured manually.
+  talos_endpoint                     = "talosendpoint"      # IP address to be used to access the Talos API. It should be an IP address within the CIDR range.
+  vmid_prefix                        = 900                  # VMID prefix for all nodes. It is important that this value does not conflict with other VMs in Proxmox, as it must be unique.
+  kubeconfig                         = "kubeconfigfile"     # Path where the kubeconfig file will be saved after the cluster is created.
+  talosconfig                        = "talosconfigfile"    #Path where the talosconfig file will be saved after cluster creation.
+  cpu_type                           = "x86-64-v2-AES"
+  internet_gateway                   = "internet_gateway_ip" # Gateway IP address for internet access.
+  cilium_lb_ip_pool_last_octet_start = 55
 }
 
 ################################################################################
@@ -24,6 +26,7 @@ iso = {
   url                   = "https://factory.talos.dev/image/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515/v1.12.4/metal-amd64.iso"
   file_name             = "metal-amd64.iso"
   talos_installer_image = "factory.talos.dev/metal-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.12.4"
+  version               = "1.12.4"
 }
 
 ################################################################################
@@ -40,16 +43,30 @@ proxmox = {
 ################################################################################
 
 argocd = {
-  password      = "argocdadminpassword"
-  chart_version = "9.4.3"
-  ha            = true
-  replicas      = 3
+  password      = "argocdadminpassword" # ArgoCD admin password (Change it to allow you to login)
+  chart_version = "9.4.7"               # ArgoCD chart version
+  ha            = true                  # Enable HA
+  replicas      = 3                     # Number of replicas
 }
 
-kubernetes_manifests = [
-  "https://raw.githubusercontent.com/argoproj/argo-cd/refs/tags/v3.3.1/manifests/crds/application-crd.yaml",
-  "https://raw.githubusercontent.com/argoproj/argo-cd/refs/tags/v3.3.1/manifests/crds/applicationset-crd.yaml",
-  "https://raw.githubusercontent.com/argoproj/argo-cd/refs/tags/v3.3.1/manifests/crds/appproject-crd.yaml"
+
+argocd_crds_manifests = [
+  "https://raw.githubusercontent.com/argoproj/argo-cd/refs/tags/v3.3.2/manifests/crds/application-crd.yaml",
+  "https://raw.githubusercontent.com/argoproj/argo-cd/refs/tags/v3.3.2/manifests/crds/applicationset-crd.yaml",
+  "https://raw.githubusercontent.com/argoproj/argo-cd/refs/tags/v3.3.2/manifests/crds/appproject-crd.yaml"
+]
+
+applications = [
+  {
+    name      = "bootstrap"
+    project   = "default"
+    repo_url  = "git_bootstrap_repo_url"
+    revision  = "HEAD"
+    recurse   = true
+    path      = "argocd"
+    server    = "https://kubernetes.default.svc"
+    namespace = "default"
+  }
 ]
 
 ################################################################################
@@ -57,26 +74,29 @@ kubernetes_manifests = [
 ################################################################################
 
 worker = {
-  type                = "worker" # Type of node: worker or controlplane
-  count               = 5        # Number of nodes to be created
-  sockets             = 1        # Number of CPU sockets
-  cores               = 2        # Number of CPU cores per socket
-  memory              = 4096     # Memory in MB
-  disk_size           = 50       # Disk size in GB
-  network_last_octect = 90       # IP definition for Worker node: 192.168.XX.0
+  type      = "worker" # Type of node: worker or controlplane
+  count     = 3        # Number of nodes to be created
+  sockets   = 1        # Number of CPU sockets
+  cores     = 2        # Number of CPU cores per socket
+  memory    = 2700     # Memory in MB
+  disk_size = 50       # Disk size in GB
+  #  network_last_octect = 90       # IP definition for Worker node: 192.168.XX.0
 }
 
 controlplane = {
-  type                = "controlplane" # Type of node: worker or controlplane
-  count               = 3              # Number of nodes to be created
-  sockets             = 1              # Number of CPU sockets
-  cores               = 2              # Number of CPU cores per socket
-  memory              = 3072           # Memory in MB
-  disk_size           = 40             # Disk size in GB
-  network_last_octect = 60             # IP definition for Control Plane node: 192.168.XX.0
+  type      = "controlplane" # Type of node: worker or controlplane
+  count     = 3              # Number of nodes to be created
+  sockets   = 1              # Number of CPU sockets
+  cores     = 2              # Number of CPU cores per socket
+  memory    = 3000           # Memory in MB
+  disk_size = 40             # Disk size in GB
+  #  network_last_octect = 60             # IP definition for Control Plane node: 192.168.XX.0
 }
 
-mac_address = [ # Base MAC addresses for generating unique MACs for controlplane nodes
+# Base MAC addresses for generating unique MACs for controlplane nodes
+# IMPORTANT!! The value should not conflict with other devices on your network, which could cause instabilities and IP conflicts.
+# This will be used to generate the MAC addresses for the controlplane nodes, and configure DHCP reservations.
+mac_address = [
   "BC:24:11:50:5E:51",
   "BC:24:11:A7:D4:68",
   "BC:24:11:5D:4B:DC"
@@ -88,6 +108,7 @@ mac_address = [ # Base MAC addresses for generating unique MACs for controlplane
 
 # Helm charts example configuration that can be used to deploy additional components
 # to the cluster after its creation. This is optional and can be customized as needed.
+# Disabled by default, we will use ArgoCD to deploy the helm charts.
 
 helm_charts = [
   # # Metrics Server
