@@ -22,11 +22,13 @@ cluster = {
 ######################### ISO IMAGE CONFIGURATION ##############################
 ################################################################################
 
-iso = {                                                                                                                                              # ISO image configuration. This data is retrieved from https://factory.talos.dev. Look for bare metal ISO and qemu image.
-  url                   = "https://factory.talos.dev/image/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515/v1.12.4/metal-amd64.iso" # URL of the ISO image
-  file_name             = "metal-amd64.iso"                                                                                                          # File name of the ISO image
-  talos_installer_image = "factory.talos.dev/metal-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.12.4"               # Talos installer image
-  version               = "1.12.4"                                                                                                                   # Talos version
+iso = {
+  url                   = "https://factory.talos.dev/image/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515/v1.12.5/metal-amd64.iso"
+  file_name             = "talos_1.12.5_amd64.iso"
+  talos_installer_image = "factory.talos.dev/metal-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.12.5"
+  version               = "1.12.5"
+  checksum              = "16d3b914d636b30bcfdfa9d0e78b8d6dcf248787b95a4e83e9c682c302ea8a73"
+  checksum_algorithm    = "sha256"
 }
 
 ################################################################################

@@ -6,9 +6,11 @@ data "proxmox_virtual_environment_file" "iso" {
 }
 
 resource "proxmox_virtual_environment_download_file" "this" {
-  content_type = "iso"
-  datastore_id = "local"
-  node_name    = "pve"
-  url          = var.iso.url
-  file_name    = var.iso.file_name
+  content_type       = "iso"
+  datastore_id       = "local"
+  node_name          = "pve"
+  url                = var.iso.url
+  file_name          = var.iso.file_name
+  checksum           = var.iso.checksum
+  checksum_algorithm = var.iso.checksum_algorithm
 }

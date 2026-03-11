@@ -45,6 +45,8 @@ variable "iso" {
     file_name             = string
     talos_installer_image = string
     version               = string
+    checksum              = string
+    checksum_algorithm    = string
   })
 }
 
