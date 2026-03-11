@@ -15,15 +15,14 @@ cluster = {
   talosconfig                        = "talosconfigfile"     #Path where the talosconfig file will be saved after cluster creation.
   cpu_type                           = "x86-64-v2-AES"       # CPU type for the nodes.
   internet_gateway                   = "internet_gateway_ip" # Gateway IP address for internet access.
-  cilium_lb_ip_pool_last_octet_start = 55
+  cilium_lb_ip_pool_last_octet_start = 55                    # Last octet of the IP address pool for Cilium LoadBalancer.
 }
 
 ################################################################################
 ######################### ISO IMAGE CONFIGURATION ##############################
 ################################################################################
 
-iso = { # ISO image configuration
-  # This data is retrieved from https://docs.talos.dev/docs/installation/install-on-bare-metal
+iso = {                                                                                                                                              # ISO image configuration. This data is retrieved from https://docs.talos.dev/docs/installation/install-on-bare-metal
   url                   = "https://factory.talos.dev/image/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515/v1.12.4/metal-amd64.iso" # URL of the ISO image
   file_name             = "metal-amd64.iso"                                                                                                          # File name of the ISO image
   talos_installer_image = "factory.talos.dev/metal-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.12.4"               # Talos installer image
