@@ -16,6 +16,22 @@ spec:
     helm:
       values: |
         controller:
+          probes:
+            startupProbe:
+              failureThreshold: 60
+              periodSeconds: 10
+              timeoutSeconds: 5
+
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "2Gi"
+            limits:
+              cpu: "1"
+              memory: "2Gi"
+          
+          javaOpts: "-Xms1024m -Xmx1024m"
+
           installPlugins:
             - kubernetes:latest  
             - workflow-aggregator:latest
