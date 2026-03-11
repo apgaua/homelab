@@ -16,12 +16,14 @@ spec:
     helm:
       values: |
         controller:
+          serviceType: NodePort
+          servicePort: 8080
+          nodePort: 32000
           probes:
             startupProbe:
               failureThreshold: 60
               periodSeconds: 10
               timeoutSeconds: 5
-
           resources:
             requests:
               cpu: "500m"
@@ -29,9 +31,7 @@ spec:
             limits:
               cpu: "1"
               memory: "1Gi"
-          
           javaOpts: "-Xms512m -Xmx512m"
-
           installPlugins:
             - kubernetes:latest  
             - workflow-aggregator:latest
@@ -41,8 +41,5 @@ spec:
     server: https://kubernetes.default.svc
     namespace: jenkins
   syncPolicy:
-    # automated:
-    #   prune: true
-    #   selfHeal: true
     syncOptions:
       - CreateNamespace=true
