@@ -25,12 +25,12 @@ spec:
           resources:
             requests:
               cpu: "500m"
-              memory: "2Gi"
+              memory: "1Gi"
             limits:
               cpu: "1"
-              memory: "2Gi"
+              memory: "1Gi"
           
-          javaOpts: "-Xms1024m -Xmx1024m"
+          javaOpts: "-Xms512m -Xmx512m"
 
           installPlugins:
             - kubernetes:latest  
