@@ -3,17 +3,17 @@
 ################################################################################
 
 cluster = {
-  name        = "lab" # Must contain only letters, numbers, hyphen, and dot.
-  description = "Default lab cluster"
+  name        = "lab"                 # Must contain only letters, numbers, hyphen, and dot.
+  description = "Default lab cluster" # Description of the cluster
 
   #IMPORTANT!! The value should not conflict with other devices on your network, which could cause instabilities and IP conflicts.
-  cidr                               = "talos_network_cidr" # CIDR of the network where the VMs will be allocated.
-  resource_pool                      = "k8s-lab"            # Resource pool name to be used by the nodes. To use this variable, the resource pool must have been configured manually.
-  talos_endpoint                     = "talosendpoint"      # IP address to be used to access the Talos API. It should be an IP address within the CIDR range.
-  vmid_prefix                        = 900                  # VMID prefix for all nodes. It is important that this value does not conflict with other VMs in Proxmox, as it must be unique.
-  kubeconfig                         = "kubeconfigfile"     # Path where the kubeconfig file will be saved after the cluster is created.
-  talosconfig                        = "talosconfigfile"    #Path where the talosconfig file will be saved after cluster creation.
-  cpu_type                           = "x86-64-v2-AES"
+  cidr                               = "talos_network_cidr"  # CIDR of the network where the VMs will be allocated.
+  resource_pool                      = "k8s-lab"             # Resource pool name to be used by the nodes. To use this variable, the resource pool must have been configured manually.
+  talos_endpoint                     = "talosendpoint"       # IP address to be used to access the Talos API. It should be an IP address within the CIDR range.
+  vmid_prefix                        = 900                   # VMID prefix for all nodes. It is important that this value does not conflict with other VMs in Proxmox, as it must be unique.
+  kubeconfig                         = "kubeconfigfile"      # Path where the kubeconfig file will be saved after the cluster is created.
+  talosconfig                        = "talosconfigfile"     #Path where the talosconfig file will be saved after cluster creation.
+  cpu_type                           = "x86-64-v2-AES"       # CPU type for the nodes.
   internet_gateway                   = "internet_gateway_ip" # Gateway IP address for internet access.
   cilium_lb_ip_pool_last_octet_start = 55
 }
@@ -22,11 +22,12 @@ cluster = {
 ######################### ISO IMAGE CONFIGURATION ##############################
 ################################################################################
 
-iso = {
-  url                   = "https://factory.talos.dev/image/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515/v1.12.4/metal-amd64.iso"
-  file_name             = "metal-amd64.iso"
-  talos_installer_image = "factory.talos.dev/metal-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.12.4"
-  version               = "1.12.4"
+iso = { # ISO image configuration
+  # This data is retrieved from https://docs.talos.dev/docs/installation/install-on-bare-metal
+  url                   = "https://factory.talos.dev/image/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515/v1.12.4/metal-amd64.iso" # URL of the ISO image
+  file_name             = "metal-amd64.iso"                                                                                                          # File name of the ISO image
+  talos_installer_image = "factory.talos.dev/metal-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.12.4"               # Talos installer image
+  version               = "1.12.4"                                                                                                                   # Talos version
 }
 
 ################################################################################
@@ -56,16 +57,16 @@ argocd_crds_manifests = [
   "https://raw.githubusercontent.com/argoproj/argo-cd/refs/tags/v3.3.2/manifests/crds/appproject-crd.yaml"
 ]
 
-applications = [
+applications = [ # ArgoCD application to be applied after the cluster is created. It use App of Apps pattern, so it will deploy other applications.s
   {
-    name      = "bootstrap"
-    project   = "default"
-    repo_url  = "git_bootstrap_repo_url"
-    revision  = "HEAD"
-    recurse   = true
-    path      = "argocd"
-    server    = "https://kubernetes.default.svc"
-    namespace = "default"
+    name      = "bootstrap"                      # Name of the application
+    project   = "default"                        # Project name
+    repo_url  = "git_bootstrap_repo_url"         # Git repository URL
+    revision  = "HEAD"                           # Git branch or tag
+    recurse   = true                             # Recurse into subdirectories
+    path      = "argocd"                         # Path to the application
+    server    = "https://kubernetes.default.svc" # Server URL
+    namespace = "default"                        # Namespace
   }
 ]
 
