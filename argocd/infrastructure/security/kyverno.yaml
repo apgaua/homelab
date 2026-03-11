@@ -30,8 +30,9 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
       - ServerSideApply=true
+      - Replace=true
+      - CreateNamespace=true
   ignoreDifferences:
     - group: rbac.authorization.k8s.io
       kind: ClusterRole
