@@ -12,7 +12,7 @@ spec:
   source:
     chart: argo-rollouts
     repoURL: https://argoproj.github.io/argo-helm
-    targetRevision: 2.40.6
+    targetRevision: 2.40.8
     helm:
       parameters:
         - name: dashboard.enabled

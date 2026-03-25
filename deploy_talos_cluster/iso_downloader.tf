@@ -11,6 +11,4 @@ resource "proxmox_virtual_environment_download_file" "this" {
   node_name          = "pve"
   url                = var.iso.url
   file_name          = var.iso.file_name
-  checksum           = var.iso.checksum
-  checksum_algorithm = var.iso.checksum_algorithm
 }
