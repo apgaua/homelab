@@ -11,12 +11,15 @@ spec:
   - policyName: "disallow-host-namespaces"
     ruleNames:
     - "host-namespaces"
+    - "autogen-host-namespaces"
   - policyName: "disallow-host-path" 
     ruleNames:
     - "host-path"
+    - "autogen-host-path"
   - policyName: "disallow-host-ports"
     ruleNames:
     - "host-ports"
+    - "autogen-host-ports"
   match:
     any:
     - resources:
