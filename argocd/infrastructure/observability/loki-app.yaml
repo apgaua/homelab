@@ -12,26 +12,41 @@ spec:
     helm:
       values: |
         loki:
-          # Enable persistent storage using your NFS class
           persistence:
             enabled: true
             storageClassName: "nfs-client"
             size: 10Gi
-          # Tell Prometheus to scrape Loki's internal metrics
           podAnnotations:
             prometheus.io/scrape: "true"
             prometheus.io/port: "3100"
             
         promtail:
           enabled: true
-          # Crucial for Talos: allow Promtail to schedule on ALL nodes
           tolerations:
             - effect: NoSchedule
               operator: Exists
-          # Tell Prometheus to scrape Promtail's internal metrics
           podAnnotations:
             prometheus.io/scrape: "true"
             prometheus.io/port: "3101"
+          config:
+            snippets:
+              extraScrapeConfigs: |
+                - job_name: edgerouter_syslog
+                  syslog:
+                    listen_address: 0.0.0.0:1514
+                    idle_timeout: 60s
+                    label_structured_data: yes
+                    labels:
+                      job: "syslog"
+                      host: "edgerouter"
+                  relabel_configs:
+                    - source_labels: ['__syslog_message_hostname']
+                      target_label: 'hostname'
+          extraPorts:
+            syslog:
+              containerPort: 1514
+              protocol: UDP
+              hostPort: 1514
 
   destination:
     server: https://kubernetes.default.svc
