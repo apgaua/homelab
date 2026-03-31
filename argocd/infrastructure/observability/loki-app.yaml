@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loki
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    targetRevision: 2.10.2 # Latest stable loki-stack version
+    chart: loki-stack
+    helm:
+      values: |
+        loki:
+          # Enable persistent storage using your NFS class
+          persistence:
+            enabled: true
+            storageClassName: "nfs-client"
+            size: 10Gi
+          # Tell Prometheus to scrape Loki's internal metrics
+          podAnnotations:
+            prometheus.io/scrape: "true"
+            prometheus.io/port: "3100"
+            
+        promtail:
+          enabled: true
+          # Crucial for Talos: allow Promtail to schedule on ALL nodes
+          tolerations:
+            - effect: NoSchedule
+              operator: Exists
+          # Tell Prometheus to scrape Promtail's internal metrics
+          podAnnotations:
+            prometheus.io/scrape: "true"
+            prometheus.io/port: "3101"
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: observability 
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
