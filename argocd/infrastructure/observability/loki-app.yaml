@@ -12,8 +12,9 @@ spec:
     helm:
       values: |
         loki:
-          limits_config:
-            volume_enabled: true
+          config:
+            limits_config:
+              volume_enabled: true
           persistence:
             enabled: true
             storageClassName: "nfs-client"
@@ -36,6 +37,7 @@ spec:
                 - job_name: edgerouter_syslog
                   syslog:
                     listen_address: 0.0.0.0:514
+                    listen_protocol: udp
                     idle_timeout: 60s
                     label_structured_data: yes
                     labels:
@@ -49,7 +51,6 @@ spec:
               containerPort: 514
               protocol: UDP
               hostPort: 514
-
   destination:
     server: https://kubernetes.default.svc
     namespace: observability 
