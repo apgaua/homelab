@@ -49,3 +49,6 @@ id_rsa
 !*.terraform-docs.yml
 **/.agent/*
 **/.vscode/*
+
+# Secret templates — never commit filled-in versions
+_templates/
