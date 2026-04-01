@@ -30,3 +30,4 @@ spec:
         - observability
         names:
         - "prometheus-prometheus-node-exporter*"
+        - "loki-promtail*"
