@@ -27,6 +27,7 @@ spec:
               metrics_path: /snmp
               params:
                 module: [if_mib]
+                auth: [homelab_v2]
               relabel_configs:
                 - source_labels: [__address__]
                   target_label: __param_target

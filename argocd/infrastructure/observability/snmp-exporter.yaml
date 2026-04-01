@@ -11,11 +11,13 @@ spec:
     chart: prometheus-snmp-exporter
     helm:
       values: |
-        config:
-          default:
-            version: 2
-            auth:
+        config: |-
+          auths:
+            homelab_v2:
+              version: 2
               community: homelab-snmp
+        extraArgs:
+          - "--config.file=/etc/snmp_exporter/snmp.yml"
   destination:
     server: https://kubernetes.default.svc
     namespace: observability
