@@ -15,7 +15,7 @@ spec:
       values: |
         nfs:
           server: homelab
-          path: /mnt/pve/nfs-storage/k8s-volumes
+          path: /mnt/nfs_share
         storageClass:
           create: true
           defaultClass: true
