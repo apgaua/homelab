@@ -74,5 +74,5 @@ resource "argocd_application" "applications" {
   }
   wait       = false
   cascade    = false
-  depends_on = [helm_release.argocd]
+  depends_on = [helm_release.argocd, kubernetes_secret_v1.argocd_repo_secret]
 }

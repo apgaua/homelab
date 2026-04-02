@@ -1,22 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bootstrap
-  # The Application resource itself typically lives in the argocd namespace
+  name: bootstrap-apps
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: https://github.com/apgaua/homelab
-    targetRevision: HEAD
-    path: argocd
-    directory:
-      recurse: true
+    repoURL: https://github.com/apgaua/argocd-apps
+    targetRevision: main
+    path: .
   destination:
     server: https://kubernetes.default.svc
-    # This is where the deployed resources will go
     namespace: default
   syncPolicy:
     automated:

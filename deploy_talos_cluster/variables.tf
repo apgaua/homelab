@@ -38,6 +38,14 @@ variable "argocd" {
   })
 }
 
+variable "github" {
+  description = "GitHub configuration"
+  type = object({
+    username = string
+    token    = string
+  })
+}
+
 variable "iso" {
   description = "ISO image configuration"
   type = object({
