@@ -34,11 +34,12 @@ spec:
               url: http://prometheus-server.observability.svc.cluster.local:80
               access: proxy
               isDefault: true
-  
+        plugins:
+          - grafana-llm-app
+
   destination:
     server: https://kubernetes.default.svc
-    namespace: observability 
-  
+    namespace: observability
   syncPolicy:
     automated:
       prune: true
