@@ -3,7 +3,6 @@ data "talos_client_configuration" "this" {
   client_configuration = talos_machine_secrets.this.client_configuration
   endpoints            = [var.cluster.talos_endpoint]
 }
-
 data "talos_machine_configuration" "this" {
   count            = length(local.node_configs)
   talos_version    = var.iso.version
