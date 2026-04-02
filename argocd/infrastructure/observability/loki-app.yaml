@@ -22,7 +22,7 @@ spec:
           podAnnotations:
             prometheus.io/scrape: "true"
             prometheus.io/port: "3100"
-            
+
         promtail:
           enabled: true
           tolerations:
@@ -53,8 +53,8 @@ spec:
               hostPort: 514
   destination:
     server: https://kubernetes.default.svc
-    namespace: observability 
-  
+    namespace: observability
+
   syncPolicy:
     automated:
       prune: true
