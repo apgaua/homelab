@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://helm.traefik.io/traefik
+    chart: traefik
+    targetRevision: 39.0.7
+    helm:
+      values: |
+        providers:
+          kubernetesCRD:
+            enabled: true
+          kubernetesIngress:
+            enabled: true
+          # This is the critical block for Gateway API
+          kubernetesGateway:
+            enabled: true
+            experimentalChannel: true # Set to true to use experimental Gateway API features like TCPRoute/UDPRoute
+        
+        # Optional: Set Traefik as the default GatewayClass
+        gatewayClass:
+          enabled: true
+          isDefaultClass: true
+          
+        ports:
+          web:
+            redirectTo:
+              port: websecure
+          websecure:
+            tls:
+              enabled: true
+              
+        # Enable the Traefik dashboard (useful for homelabs)
+        ingressRoute:
+          dashboard:
+            enabled: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: traefik
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
