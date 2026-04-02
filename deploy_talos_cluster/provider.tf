@@ -2,7 +2,7 @@ terraform {
   required_providers {
     proxmox = {
       source  = "bpg/proxmox"
-      version = "0.97.1"
+      version = "0.99.0"
     }
     local = {
       source  = "hashicorp/local"
@@ -22,7 +22,7 @@ terraform {
     }
     argocd = {
       source  = "argoproj-labs/argocd"
-      version = "7.15.0"
+      version = "7.15.2"
     }
   }
 }
