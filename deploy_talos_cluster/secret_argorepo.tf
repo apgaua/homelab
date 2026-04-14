@@ -17,5 +17,6 @@ resource "kubernetes_secret_v1" "argocd_repo_secret" {
     password = var.github.token
   }
 
-  type = "Opaque"
+  type       = "Opaque"
+  depends_on = [null_resource.waiting]
 }
