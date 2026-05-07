@@ -35,11 +35,14 @@ Sys.Console, VM.Allocate, Datastore.AllocateTemplate, VM.Config.HWType, VM.Confi
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_argocd"></a> [argocd](#input\_argocd) | ArgoCD configuration | <pre>object({<br/>    password      = string<br/>    chart_version = string<br/>    ha            = optional(bool, false)<br/>    replicas      = optional(number)<br/>  })</pre> | n/a | yes |
-| <a name="input_cluster"></a> [cluster](#input\_cluster) | Cluster wide configuration | <pre>object({<br/>    name             = string<br/>    description      = string<br/>    cidr             = string<br/>    resource_pool    = optional(string)<br/>    talos_endpoint   = string<br/>    vmid_prefix      = number<br/>    kubeconfig       = string<br/>    talosconfig      = string<br/>    cpu_type         = string<br/>    internet_gateway = string<br/>  })</pre> | n/a | yes |
+| <a name="input_cluster"></a> [cluster](#input\_cluster) | Cluster wide configuration | <pre>object({<br/>    name             = string<br/>    description      = string<br/>    cidr             = string<br/>    resource_pool    = optional(string)<br/>    talos_endpoint   = string<br/>    vmid_prefix      = number<br/>    kubeconfig       = string<br/>    talosconfig      = string<br/>    cpu_type         = string<br/>    internet_gateway = string<br/>    cilium_version   = string<br/>  })</pre> | n/a | yes |
 | <a name="input_controlplane"></a> [controlplane](#input\_controlplane) | Hardware configuration for controlplane nodes | <pre>object({<br/>    count     = number<br/>    sockets   = number<br/>    cores     = number<br/>    memory    = number<br/>    balloon   = optional(number)<br/>    disk_size = number<br/>  })</pre> | n/a | yes |
-| <a name="input_github"></a> [github](#input\_github) | GitHub configuration | <pre>object({<br/>    username = string<br/>    token    = string<br/>  })</pre> | n/a | yes |
+| <a name="input_github_token"></a> [github\_token](#input\_github\_token) | GitHub PAT for ArgoCD | `string` | n/a | yes |
+| <a name="input_github_username"></a> [github\_username](#input\_github\_username) | GitHub username for ArgoCD | `string` | n/a | yes |
 | <a name="input_iso"></a> [iso](#input\_iso) | ISO image configuration | <pre>object({<br/>    url                   = string<br/>    file_name             = string<br/>    talos_installer_image = string<br/>    version               = string<br/>  })</pre> | n/a | yes |
 | <a name="input_mac_address"></a> [mac\_address](#input\_mac\_address) | Base MAC address for generating unique MACs for controlplane nodes | `list(string)` | n/a | yes |
+| <a name="input_onepassword_credentials_json"></a> [onepassword\_credentials\_json](#input\_onepassword\_credentials\_json) | The 1password-credentials.json content as a string | `string` | n/a | yes |
+| <a name="input_onepassword_token"></a> [onepassword\_token](#input\_onepassword\_token) | The 1Password Connect API token | `string` | n/a | yes |
 | <a name="input_proxmox"></a> [proxmox](#input\_proxmox) | Proxmox backend address | <pre>object({<br/>    ip   = string<br/>    port = number<br/>  })</pre> | n/a | yes |
 | <a name="input_worker"></a> [worker](#input\_worker) | Hardware configuration for worker nodes | <pre>object({<br/>    count     = number<br/>    sockets   = number<br/>    cores     = number<br/>    memory    = number<br/>    balloon   = optional(number)<br/>    disk_size = number<br/>  })</pre> | n/a | yes |
 | <a name="input_applications"></a> [applications](#input\_applications) | List of ArgoCD applications to be applied after the cluster is created | <pre>list(object({<br/>    name      = string<br/>    project   = string<br/>    repo_url  = string<br/>    revision  = string<br/>    path      = string<br/>    server    = string<br/>    namespace = string<br/>    recurse   = optional(bool, false)<br/>  }))</pre> | `[]` | no |
@@ -54,7 +57,9 @@ Sys.Console, VM.Allocate, Datastore.AllocateTemplate, VM.Config.HWType, VM.Confi
 | [helm_release.argocd](https://registry.terraform.io/providers/hashicorp/helm/3.1.1/docs/resources/release) | resource |
 | [helm_release.cilium](https://registry.terraform.io/providers/hashicorp/helm/3.1.1/docs/resources/release) | resource |
 | [helm_release.this](https://registry.terraform.io/providers/hashicorp/helm/3.1.1/docs/resources/release) | resource |
+| [kubernetes_namespace_v1.onepassword](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace_v1) | resource |
 | [kubernetes_secret_v1.argocd_repo_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
+| [kubernetes_secret_v1.op_credentials](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
 | [local_file.kubeconfig](https://registry.terraform.io/providers/hashicorp/local/2.7.0/docs/resources/file) | resource |
 | [local_file.talosconfig](https://registry.terraform.io/providers/hashicorp/local/2.7.0/docs/resources/file) | resource |
 | [null_resource.argocd_crds_manifests](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
