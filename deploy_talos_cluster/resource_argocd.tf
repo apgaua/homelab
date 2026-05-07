@@ -92,8 +92,8 @@ resource "kubernetes_secret_v1" "argocd_repo_secret" {
   data = {
     type     = "git"
     url      = var.applications[0].repo_url
-    username = var.github.username
-    password = var.github.token
+    username = var.github_username
+    password = var.github_token
   }
 
   type       = "Opaque"

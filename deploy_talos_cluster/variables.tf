@@ -25,6 +25,7 @@ variable "cluster" {
     talosconfig      = string
     cpu_type         = string
     internet_gateway = string
+    cilium_version   = string
   })
 }
 
@@ -38,12 +39,15 @@ variable "argocd" {
   })
 }
 
-variable "github" {
-  description = "GitHub configuration"
-  type = object({
-    username = string
-    token    = string
-  })
+variable "github_username" {
+  description = "GitHub username for ArgoCD"
+  type        = string
+}
+
+variable "github_token" {
+  description = "GitHub PAT for ArgoCD"
+  type        = string
+  sensitive   = true
 }
 
 variable "iso" {
@@ -150,4 +154,20 @@ variable "helm_charts" {
     })), [])
   }))
   default = []
+}
+
+################################################################################
+########################## 1PASSWORD CONFIGURATION #############################
+################################################################################
+
+variable "onepassword_credentials_json" {
+  description = "The 1password-credentials.json content as a string"
+  type        = string
+  sensitive   = true
+}
+
+variable "onepassword_token" {
+  description = "The 1Password Connect API token"
+  type        = string
+  sensitive   = true
 }

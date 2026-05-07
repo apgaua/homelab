@@ -4,7 +4,7 @@ resource "helm_release" "cilium" {
   chart            = "cilium"
   namespace        = "kube-system"
   create_namespace = false
-  version          = "1.19.1"
+  version          = var.cluster.cilium_version
 
   set = [{ name = "ipam.mode", value = "kubernetes" },
     { name = "kubeProxyReplacement", value = "true" },
