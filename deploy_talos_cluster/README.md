@@ -42,7 +42,7 @@ Sys.Console, VM.Allocate, Datastore.AllocateTemplate, VM.Config.HWType, VM.Confi
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_argocd"></a> [argocd](#input\_argocd) | ArgoCD configuration | <pre>object({<br/>    password      = string<br/>    chart_version = string<br/>    ha            = optional(bool, false)<br/>    replicas      = optional(number)<br/>  })</pre> | n/a | yes |
-| <a name="input_cluster"></a> [cluster](#input\_cluster) | Cluster wide configuration | <pre>object({<br/>    name             = string<br/>    description      = string<br/>    cidr             = string<br/>    resource_pool    = optional(string)<br/>    talos_endpoint   = string<br/>    vmid_prefix      = number<br/>    kubeconfig       = string<br/>    talosconfig      = string<br/>    cpu_type         = string<br/>    internet_gateway = string<br/>    cilium_version   = string<br/>  })</pre> | n/a | yes |
+| <a name="input_cluster"></a> [cluster](#input\_cluster) | Cluster wide configuration | <pre>object({<br/>    name             = string<br/>    description      = string<br/>    cidr             = string<br/>    resource_pool    = optional(string)<br/>    talos_endpoint   = string<br/>    vip              = string<br/>    vmid_prefix      = number<br/>    kubeconfig       = string<br/>    talosconfig      = string<br/>    cpu_type         = string<br/>    internet_gateway = string<br/>    cilium_version   = string<br/>  })</pre> | n/a | yes |
 | <a name="input_controlplane"></a> [controlplane](#input\_controlplane) | Hardware configuration for controlplane nodes | <pre>object({<br/>    count     = number<br/>    sockets   = number<br/>    cores     = number<br/>    memory    = number<br/>    balloon   = optional(number)<br/>    disk_size = number<br/>  })</pre> | n/a | yes |
 | <a name="input_github_token"></a> [github\_token](#input\_github\_token) | GitHub PAT for ArgoCD | `string` | n/a | yes |
 | <a name="input_github_username"></a> [github\_username](#input\_github\_username) | GitHub username for ArgoCD | `string` | n/a | yes |
@@ -120,6 +120,7 @@ Sys.Console, VM.Allocate, Datastore.AllocateTemplate, VM.Config.HWType, VM.Confi
 | <a name="output_kubernetes_endpoint"></a> [kubernetes\_endpoint](#output\_kubernetes\_endpoint) | Kubernetes API endpoint |
 | <a name="output_node_names"></a> [node\_names](#output\_node\_names) | List of node names that will be created |
 | <a name="output_talos_endpoint"></a> [talos\_endpoint](#output\_talos\_endpoint) | Talos API endpoint |
+| <a name="output_talos_vip"></a> [talos\_vip](#output\_talos\_vip) | Talos API endpoint |
 | <a name="output_talosconfig"></a> [talosconfig](#output\_talosconfig) | value of talosconfig to be used with talosctl |
 
 ## Author
