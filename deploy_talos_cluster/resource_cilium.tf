@@ -13,7 +13,9 @@ resource "helm_release" "cilium" {
     { name = "cgroup.autoMount.enabled", value = "false" },
     { name = "cgroup.hostRoot", value = "/sys/fs/cgroup" },
     { name = "k8sServiceHost", value = var.cluster.talos_endpoint },
-    { name = "k8sServicePort", value = "6443" }
+    { name = "k8sServicePort", value = "6443" },
+    { name = "l2announcements.enabled", value = "true" },
+    { name = "externalIPs.enabled", value = "true" }
   ]
   depends_on = [null_resource.waiting]
 }

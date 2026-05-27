@@ -27,10 +27,10 @@ resource "helm_release" "argocd" {
 
   set = [
     { name = "crds.install", value = "false" },
-    # { name = "server.service.type", value = "NodePort" },
-    # { name = "server.service.nodePortHttps", value = "30080" },
-    # { name = "server.service.nodePortHttp", value = "30081" },
-    { name = "server.service.type", value = "LoadBalancer" },
+    { name = "server.service.type", value = "NodePort" },
+    { name = "server.service.nodePortHttps", value = "30080" },
+    { name = "server.service.nodePortHttp", value = "30081" },
+    # { name = "server.service.type", value = "LoadBalancer" },
     { name = "configs.secret.argocdServerAdminPassword", value = bcrypt(var.argocd.password) },
     { name = "configs.secret.argocdServerAdminPasswordMtime", value = time_static.argocd_mtime.rfc3339 },
     { name = "configs.secret.argocdServerSecretKey", value = random_uuid.argocd_secret_key.result },
@@ -63,6 +63,10 @@ resource "argocd_application" "applications" {
       namespace = var.applications[count.index].namespace
     }
     sync_policy {
+      automated {
+        prune     = true
+        self_heal = true
+      }
       retry {
         limit = "2"
         backoff {

@@ -20,6 +20,7 @@ variable "cluster" {
     cidr             = string
     resource_pool    = optional(string)
     talos_endpoint   = string
+    vip              = string
     vmid_prefix      = number
     kubeconfig       = string
     talosconfig      = string

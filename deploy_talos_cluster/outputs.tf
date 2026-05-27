@@ -15,6 +15,11 @@ output "kubernetes_endpoint" {
   value       = talos_cluster_kubeconfig.this.kubernetes_client_configuration.host
 }
 
+output "talos_vip" {
+  description = "Talos API endpoint"
+  value       = var.cluster.vip
+}
+
 output "talos_endpoint" {
   description = "Talos API endpoint"
   value       = var.cluster.talos_endpoint
