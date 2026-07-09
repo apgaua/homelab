@@ -40,48 +40,51 @@ resource "helm_release" "argocd" {
   depends_on = [null_resource.waiting, helm_release.cilium, null_resource.argocd_crds_manifests]
 }
 
-resource "argocd_application" "applications" {
+resource "kubernetes_manifest" "applications" {
   count = length(var.applications)
-  metadata {
-    name      = var.applications[count.index].name
-    namespace = "argocd"
-  }
 
-  spec {
-    project = var.applications[count.index].project
-    source {
-      repo_url        = var.applications[count.index].repo_url
-      target_revision = var.applications[count.index].revision
-      path            = var.applications[count.index].path
-      directory {
-        recurse = var.applications[count.index].recurse
-      }
+  manifest = {
+    apiVersion = "argoproj.io/v1alpha1"
+    kind       = "Application"
+    metadata = {
+      name      = var.applications[count.index].name
+      namespace = "argocd"
     }
-    destination {
-      server    = var.applications[count.index].server
-      namespace = var.applications[count.index].namespace
-    }
-    sync_policy {
-      automated {
-        prune     = true
-        self_heal = true
+    spec = {
+      project = var.applications[count.index].project
+      source = {
+        repoURL        = var.applications[count.index].repo_url
+        targetRevision = var.applications[count.index].revision
+        path           = var.applications[count.index].path
+        directory = {
+          recurse = var.applications[count.index].recurse
+        }
       }
-      sync_options = [
-        "ServerSideApply=true",
-        "SkipDryRunOnMissingResource=true"
-      ]
-      retry {
-        limit = "2"
-        backoff {
-          duration     = "5s"
-          factor       = "2"
-          max_duration = "3m"
+      destination = {
+        server    = var.applications[count.index].server
+        namespace = var.applications[count.index].namespace
+      }
+      syncPolicy = {
+        automated = {
+          prune    = true
+          selfHeal = true
+        }
+        syncOptions = [
+          "ServerSideApply=true",
+          "SkipDryRunOnMissingResource=true"
+        ]
+        retry = {
+          limit = "2"
+          backoff = {
+            duration    = "5s"
+            factor      = 2
+            maxDuration = "3m"
+          }
         }
       }
     }
   }
-  wait       = false
-  cascade    = false
+
   depends_on = [helm_release.argocd, kubernetes_secret_v1.argocd_repo_secret]
 }
 

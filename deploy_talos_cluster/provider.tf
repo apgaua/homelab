@@ -20,10 +20,7 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = ">= 3.0.1"
     }
-    argocd = {
-      source  = "argoproj-labs/argocd"
-      version = "7.15.3"
-    }
+
   }
 }
 
@@ -52,16 +49,3 @@ provider "proxmox" {
   }
 }
 
-provider "argocd" {
-  port_forward_with_namespace = "argocd"
-  username                    = "admin"
-  password                    = var.argocd.password
-  insecure                    = true
-
-  kubernetes {
-    host                   = resource.talos_cluster_kubeconfig.this.kubernetes_client_configuration.host
-    client_certificate     = base64decode(resource.talos_cluster_kubeconfig.this.kubernetes_client_configuration.client_certificate)
-    client_key             = base64decode(resource.talos_cluster_kubeconfig.this.kubernetes_client_configuration.client_key)
-    cluster_ca_certificate = base64decode(resource.talos_cluster_kubeconfig.this.kubernetes_client_configuration.ca_certificate)
-  }
-}
