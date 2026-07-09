@@ -2,7 +2,7 @@ terraform {
   required_providers {
     proxmox = {
       source  = "bpg/proxmox"
-      version = "0.99.0"
+      version = "0.111.1"
     }
     local = {
       source  = "hashicorp/local"
@@ -10,11 +10,11 @@ terraform {
     }
     talos = {
       source  = "siderolabs/talos"
-      version = "0.10.1"
+      version = "0.11.0"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "3.1.1"
+      version = "3.2.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -22,7 +22,7 @@ terraform {
     }
     argocd = {
       source  = "argoproj-labs/argocd"
-      version = "7.15.2"
+      version = "7.15.3"
     }
   }
 }

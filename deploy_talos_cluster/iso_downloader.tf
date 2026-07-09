@@ -1,11 +1,11 @@
-data "proxmox_virtual_environment_file" "iso" {
+data "proxmox_file" "iso" {
   content_type = "iso"
   datastore_id = "local"
   node_name    = "pve"
-  file_name    = proxmox_virtual_environment_download_file.this.file_name
+  file_name    = proxmox_download_file.this.file_name
 }
 
-resource "proxmox_virtual_environment_download_file" "this" {
+resource "proxmox_download_file" "this" {
   content_type = "iso"
   datastore_id = "local"
   node_name    = "pve"

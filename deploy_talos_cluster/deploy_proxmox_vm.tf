@@ -44,7 +44,7 @@ resource "proxmox_virtual_environment_vm" "this" {
 
   # CDROM Configuration
   cdrom {
-    file_id = data.proxmox_virtual_environment_file.iso.id
+    file_id = data.proxmox_file.iso.id
   }
 
   # Network Configuration

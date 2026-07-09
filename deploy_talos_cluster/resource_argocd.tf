@@ -67,6 +67,10 @@ resource "argocd_application" "applications" {
         prune     = true
         self_heal = true
       }
+      sync_options = [
+        "ServerSideApply=true",
+        "SkipDryRunOnMissingResource=true"
+      ]
       retry {
         limit = "2"
         backoff {
