@@ -60,10 +60,10 @@ Sys.Console, VM.Allocate, Datastore.AllocateTemplate, VM.Config.HWType, VM.Confi
 
 | Name | Type |
 |------|------|
-| [argocd_application.applications](https://registry.terraform.io/providers/argoproj-labs/argocd/7.15.2/docs/resources/application) | resource |
-| [helm_release.argocd](https://registry.terraform.io/providers/hashicorp/helm/3.1.1/docs/resources/release) | resource |
-| [helm_release.cilium](https://registry.terraform.io/providers/hashicorp/helm/3.1.1/docs/resources/release) | resource |
-| [helm_release.this](https://registry.terraform.io/providers/hashicorp/helm/3.1.1/docs/resources/release) | resource |
+| [argocd_application.applications](https://registry.terraform.io/providers/argoproj-labs/argocd/7.15.3/docs/resources/application) | resource |
+| [helm_release.argocd](https://registry.terraform.io/providers/hashicorp/helm/3.2.0/docs/resources/release) | resource |
+| [helm_release.cilium](https://registry.terraform.io/providers/hashicorp/helm/3.2.0/docs/resources/release) | resource |
+| [helm_release.this](https://registry.terraform.io/providers/hashicorp/helm/3.2.0/docs/resources/release) | resource |
 | [kubernetes_namespace_v1.onepassword](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace_v1) | resource |
 | [kubernetes_secret_v1.argocd_repo_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
 | [kubernetes_secret_v1.op_credentials](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
@@ -71,40 +71,40 @@ Sys.Console, VM.Allocate, Datastore.AllocateTemplate, VM.Config.HWType, VM.Confi
 | [local_file.talosconfig](https://registry.terraform.io/providers/hashicorp/local/2.7.0/docs/resources/file) | resource |
 | [null_resource.argocd_crds_manifests](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.waiting](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [proxmox_virtual_environment_download_file.this](https://registry.terraform.io/providers/bpg/proxmox/0.99.0/docs/resources/virtual_environment_download_file) | resource |
-| [proxmox_virtual_environment_pool.this](https://registry.terraform.io/providers/bpg/proxmox/0.99.0/docs/resources/virtual_environment_pool) | resource |
-| [proxmox_virtual_environment_vm.this](https://registry.terraform.io/providers/bpg/proxmox/0.99.0/docs/resources/virtual_environment_vm) | resource |
+| [proxmox_download_file.this](https://registry.terraform.io/providers/bpg/proxmox/0.111.1/docs/resources/download_file) | resource |
+| [proxmox_virtual_environment_pool.this](https://registry.terraform.io/providers/bpg/proxmox/0.111.1/docs/resources/virtual_environment_pool) | resource |
+| [proxmox_virtual_environment_vm.this](https://registry.terraform.io/providers/bpg/proxmox/0.111.1/docs/resources/virtual_environment_vm) | resource |
 | [random_uuid.argocd_secret_key](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/uuid) | resource |
-| [talos_cluster_kubeconfig.this](https://registry.terraform.io/providers/siderolabs/talos/0.10.1/docs/resources/cluster_kubeconfig) | resource |
-| [talos_machine_bootstrap.this](https://registry.terraform.io/providers/siderolabs/talos/0.10.1/docs/resources/machine_bootstrap) | resource |
-| [talos_machine_configuration_apply.this](https://registry.terraform.io/providers/siderolabs/talos/0.10.1/docs/resources/machine_configuration_apply) | resource |
-| [talos_machine_secrets.this](https://registry.terraform.io/providers/siderolabs/talos/0.10.1/docs/resources/machine_secrets) | resource |
+| [talos_cluster_kubeconfig.this](https://registry.terraform.io/providers/siderolabs/talos/0.11.0/docs/resources/cluster_kubeconfig) | resource |
+| [talos_machine_bootstrap.this](https://registry.terraform.io/providers/siderolabs/talos/0.11.0/docs/resources/machine_bootstrap) | resource |
+| [talos_machine_configuration_apply.this](https://registry.terraform.io/providers/siderolabs/talos/0.11.0/docs/resources/machine_configuration_apply) | resource |
+| [talos_machine_secrets.this](https://registry.terraform.io/providers/siderolabs/talos/0.11.0/docs/resources/machine_secrets) | resource |
 | [time_static.argocd_mtime](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/static) | resource |
-| [proxmox_virtual_environment_file.iso](https://registry.terraform.io/providers/bpg/proxmox/0.99.0/docs/data-sources/virtual_environment_file) | data source |
-| [talos_client_configuration.this](https://registry.terraform.io/providers/siderolabs/talos/0.10.1/docs/data-sources/client_configuration) | data source |
-| [talos_machine_configuration.this](https://registry.terraform.io/providers/siderolabs/talos/0.10.1/docs/data-sources/machine_configuration) | data source |
+| [proxmox_file.iso](https://registry.terraform.io/providers/bpg/proxmox/0.111.1/docs/data-sources/file) | data source |
+| [talos_client_configuration.this](https://registry.terraform.io/providers/siderolabs/talos/0.11.0/docs/data-sources/client_configuration) | data source |
+| [talos_machine_configuration.this](https://registry.terraform.io/providers/siderolabs/talos/0.11.0/docs/data-sources/machine_configuration) | data source |
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_argocd"></a> [argocd](#requirement\_argocd) | 7.15.2 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | 3.1.1 |
+| <a name="requirement_argocd"></a> [argocd](#requirement\_argocd) | 7.15.3 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | 3.2.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 3.0.1 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | 2.7.0 |
-| <a name="requirement_proxmox"></a> [proxmox](#requirement\_proxmox) | 0.99.0 |
-| <a name="requirement_talos"></a> [talos](#requirement\_talos) | 0.10.1 |
+| <a name="requirement_proxmox"></a> [proxmox](#requirement\_proxmox) | 0.111.1 |
+| <a name="requirement_talos"></a> [talos](#requirement\_talos) | 0.11.0 |
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.15.2 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | 3.1.1 |
+| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.15.3 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | 3.2.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 3.0.1 |
 | <a name="provider_local"></a> [local](#provider\_local) | 2.7.0 |
 | <a name="provider_null"></a> [null](#provider\_null) | n/a |
-| <a name="provider_proxmox"></a> [proxmox](#provider\_proxmox) | 0.99.0 |
+| <a name="provider_proxmox"></a> [proxmox](#provider\_proxmox) | 0.111.1 |
 | <a name="provider_random"></a> [random](#provider\_random) | n/a |
-| <a name="provider_talos"></a> [talos](#provider\_talos) | 0.10.1 |
+| <a name="provider_talos"></a> [talos](#provider\_talos) | 0.11.0 |
 | <a name="provider_time"></a> [time](#provider\_time) | n/a |
 
 ## Outputs
