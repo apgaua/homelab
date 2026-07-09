@@ -53,8 +53,15 @@ provider "proxmox" {
 }
 
 provider "argocd" {
-  server_addr = "${var.cluster.talos_endpoint}:30080"
-  username    = "admin"
-  password    = var.argocd.password
-  insecure    = true
+  port_forward_with_namespace = "argocd"
+  username                    = "admin"
+  password                    = var.argocd.password
+  insecure                    = true
+
+  kubernetes {
+    host                   = resource.talos_cluster_kubeconfig.this.kubernetes_client_configuration.host
+    client_certificate     = base64decode(resource.talos_cluster_kubeconfig.this.kubernetes_client_configuration.client_certificate)
+    client_key             = base64decode(resource.talos_cluster_kubeconfig.this.kubernetes_client_configuration.client_key)
+    cluster_ca_certificate = base64decode(resource.talos_cluster_kubeconfig.this.kubernetes_client_configuration.ca_certificate)
+  }
 }
