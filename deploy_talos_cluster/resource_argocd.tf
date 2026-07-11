@@ -40,10 +40,9 @@ resource "helm_release" "argocd" {
   depends_on = [null_resource.waiting, helm_release.cilium, null_resource.argocd_crds_manifests]
 }
 
-resource "kubernetes_manifest" "applications" {
+resource "local_file" "argocd_application_manifest" {
   count = length(var.applications)
-
-  manifest = {
+  content = yamlencode({
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
@@ -74,7 +73,7 @@ resource "kubernetes_manifest" "applications" {
           "SkipDryRunOnMissingResource=true"
         ]
         retry = {
-          limit = "2"
+          limit = 2
           backoff = {
             duration    = "5s"
             factor      = 2
@@ -83,9 +82,22 @@ resource "kubernetes_manifest" "applications" {
         }
       }
     }
+  })
+  filename = "${path.module}/.terraform/argocd-app-${var.applications[count.index].name}.yaml"
+}
+
+resource "null_resource" "apply_argocd_applications" {
+  count = length(var.applications)
+
+  triggers = {
+    manifest_sha = sha256(local_file.argocd_application_manifest[count.index].content)
   }
 
-  depends_on = [helm_release.argocd, kubernetes_secret_v1.argocd_repo_secret]
+  provisioner "local-exec" {
+    command = "KUBECONFIG=${var.cluster.kubeconfig} kubectl apply -f ${local_file.argocd_application_manifest[count.index].filename}"
+  }
+
+  depends_on = [helm_release.argocd, kubernetes_secret_v1.argocd_repo_secret, local_file.argocd_application_manifest, null_resource.waiting]
 }
 
 resource "kubernetes_secret_v1" "argocd_repo_secret" {
