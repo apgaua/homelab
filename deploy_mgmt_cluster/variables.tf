@@ -1,0 +1,174 @@
+################################################################################
+############################ BACKEND CONFIGURATION #############################
+################################################################################
+
+variable "bucket" {
+  description = "S3 bucket to store the Terraform state"
+  type        = string
+  default     = "homelab-kuda-state"
+}
+
+################################################################################
+########################## CLUSTER CONFIGURATION ###############################
+################################################################################
+
+variable "cluster" {
+  description = "Cluster wide configuration"
+  type = object({
+    name             = string
+    description      = string
+    cidr             = string
+    resource_pool    = optional(string)
+    talos_endpoint   = string
+    vip              = string
+    vmid_prefix      = number
+    kubeconfig       = string
+    talosconfig      = string
+    cpu_type         = string
+    internet_gateway = string
+    cilium_version   = string
+  })
+}
+
+variable "argocd" {
+  description = "ArgoCD configuration"
+  type = object({
+    password      = string
+    chart_version = string
+    ha            = optional(bool, false)
+    replicas      = optional(number)
+  })
+}
+
+variable "github_username" {
+  description = "GitHub username for ArgoCD"
+  type        = string
+}
+
+variable "github_token" {
+  description = "GitHub PAT for ArgoCD"
+  type        = string
+  sensitive   = true
+}
+
+variable "iso" {
+  description = "ISO image configuration"
+  type = object({
+    url                   = string
+    file_name             = string
+    talos_installer_image = string
+    version               = string
+  })
+}
+
+################################################################################
+########################### PROXMOX ENDPOINT CONFIG ############################
+################################################################################
+
+variable "proxmox" {
+  description = "Proxmox backend address"
+  type = object({
+    ip   = string
+    port = number
+  })
+}
+
+################################################################################
+############################ WORKER NODES CONFIG ###############################
+################################################################################
+
+variable "worker" {
+  description = "Hardware configuration for worker nodes"
+  type = object({
+    count     = number
+    sockets   = number
+    cores     = number
+    memory    = number
+    balloon   = optional(number)
+    disk_size = number
+  })
+}
+
+################################################################################
+########################## CONTROL PLANE NODES CONFIG ##########################
+################################################################################
+
+variable "controlplane" {
+  description = "Hardware configuration for controlplane nodes"
+  type = object({
+    count     = number
+    sockets   = number
+    cores     = number
+    memory    = number
+    balloon   = optional(number)
+    disk_size = number
+  })
+}
+
+################################################################################
+########################## ADDITIONAL CONFIGURATIONS ###########################
+################################################################################
+
+variable "mac_address" {
+  description = "Base MAC address for generating unique MACs for controlplane nodes"
+  type        = list(string)
+}
+
+variable "argocd_crds_manifests" {
+  description = "List of ArgoCD CRDs manifest files or URLs to be applied after the cluster is created"
+  type        = list(string)
+  default     = []
+}
+
+variable "applications" {
+  description = "List of ArgoCD applications to be applied after the cluster is created"
+  type = list(object({
+    name      = string
+    project   = string
+    repo_url  = string
+    revision  = string
+    path      = string
+    server    = string
+    namespace = string
+    recurse   = optional(bool, false)
+  }))
+  default = []
+}
+
+################################################################################
+############################ HELM CHARTS CONFIG ################################
+################################################################################
+
+variable "helm_charts" {
+  description = "values for Helm charts to be installed after the cluster is created"
+  type = list(object({
+    name             = string
+    repository       = string
+    chart            = string
+    namespace        = string
+    create_namespace = optional(bool, false)
+    wait             = optional(bool, false)
+    version          = optional(string, null)
+    set = optional(list(object({
+      name  = string
+      value = string
+    })), [])
+  }))
+  default = []
+}
+
+################################################################################
+########################## 1PASSWORD CONFIGURATION #############################
+################################################################################
+
+variable "onepassword_credentials_json" {
+  description = "The 1password-credentials.json content as a string"
+  type        = string
+  sensitive   = true
+}
+
+variable "onepassword_token" {
+  description = "The 1Password Connect API token"
+  type        = string
+  sensitive   = true
+}
