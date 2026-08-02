@@ -92,7 +92,8 @@ resource "talos_cluster_kubeconfig" "this" {
 }
 
 resource "local_file" "kubeconfig" {
-  content         = talos_cluster_kubeconfig.this.kubeconfig_raw
+  # Replace the default "admin@<cluster_name>" context name with a clean version of the cluster description
+  content         = replace(talos_cluster_kubeconfig.this.kubeconfig_raw, "admin@${var.cluster.name}", lower(replace(var.cluster.description, " ", "-")))
   filename        = var.cluster.kubeconfig
   file_permission = "0600"
 }
