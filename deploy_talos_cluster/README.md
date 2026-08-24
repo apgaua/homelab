@@ -64,7 +64,6 @@ Sys.Console, VM.Allocate, Datastore.AllocateTemplate, VM.Config.HWType, VM.Confi
 | [helm_release.cilium](https://registry.terraform.io/providers/hashicorp/helm/3.2.0/docs/resources/release) | resource |
 | [helm_release.this](https://registry.terraform.io/providers/hashicorp/helm/3.2.0/docs/resources/release) | resource |
 | [kubernetes_namespace_v1.onepassword](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace_v1) | resource |
-| [kubernetes_secret_v1.argocd_repo_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
 | [kubernetes_secret_v1.op_credentials](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
 | [local_file.argocd_application_manifest](https://registry.terraform.io/providers/hashicorp/local/2.7.0/docs/resources/file) | resource |
 | [local_file.kubeconfig](https://registry.terraform.io/providers/hashicorp/local/2.7.0/docs/resources/file) | resource |
