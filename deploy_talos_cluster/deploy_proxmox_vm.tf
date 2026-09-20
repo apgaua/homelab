@@ -8,9 +8,18 @@ resource "proxmox_virtual_environment_vm" "this" {
   name        = local.node_configs[count.index].name                                                           # VM name
   description = format("Talos %s node for %s cluster", local.node_configs[count.index].type, var.cluster.name) # VM description
   tags        = [format("%s-%s", var.cluster.name, local.node_configs[count.index].type)]
-  node_name   = "pve"
+  node_name = "lab"
   vm_id       = local.node_configs[count.index].vmid # Unique VM ID
   pool_id     = proxmox_virtual_environment_pool.this.pool_id
+
+  bios = "ovmf"
+  
+  efi_disk {
+    datastore_id      = "local-lvm"
+    file_format       = "raw"
+    type              = "4m"
+    pre_enrolled_keys = false
+  }
 
   boot_order = ["scsi0", "ide3"]
 
@@ -53,6 +62,8 @@ resource "proxmox_virtual_environment_vm" "this" {
     mac_address = local.node_configs[count.index].mac_address # MAC address for the network interface
     bridge      = "vmbr0"
   }
+
+  machine = "q35"
 
   operating_system {
     type = "l26"
