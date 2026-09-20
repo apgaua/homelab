@@ -38,6 +38,9 @@ resource "talos_machine_configuration_apply" "this" {
             port    = 7445
           }
         }
+        nodeLabels = {
+          "topology.kubernetes.io/region" = "cluster-1"
+        }
       }
       cluster = {
         network = {
