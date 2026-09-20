@@ -100,3 +100,22 @@ resource "null_resource" "apply_argocd_applications" {
   depends_on = [helm_release.argocd, local_file.argocd_application_manifest, null_resource.waiting]
 }
 
+
+resource "kubernetes_secret_v1" "argocd_repo_secret" {
+  metadata {
+    name      = "argocd-apps-repo-secret"
+    namespace = "argocd"
+    labels = {
+      "argocd.argoproj.io/secret-type" = "repository"
+    }
+  }
+
+  data = {
+    type     = "git"
+    url      = "https://github.com/apgorg/argocd-apps"
+    password = var.github_token
+    username = var.github_username
+  }
+
+  depends_on = [helm_release.argocd]
+}

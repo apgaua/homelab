@@ -8,12 +8,12 @@ resource "proxmox_virtual_environment_vm" "this" {
   name        = local.node_configs[count.index].name                                                           # VM name
   description = format("Talos %s node for %s cluster", local.node_configs[count.index].type, var.cluster.name) # VM description
   tags        = [format("%s-%s", var.cluster.name, local.node_configs[count.index].type)]
-  node_name = "lab"
+  node_name   = "lab"
   vm_id       = local.node_configs[count.index].vmid # Unique VM ID
   pool_id     = proxmox_virtual_environment_pool.this.pool_id
 
   bios = "ovmf"
-  
+
   efi_disk {
     datastore_id      = "local-lvm"
     file_format       = "raw"
