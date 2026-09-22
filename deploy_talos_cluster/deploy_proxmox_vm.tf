@@ -12,7 +12,8 @@ resource "proxmox_virtual_environment_vm" "this" {
   vm_id       = local.node_configs[count.index].vmid # Unique VM ID
   pool_id     = proxmox_virtual_environment_pool.this.pool_id
 
-  bios = "ovmf"
+  bios          = "ovmf"
+  scsi_hardware = "virtio-scsi-single"
 
   efi_disk {
     datastore_id      = "local-lvm"

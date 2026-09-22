@@ -38,8 +38,14 @@ resource "talos_machine_configuration_apply" "this" {
             port    = 7445
           }
         }
+        kubelet = {
+          extraArgs = {
+            "provider-id" = "proxmox://cluster-1/${local.node_configs[count.index].vmid}"
+          }
+        }
         nodeLabels = {
           "topology.kubernetes.io/region" = "cluster-1"
+          "topology.kubernetes.io/zone"   = "lab"
         }
       }
       cluster = {
